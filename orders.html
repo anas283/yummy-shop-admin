@@ -1,0 +1,110 @@
+<html>
+<thead>
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="orders.css">
+</thead>
+<body>
+    
+    <div class="container-fluid">
+        <h3>My orders</h3>
+        <div class="row order-nav">
+            <div class="tablinks" onclick="openTab(event,'all')" id="default">
+                <button class="btn-light">All</button>
+            </div>
+            <div class="tablinks" onclick="openTab(event,'processing')">
+                <button class="btn-light">Processing</button>
+            </div>
+            <div class="tablinks" onclick="openTab(event,'completed')">
+                <button class="btn-light">Completed</button>
+            </div>
+            <div class="tablinks" onclick="openTab(event,'cancelled')">
+                <button class="btn-light">Cancelled</button>
+            </div>
+        </div>
+
+        <div id="main">
+            <div id="all" class="tabcontent" style="border: 0;">
+                <div class="card card-table">
+                    <div>
+                        <form action="" class="row">
+                            <div>
+                                <ion-icon class="search-icon" name="search-outline"></ion-icon>
+                            </div>
+                            <div class="form-group">
+                                <input style="border: none;" class="form-control search-input" type="text" name="serach" placeholder="Search">
+                            </div>
+                        </form>
+                    </div>
+                    <table>
+                        <tr class="bg-gray">
+                            <th>ORDER</th>
+                            <th>DATE</th>
+                            <th>CUSTOMER</th>
+                            <th>ORDER TOTAL</th>
+                            <th>PAYMENT</th>
+                            <th>ITEM(S)</th>
+                        </tr>
+                        <tr>
+                            <td><a href="">#1</a></td>
+                            <td><a href="">December 16, 2020 10:04 AM</a></td>
+                            <td>-</td>
+                            <td>MYR69.00</td>
+                            <td><span class="pending">Pending</span></td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td><a href="">#2</a></td>
+                            <td><a href="">December 16, 2020 10:04 AM</a></td>
+                            <td>-</td>
+                            <td>MYR89.00</td>
+                            <td><span class="success">Success</span></td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td><a href="">#3</a></td>
+                            <td><a href="">December 16, 2020 10:04 AM</a></td>
+                            <td>-</td>
+                            <td>MYR89.00</td>
+                            <td><span class="failed">Failed</span></td>
+                            <td>3</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div id="processing" class="tabcontent">
+                <h3>Processing</h3>
+            </div>
+            <div id="completed" class="tabcontent">
+                <h3>Completed</h3>
+            </div>
+            <div id="cancelled" class="tabcontent">
+                <h3>Cancelled</h3>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("default").click();
+
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for(i=0;i<tabcontent.length;i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            tablinks = document.getElementsByClassName("tablinks");
+            for(i=0;i<tablinks.length;i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
+
+    <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
+    
+</body>
+</html>

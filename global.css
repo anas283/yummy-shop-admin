@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+
 html, body {
     font-family: 'Open Sans', sans-serif;
     overflow-x: hidden;
@@ -8,6 +10,12 @@ html, body {
 .container {
     max-width: 80%;
     margin: 0 auto;
+}
+
+.container-fluid {
+    min-width: 100%;
+    margin: 0 auto;
+    padding: 15px 0px;
 }
 
 .text-center {
@@ -115,7 +123,7 @@ html, body {
     padding: 40px;
     border-radius: 5px;
     background-color: white;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    box-shadow: rgba(170, 170, 170, 0.1) 0px 4px 12px;
 }
 
 .form-group {
