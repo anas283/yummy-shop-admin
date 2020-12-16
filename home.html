@@ -13,71 +13,102 @@
 
     <div id="mySidenav" class="sidenav">
         <div>
-            <a href="#"><b>Logo</b></a>
+            <a class="logo" href="#"><b>Logo</b></a>
         </div>
         <div>
-            <div class="row nav-item">
-                <ion-icon class="ion-icon" name="home-outline"></ion-icon>
-                <a href="#">Overview</a>
+            <div class="row nav-item tablinks" onclick="openTab(event,'overview')">
+                <div>
+                    <ion-icon class="ion-icon" name="home-outline"></ion-icon>
+                </div>
+                <div>
+                    <p>Overview</p>
+                </div>
             </div>
-            <div class="row nav-item">
-                <ion-icon class="ion-icon" name="file-tray-outline"></ion-icon>
-                <a href="#">Orders</a>
+            <div class="row nav-item tablinks" onclick="openTab(event,'orders')">
+                <div>
+                    <ion-icon class="ion-icon" name="cart-outline"></ion-icon>
+                </div>
+                <div>
+                    <p>Orders</p>
+                </div>
             </div>
-            <div class="row nav-item">
-                <ion-icon class="ion-icon" name="people-circle-outline"></ion-icon>
-                <a href="#">Products</a>
+            <div class="row nav-item tablinks" onclick="openTab(event,'products')">
+                <div>
+                    <ion-icon class="ion-icon" name="bag-outline"></ion-icon>
+                </div>
+                <div>
+                    <p>Products</p>
+                </div>
             </div>
-            <div class="row nav-item">
-                <ion-icon class="ion-icon" name="home-outline"></ion-icon>
-                <a href="#">Customers</a>
+            <div class="row nav-item tablinks" onclick="openTab(event,'customers')">
+                <div>
+                    <ion-icon class="ion-icon" name="person-outline"></ion-icon>
+                </div>
+                <div>
+                    <p>Customers</p>
+                </div>
             </div>
-            <div class="row nav-item">
-                <ion-icon class="ion-icon" name="home-outline"></ion-icon>
-                <a href="#">Reports</a>
+            <div class="row nav-item tablinks" onclick="openTab(event,'settings')">
+                <div>    
+                    <ion-icon class="ion-icon" name="settings-outline"></ion-icon>
+                </div>
+                <div>
+                    <p>Settings</p>
+                </div>
             </div>
-            <div class="row nav-item">
-                <ion-icon class="ion-icon" name="home-outline"></ion-icon>
-                <a href="#">Settings</a>
-            </div>
-            <div class="row nav-item">
-                <ion-icon class="ion-icon" name="home-outline"></ion-icon>
-                <a href="#">Online store</a>
+            <div class="row nav-item tablinks" onclick="openTab(event,'store')">
+                <div>
+                    <ion-icon class="ion-icon" name="home-outline"></ion-icon>
+                </div>
+                <div>
+                    <p>Online store</p>
+                </div>
             </div>
         </div>
     </div>
     
     <div id="main">
-        <div class="banner">
-            <h3 class="text-white">Dashboard</h3>
-            <div class="row">
-                <div class="col-4 card">
-                    <h5 class="text-secondary">TOTAL TRAFFIC</h5>
-                    <h3>24,800</h3>
-                </div>
-                <div class="col-4 card">
-                    <h5 class="text-secondary">NEW USERS</h5>
-                    <h3>5,300</h3>
-                </div>
-                <div class="col-4 card">
-                    <h5 class="text-secondary">SALES</h5>
-                    <h3>610</h3>
-                </div>
-                <div class="col-4 card">
-                    <h5 class="text-secondary">PERFORMANCE</h5>
-                    <h3>300%</h3>
-                </div>
-            </div>
+        <div id="overview" class="tabcontent">
+            <h3>Overview</h3>
         </div>
-        <!-- <div class="charts-box row">
-            <div class="col-4 card">
-                Chart 1
-            </div>
-            <div class="col-4 card">
-                Chart 2
-            </div>
-        </div> -->
+        <div id="orders" class="tabcontent">
+            <h3>Orders</h3>
+        </div>
+        <div id="products" class="tabcontent">
+            <h3>Products</h3>
+        </div>
+        <div id="customers" class="tabcontent">
+            <h3>Customers</h3>
+        </div>
+        <div id="settings" class="tabcontent">
+            <h3>Settings</h3>
+        </div>
+        <div id="store" class="tabcontent">
+            <h3>Online Store</h3>
+        </div>
     </div>
+
+    <script>
+        document.getElementById("overview").style.display = "block";
+        document.getElementById("overview").className += " active";
+
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for(i=0;i<tabcontent.length;i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            tablinks = document.getElementsByClassName("tablinks");
+            for(i=0;i<tablinks.length;i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
 
     <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
     
