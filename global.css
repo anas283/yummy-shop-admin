@@ -7,6 +7,10 @@ html, body {
     padding: 0;
 }
 
+.debug {
+    border: 1px solid red;
+}
+
 .container {
     max-width: 80%;
     margin: 0 auto;
@@ -35,6 +39,11 @@ html, body {
     color: white;
 }
 
+.text-dark {
+    font-weight: 600;
+    color: rgb(83, 83, 83);
+}
+
 .text-small {
     font-size: .9rem;
 }
@@ -44,7 +53,8 @@ html, body {
 }
 
 .text-secondary {
-    color: gray;
+    font-size: .9rem;
+    color: #90a5c2;
 }
 
 .shadow {
@@ -81,6 +91,10 @@ html, body {
     margin: 20px;
 }
 
+.-mt-10 {
+    margin: -10px;
+}
+
 .my-10 {
     margin: 10px 0px;
 }
@@ -91,6 +105,14 @@ html, body {
 
 .mt-20 {
     margin-top: 20px;
+}
+
+.mt-50 {
+    margin-top: 50px;
+}
+
+.mr-5 {
+    margin-right: 5px;
 }
 
 .p-5 {
@@ -123,7 +145,7 @@ html, body {
     padding: 40px;
     border-radius: 5px;
     background-color: white;
-    box-shadow: rgba(170, 170, 170, 0.1) 0px 4px 12px;
+    box-shadow: rgba(148, 148, 148, 0.1) 0px 4px 10px;
 }
 
 .form-group {
@@ -133,16 +155,16 @@ html, body {
 
 .form-group .form-control {
     color: rgb(75, 75, 75);
-    height: 33px;
+    height: 35px;
     border: none;
     outline: none;
-    font-size: 1rem;
+    font-size: .9rem;
     text-indent: 7px;
     margin: 10px 0px;
-    border-radius: 3px;
+    border-radius: 5px;
     padding: 3px;
     font-family: 'Roboto', sans-serif;
-    border: 1px solid rgb(201, 201, 201);
+    border: 1px solid rgb(196, 212, 214);
 }
 
 .form-group .form-control:focus {
@@ -190,4 +212,45 @@ html, body {
 .btn-link:hover {
     color: #3b35af;
     transition: .4s;
+}
+
+.btn-purple {
+    width: fit-content;
+    height: 40px;
+    color: white;
+    outline: none;
+    border: none;
+    font-size: .9rem;
+    border-radius: 5px;
+    padding: 0px 15px;
+    cursor: pointer;
+    margin: 7px 0px;
+    font-family: 'Roboto', sans-serif;
+    background-color: #524cd3;
+}
+
+.btn-purple:hover {
+    color: white;
+    transition: .4s;
+    background-color: #3b35af;
+}
+
+.btn-outline {
+    width: fit-content;
+    height: 40px;
+    color: black;
+    outline: none;
+    border: 1px solid rgb(211, 211, 211);
+    font-size: .9rem;
+    border-radius: 5px;
+    padding: 0px 15px;
+    cursor: pointer;
+    margin: 7px 0px;
+    font-family: 'Roboto', sans-serif;
+    background-color: #ffffff;
+}
+
+.btn-outline:hover {
+    transition: .4s;
+    background-color: #f2f2f7;
 }
