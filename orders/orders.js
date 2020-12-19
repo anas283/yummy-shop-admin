@@ -15,14 +15,16 @@ function openTabOrders(evt, tabName) {
     evt.currentTarget.className += " active2";
 }
 
-var modal = document.getElementById("myModal");
+var modal = document.getElementById("modal-cancel");
+var modal2 = document.getElementById("modal-note");
+var modal3 = document.getElementById("modal-paid");
 var span = document.getElementsByClassName("close")[0];
 
-function openModal() {
+function openModalCancel() {
     modal.style.display = "block";
 }
 
-function closeModal() {
+function closeModalCancel() {
     modal.style.display = "none";
 }
 
@@ -30,6 +32,28 @@ window.onclick = function(event) {
     if (event.target == modal) {
         modal.style.display = "none";
     }
+    if (event.target == modal2) {
+        modal2.style.display = "none";
+    }
+    if (event.target == modal3) {
+        modal3.style.display = "none";
+    }
+}
+
+function openModalNote() {
+    modal2.style.display = "block";
+}
+
+function closeModalNote() {
+    modal2.style.display = "none";
+}
+
+function openModalPaid() {
+    modal3.style.display = "block";
+}
+
+function closeModalPaid() {
+    modal3.style.display = "none";
 }
 
 function printOrder() {

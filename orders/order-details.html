@@ -6,7 +6,7 @@
 </head>
 <body>
 
-    <div class="tabcontent container-fluid">
+    <div class="tabcontent">
 
         <h3 class="text-secondary">Orders</h3>
         <div class="row">
@@ -21,7 +21,7 @@
             <button onclick="printOrder()" class="btn-outline" style="margin-right: 7px;">
                 Print
             </button>
-            <button class="btn-outline" style="margin-right: 7px;">
+            <button onclick="openModalCancel()" class="btn-outline" style="margin-right: 7px;">
                 Cancel order
             </button>
         </div>
@@ -66,7 +66,7 @@
                 </div>
     
                 <div class="row my-10">
-                    <button class="btn-outline" style="margin-right: 7px;">
+                    <button onclick="openModalPaid()" class="btn-outline" style="margin-right: 7px;">
                         Mark as paid
                     </button>
                     <select class="btn-outline-select" name="status" id="status">
@@ -79,10 +79,17 @@
 
             <div class="col-6 mt-20">
                 <div class="card card-details">
-                    <div class="col-auto">
-                        <h4 class="text-medium font-weight-medium">
-                            Note
-                        </h4>
+                    <div class="row w-full">
+                        <div class="col-6">
+                            <h4 class="text-medium font-weight-medium">
+                                Note
+                            </h4>
+                        </div>
+                        <div class="col-6 float-right">
+                            <button onclick="openModalNote()" class="btn-empty float-right mt-10">
+                                Edit
+                            </button>
+                        </div>
                     </div>
                     <div class="line"></div>
                     <div class="col-auto">
@@ -103,16 +110,77 @@
                 </div>
         
                 <div class="card card-details mt-10">
-                    <div class="col-auto">
-                        <h4 class="text-medium font-weight-medium">
-                            Shipping address
-                        </h4>
+                    <div class="row w-full">
+                        <div class="col-6">
+                            <h4 class="text-medium font-weight-medium">
+                                Shipping address
+                            </h4>
+                        </div>
+                        <div class="col-6 float-right">
+                            <button class="btn-empty float-right mt-10">
+                                Edit
+                            </button>
+                        </div>
                     </div>
                     <div class="line"></div>
                     <div class="col-auto">
                         <h4 class="text-medium font-weight-normal">-</h4>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-cancel" class="modal">
+        <div class="modal-content">
+            <span onclick="closeModalCancel()" class="close">&times;</span>
+            <h4 class="modal-title">Cancel order</h4>
+            <div class="modal-line"></div>
+            <p class="text-medium font-weight-normal my-20">Are you sure you want to cancel your this order?</p>
+
+            <div class="row justify-content-end">
+                <button onclick="closeModalCancel()" class="btn-outline" style="margin-right: 7px;">
+                    Cancel
+                </button>
+                <button class="btn-purple">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-note" class="modal">
+        <div class="modal-content">
+            <span onclick="closeModalNote()" class="close">&times;</span>
+            <h4 class="modal-title">Add note</h4>
+            <div class="modal-line"></div>
+
+            <form action="">
+                <div class="form-group mt-10">
+                    <label class="form-label">Message</label>
+                    <textarea class="form-control" name="note" id="note" style="height: 80px; padding-top: 10px;"></textarea>
+                </div>
+            </form>
+
+            <div class="row justify-content-end">
+                <button onclick="closeModalNote()" class="btn-outline" style="margin-right: 7px;">
+                    Cancel
+                </button>
+                <button class="btn-purple">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-paid" class="modal">
+        <div class="modal-content">
+            <span onclick="closeModalPaid()" class="close">&times;</span>
+            <h4 class="modal-title">Mark order</h4>
+            <div class="modal-line"></div>
+            <p class="text-medium font-weight-normal my-20">Are you sure you want to mark this order as paid?</p>
+
+            <div class="row justify-content-end">
+                <button onclick="closeModalPaid()" class="btn-outline" style="margin-right: 7px;">
+                    Cancel
+                </button>
+                <button class="btn-purple">OK</button>
             </div>
         </div>
     </div>

@@ -155,20 +155,6 @@ h3 {
     border-bottom: 1px solid rgb(231, 231, 231);
 }
 
-.btn-empty {
-    width: fit-content;
-    height: 40px;
-    color: rgb(81, 81, 228);
-    font-weight: 400;
-    background-color: transparent;
-    border: none;
-    outline: none;
-    font-size: .9rem;
-    cursor: pointer;
-    text-decoration: none;
-    font-family: 'Open Sans', sans-serif;
-}
-
 .active2 {
     height: 38px;
     border-bottom: 1px solid #594eda;
@@ -222,49 +208,3 @@ table, td, th {
 .bg-gray {
     background-color: #F8FAFC;
 }
-
-/* modal popup */
-
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    width: 100vw;
-    height: 100vh; 
-    background-color: rgb(76, 99, 109);
-    background-color: rgba(47, 63, 66, 0.4); 
-}
-  
-.modal-content {
-    height: fit-content;
-    width: 400px;
-    padding: 10px 25px;
-    margin: 0 auto;
-    margin-top: 100px;
-    border-radius: 5px;
-    position: relative;
-    background-color: #fefefe;
-    animation-name: animatetop;
-    animation-duration: 0.4s
-}
-  
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-  
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-@keyframes animatetop {
-    from {top: -300px; opacity: 0}
-    to {top: 0; opacity: 1}
-}
-
-/* modal popup */
