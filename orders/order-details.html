@@ -6,11 +6,118 @@
 </head>
 <body>
 
-    <div id="orders" class="tabcontent">
+    <div class="tabcontent container-fluid">
 
-        <h3>Order details</h3>
+        <h3 class="text-secondary">Orders</h3>
+        <div class="row">
+            <h1 class="order-number">#1</h1>
+            <small class="order-date">December 16, 2020 10:04 AM</small>
+        </div>
+        <div class="row">
+            <span class="chip pending">Pending</span>
+            <span class="chip processing">Processing</span>
+        </div>
+        <div class="row mt-5">
+            <button onclick="printOrder()" class="btn-outline" style="margin-right: 7px;">
+                Print
+            </button>
+            <button class="btn-outline" style="margin-right: 7px;">
+                Cancel order
+            </button>
+        </div>
 
+        <div class="row">
+            <div class="card col-6 card-details mt-20 mr-20 h-fit">
+                <div class="row">
+                    <div class="col-6">
+                        <h4 class="text-medium font-weight-medium">
+                            The Guide To The Galaxy
+                        </h4>
+                    </div>
+                    <div class="col-6 justify-content-end">
+                        <h4 class="text-medium font-weight-normal">MYR69.00 x 3</h4>
+                    </div>
+                </div>
+                
+                <div class="line"></div>
+    
+                <div class="row">
+                    <div class="col-6">
+                        <h4 class="text-medium font-weight-medium">
+                            Shipping
+                        </h4>
+                    </div>
+                    <div class="col-6 justify-content-end">
+                        <h4 class="text-medium font-weight-normal">MYR7.00</h4>
+                    </div>
+                </div>
+    
+                <div class="line"></div>
+    
+                <div class="row">
+                    <div class="col-6">
+                        <h4 class="text-medium font-weight-medium">
+                            Total
+                        </h4>
+                    </div>
+                    <div class="col-6 justify-content-end">
+                        <h4 class="text-medium font-weight-normal">MYR76.00</h4>
+                    </div>
+                </div>
+    
+                <div class="row my-10">
+                    <button class="btn-outline" style="margin-right: 7px;">
+                        Mark as paid
+                    </button>
+                    <select class="btn-outline-select" name="status" id="status">
+                        <option value="processing">Processing</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-6 mt-20">
+                <div class="card card-details">
+                    <div class="col-auto">
+                        <h4 class="text-medium font-weight-medium">
+                            Note
+                        </h4>
+                    </div>
+                    <div class="line"></div>
+                    <div class="col-auto">
+                        <h4 class="text-medium font-weight-normal">Testing</h4>
+                    </div>
+                </div>
+
+                <div class="card card-details mt-10">
+                    <div class="col-auto">
+                        <h4 class="text-medium font-weight-medium">
+                            Customer
+                        </h4>
+                    </div>
+                    <div class="line"></div>
+                    <div class="col-auto">
+                        <h4 class="text-medium font-weight-normal">-</h4>
+                    </div>
+                </div>
+        
+                <div class="card card-details mt-10">
+                    <div class="col-auto">
+                        <h4 class="text-medium font-weight-medium">
+                            Shipping address
+                        </h4>
+                    </div>
+                    <div class="line"></div>
+                    <div class="col-auto">
+                        <h4 class="text-medium font-weight-normal">-</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <script src="./orders.js"></script>
     
 </body>
 </html>

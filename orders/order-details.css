@@ -1,0 +1,21 @@
+h3 {
+    margin-top: 5px;
+    margin-left: 5px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.order-number {
+    margin-top: -12px;
+    font-weight: 600;
+    color: rgb(58, 58, 58);
+}
+
+.order-date {
+    margin: 7px;
+    color: rgb(77, 77, 77);
+}
+
+.card-details {
+    padding: 4px 24px;
+}

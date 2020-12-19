@@ -223,27 +223,6 @@ table, td, th {
     background-color: #F8FAFC;
 }
 
-.pending {
-    width: 100px;
-    border-radius: 25px;
-    padding: 4px 10px;
-    background-color: #FFC58B;
-}
-
-.success {
-    width: 100px;
-    border-radius: 25px;
-    padding: 4px 10px;
-    background-color: #81da7e;
-}
-
-.failed {
-    width: 100px;
-    border-radius: 25px;
-    padding: 4px 10px;
-    background-color: #f08989;
-}
-
 /* modal popup */
 
 .modal {
