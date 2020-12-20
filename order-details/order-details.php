@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="../global.css">
-    <link rel="stylesheet" href="../order-details/order-details.css">
+    <link rel="stylesheet" href="../global.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="./order-details.css?v=<?php echo time(); ?>">
 </head>
 <body>
 
@@ -10,8 +10,8 @@
         <div>
             <a class="logo" href="#"><b>Logo</b></a>
         </div>
-        <div>
-            <a href="../home/home.html" id="overview-tab" class="row nav-item tablinks">
+        <div class="navs">
+            <a href="../home/home.php" id="overview-tab" class="row nav-item tablinks">
                 <div>
                     <ion-icon class="ion-icon" name="home-outline"></ion-icon>
                 </div>
@@ -19,12 +19,12 @@
                     <p>Overview</p>
                 </div>
             </a>
-            <a href="../orders/orders.html" id="order" class="row nav-item tablinks active">
+            <a href="../orders/orders.php" id="order" class="row nav-item tablinks active">
                 <div>
-                    <ion-icon class="ion-icon" name="cart-outline"></ion-icon>
+                    <ion-icon class="ion-icon logo-active" name="cart-outline"></ion-icon>
                 </div>
                 <div>
-                    <p>Orders</p>
+                    <p class="text-active"">Orders</p>
                 </div>
             </a>
             <a href="#" class="row nav-item tablinks">
@@ -236,7 +236,7 @@
         </div>
     </div>
 
-    <script src="../order-details/order-details.js"></script>
+    <script src="./order-details.js?v=<?php echo time(); ?>"></script>
     <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
     
 </body>

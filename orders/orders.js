@@ -3,7 +3,7 @@ function setDefault() {
 }
 
 function openOrderDetails() {
-    window.open('../order-details/order-details.html', '_self');
+    window.open('../order-details/order-details.php', '_self');
 }
 
 function openTabOrders(evt, tabName) {

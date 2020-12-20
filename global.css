@@ -458,20 +458,21 @@ iframe {
     overflow-x: hidden;
     transition: 0.5s;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    padding-top: 20px;
 }
 
 .sidenav .logo {
-    margin-left: 11px;
+    margin: 20px 25px;
+}
+
+.sidenav .navs {
+    margin-top: 20px;
 }
 
 .sidenav a {
-    /* padding: 8px 15px; */
     text-decoration: none;
     font-size: .9rem;
-    color: #41475B;
-    /* margin: 7px; */
-    /* border-radius: 5px; */
-    /* display: block; */
+    color: #787f97;
     transition: 0.3s;
 }
 
@@ -487,7 +488,7 @@ iframe {
 }
 
 .sidenav p {
-    color: #41475B;
+    color: #5f6785;
     font-size: .9rem;
     margin-top: 15px;
     margin-left: 5px;
@@ -504,7 +505,15 @@ iframe {
 }
 
 .active {
-    border-left: 5px solid #594eda;   
+    border-left: 4px solid #594eda;   
+}
+
+.sidenav .navs .text-active {
+    color: #181818;
+}
+
+.sidenav .navs .logo-active {
+    color: #181818;
 }
 
 @media screen and (max-height: 450px) {
@@ -521,6 +530,7 @@ iframe {
 }
 
 .ion-icon {
+    color:  #787f97;
     width: 20px;
     height: 20px;
     padding: 10px;

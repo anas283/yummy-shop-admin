@@ -1,28 +1,36 @@
+<?php
+session_start();
+
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: ../index.php");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../global.css">
-    <link rel="stylesheet" href="./home.css">
+    <link rel="stylesheet" href="../global.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="./home.css?v=<?php echo time(); ?>">
     <title>Home</title>
 </head>
-<body id="body" onload="setTab()">
+<body id="body">
 
     <div id="mySidenav" class="sidenav">
         <div>
             <a class="logo" href="#"><b>Logo</b></a>
         </div>
-        <div>
-            <a href="../home/home.html" id="overview-tab" class="row nav-item tablinks active">
+        <div class="navs">
+            <a href="../home/home.php" id="overview-tab" class="row nav-item tablinks active">
                 <div>
-                    <ion-icon class="ion-icon" name="home-outline"></ion-icon>
+                    <ion-icon class="ion-icon logo-active" name="home-outline"></ion-icon>
                 </div>
                 <div>
-                    <p>Overview</p>
+                    <p class="text-active">Overview</p>
                 </div>
             </a>
-            <a href="../orders/orders.html" id="order" class="row nav-item tablinks">
+            <a href="../orders/orders.php" id="order" class="row nav-item tablinks">
                 <div>
                     <ion-icon class="ion-icon" name="cart-outline"></ion-icon>
                 </div>
@@ -68,6 +76,8 @@
     <section id="main">
         <div id="overview" class="tabcontent">
             <h3>Overview</h3>
+            <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to our site.</h1>
+            <a href="../logout.php" class="btn btn-danger">Sign Out of Your Account</a>
         </div>
     </section>
 
