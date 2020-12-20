@@ -34,3 +34,8 @@ body {
     margin-top: -40px;
     right: 0;
 }
+
+.error-msg {
+    color: #C82333;
+    margin-top: -5px;
+}
