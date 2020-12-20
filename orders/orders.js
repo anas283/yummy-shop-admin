@@ -1,3 +1,11 @@
+function setDefault() {
+    document.getElementById("default").click();
+}
+
+function openOrderDetails() {
+    window.open('../order-details/order-details.html', '_self');
+}
+
 function openTabOrders(evt, tabName) {
     var i, tabcontent2, tablinks2;
 
@@ -15,47 +23,18 @@ function openTabOrders(evt, tabName) {
     evt.currentTarget.className += " active2";
 }
 
-var modal = document.getElementById("modal-cancel");
-var modal2 = document.getElementById("modal-note");
-var modal3 = document.getElementById("modal-paid");
+var modalOrder = document.getElementById("modal-order");
 var span = document.getElementsByClassName("close")[0];
 
-function openModalCancel() {
-    modal.style.display = "block";
+function openModalOrder() {
+    modalOrder.style.display = "block";
 }
-
-function closeModalCancel() {
-    modal.style.display = "none";
+function closeModalOrder() {
+    modalOrder.style.display = "none";
 }
 
 window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
+    if (event.target == modalOrder) {
+        modalOrder.style.display = "none";
     }
-    if (event.target == modal2) {
-        modal2.style.display = "none";
-    }
-    if (event.target == modal3) {
-        modal3.style.display = "none";
-    }
-}
-
-function openModalNote() {
-    modal2.style.display = "block";
-}
-
-function closeModalNote() {
-    modal2.style.display = "none";
-}
-
-function openModalPaid() {
-    modal3.style.display = "block";
-}
-
-function closeModalPaid() {
-    modal3.style.display = "none";
-}
-
-function printOrder() {
-    window.print();
 }

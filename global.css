@@ -446,3 +446,102 @@ iframe {
     min-height: 100vh;
     z-index: 2;
 }
+
+/* sidenav */
+.sidenav {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    background-color:white;
+    overflow-x: hidden;
+    transition: 0.5s;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+.sidenav .logo {
+    margin-left: 11px;
+}
+
+.sidenav a {
+    /* padding: 8px 15px; */
+    text-decoration: none;
+    font-size: .9rem;
+    color: #41475B;
+    /* margin: 7px; */
+    /* border-radius: 5px; */
+    /* display: block; */
+    transition: 0.3s;
+}
+
+.sidenav .nav-item {
+    width: 100%;
+    float: left;
+    cursor: pointer;
+}
+
+.sidenav .ion-icon {
+    margin-left: 15px;
+    margin-top: 5px;
+}
+
+.sidenav p {
+    color: #41475B;
+    font-size: .9rem;
+    margin-top: 15px;
+    margin-left: 5px;
+}
+
+.sidenav .nav-item:hover {
+    transition: .3s;
+    background-color: #f3f2ff;
+}
+
+.tablinks {
+    transition: .3s;
+    border-left: 5px solid transparent;
+}
+
+.active {
+    border-left: 5px solid #594eda;   
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+
+#nav-items {
+    margin-top: 20px;
+}
+
+#nav-icons {
+    margin-top: 20px;
+}
+
+.ion-icon {
+    width: 20px;
+    height: 20px;
+    padding: 10px;
+    margin: 0 auto;
+}
+/* sidenav */
+
+#main {
+    width: 86%;
+    transition: margin-left .5s;
+    margin-top: -20px;
+    margin-left: 200px;
+}
+
+.tabcontent {
+    min-height: 100vh;
+    background-color: #F9FBFD;
+    padding: 20px 30px;
+    border: 0;
+}
+
+.tabcontent h3 {
+    font-weight: 600;
+}

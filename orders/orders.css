@@ -1,0 +1,96 @@
+#overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%; 
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 2;
+    cursor: pointer; 
+}
+
+.tabcontent2 {
+    border: 0;
+}
+
+.order-nav {
+    margin-left: 5px;
+}
+
+.btn-light {
+    width: fit-content;
+    height: 40px;
+    color: #A9B9CF;
+    font-weight: 600;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-size: .9rem;
+    cursor: pointer;
+    text-decoration: none;
+    float: right;
+    font-family: 'Open Sans', sans-serif;
+    padding: 0px 15px;
+    border-bottom: 1px solid rgb(231, 231, 231);
+}
+
+.active2 {
+    height: 38px;
+    border-bottom: 1px solid #594eda;
+}
+
+.card-table {
+    padding: 0;
+    margin: 25px 5px;
+}
+
+.card-empty {
+    padding-top: 20px;
+    padding-bottom: 55px;
+    margin: 25px 5px;
+}
+
+.search-input {
+    margin-top: 0px;
+}
+
+.search-icon {
+    color: gray;
+    width: 18px;
+    height: 18px;
+    margin-top: 18px;
+    margin-left: 20px;
+}
+
+table {
+    width: 100%;
+    margin-top: -5px;
+}
+
+table a {
+    color: rgb(81, 81, 228);
+    text-decoration: none;
+}
+
+th {
+    color: #b2c5cf;
+    text-align: start;
+}
+
+table, td, th {
+    font-size: .85rem;
+    border-bottom: 1px solid #ececec;
+    border-collapse: collapse;
+    padding: 18px;
+}
+
+tr {
+    cursor: pointer;
+}
+
+.bg-gray {
+    background-color: #F8FAFC;
+}

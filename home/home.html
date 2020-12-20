@@ -7,30 +7,30 @@
     <link rel="stylesheet" href="./home.css">
     <title>Home</title>
 </head>
-<body id="body">
+<body id="body" onload="setTab()">
 
     <div id="mySidenav" class="sidenav">
         <div>
             <a class="logo" href="#"><b>Logo</b></a>
         </div>
         <div>
-            <div id="overview-tab" class="row nav-item tablinks" onclick="openTab(event,'overview')">
+            <a href="../home/home.html" id="overview-tab" class="row nav-item tablinks active">
                 <div>
                     <ion-icon class="ion-icon" name="home-outline"></ion-icon>
                 </div>
                 <div>
                     <p>Overview</p>
                 </div>
-            </div>
-            <div class="row nav-item tablinks" onclick="openTab(event,'orders')">
+            </a>
+            <a href="../orders/orders.html" id="order" class="row nav-item tablinks">
                 <div>
                     <ion-icon class="ion-icon" name="cart-outline"></ion-icon>
                 </div>
                 <div>
                     <p>Orders</p>
                 </div>
-            </div>
-            <div class="row nav-item tablinks" onclick="openTab(event,'products')">
+            </a>
+            <a href="#" class="row nav-item tablinks">
                 <div>
                     <ion-icon class="ion-icon" name="bag-outline"></ion-icon>
                 </div>
@@ -38,182 +38,40 @@
                     <p>Products</p>
                 </div>
             </div>
-            <div class="row nav-item tablinks" onclick="openTab(event,'customers')">
+            <a href="#" class="row nav-item tablinks">
                 <div>
                     <ion-icon class="ion-icon" name="person-outline"></ion-icon>
                 </div>
                 <div>
                     <p>Customers</p>
                 </div>
-            </div>
-            <div class="row nav-item tablinks" onclick="openTab(event,'settings')">
+            </a>
+            <a href="#" class="row nav-item tablinks">
                 <div>    
                     <ion-icon class="ion-icon" name="settings-outline"></ion-icon>
                 </div>
                 <div>
                     <p>Settings</p>
                 </div>
-            </div>
-            <div class="row nav-item tablinks" onclick="openTab(event,'store')">
+            </a>
+            <a href="#" class="row nav-item tablinks">
                 <div>
                     <ion-icon class="ion-icon" name="home-outline"></ion-icon>
                 </div>
                 <div>
                     <p>Online store</p>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <span onclick="closeModal()" class="close">&times;</span>
-            <h4>Create order</h4>
-
-            <form action="">
-                <div class="form-group mt-10">
-                    <label class="form-label">Product name</label>
-                    <input class="form-control" type="text">
-                </div>
-                <div class="form-group mt-10">
-                    <label class="form-label">Product price</label>
-                    <input class="form-control" type="number">
-                </div>
-                <div class="form-group mt-10">
-                    <label class="form-label">Date</label>
-                    <input class="form-control" type="date">
-                </div>
-            </form>
-
-            <div class="row justify-content-end">
-                <button onclick="closeModal()" class="btn-outline" style="margin-right: 7px;">
-                    Cancel
-                </button>
-                <button class="btn-purple">Save</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="main">
+    <section id="main">
         <div id="overview" class="tabcontent">
             <h3>Overview</h3>
         </div>
-        <div id="orders" class="tabcontent">
+    </section>
 
-            <div class="row">
-                <div class="col-6">
-                    <h3>My orders</h3>
-                </div>
-                <div class="col-6">
-                    <button onclick="openModal()" class="btn-purple float-right" style="margin-top: 20px;">Create order</button>
-                </div>
-            </div>
-            <div class="row order-nav">
-                <div class="tablinks2" onclick="openTabOrders(event,'all')" id="default">
-                    <button class="btn-light">All</button>
-                </div>
-                <div class="tablinks2" onclick="openTabOrders(event,'processing')">
-                    <button class="btn-light">Processing</button>
-                </div>
-                <div class="tablinks2" onclick="openTabOrders(event,'completed')">
-                    <button class="btn-light">Completed</button>
-                </div>
-                <div class="tablinks2" onclick="openTabOrders(event,'cancelled')">
-                    <button class="btn-light">Cancelled</button>
-                </div>
-            </div>
-    
-            <div id="all" class="card card-table tabcontent2">
-                <div>
-                    <form action="" class="row">
-                        <div>
-                            <ion-icon class="search-icon" name="search-outline"></ion-icon>
-                        </div>
-                        <div class="form-group">
-                            <input style="border: 0; margin-top: 5px;" class="form-control search-input" type="text" name="serach" placeholder="Search">
-                        </div>
-                    </form>
-                </div>
-                <table>
-                    <tr class="bg-gray">
-                        <th>ORDER</th>
-                        <th>DATE</th>
-                        <th>CUSTOMER</th>
-                        <th>ORDER TOTAL</th>
-                        <th>PAYMENT</th>
-                        <th>FULFILLMENT</th>
-                        <th>ITEM(S)</th>
-                    </tr>
-                    <tr>
-                        <td><button class="btn-empty" onclick="openTab(event,'order-details')">#1</button></td>
-                        <td><button class="btn-empty" onclick="openTab(event,'order-details')">December 16, 2020 10:04 AM</button></td>
-                        <td>-</td>
-                        <td>MYR69.00</td>
-                        <td><span class="pending">Pending</span></td>
-                        <td><span class="processing">Processing</span></td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td><button class="btn-empty" onclick="openTab(event,'order-details')">#2</button></td>
-                        <td><button class="btn-empty" onclick="openTab(event,'order-details')">December 17, 2020 7:50 AM</button></td>
-                        <td>-</td>
-                        <td>MYR89.00</td>
-                        <td><span class="success">Success</span></td>
-                        <td><span class="success">Completed</span></td>
-                        <td>3</td>
-                    </tr>
-                    <tr>
-                        <td><button class="btn-empty" onclick="openTab(event,'order-details')">#3</button></td>
-                        <td><button class="btn-empty" onclick="openTab(event,'order-details')">December 19, 2020 9:15 AM</button></td>
-                        <td>-</td>
-                        <td>MYR45.00</td>
-                        <td><span class="failed">Failed</span></td>
-                        <td><span class="failed">Cancelled</span></td>
-                        <td>6</td>
-                    </tr>
-                </table>
-            </div>
-
-            <div id="processing" class="tabcontent2">
-                <div class="card card-empty">
-                    <h4 class="text-dark text-center">Manage orders</h4>
-                    <p class="text-secondary text-center -mt-10">When your orders start coming in, you will be able to view and process them here.</p>
-                </div>
-            </div>
-            <div id="completed" class="tabcontent2">
-                <div class="card card-empty">
-                    <h4 class="text-dark text-center">Manage orders</h4>
-                    <p class="text-secondary text-center -mt-10">When your orders start coming in, you will be able to view and process them here.</p>
-                </div>     
-            </div>
-            <div id="cancelled" class="tabcontent2">
-                <div class="card card-empty">
-                    <h4 class="text-dark text-center">Manage orders</h4>
-                    <p class="text-secondary text-center -mt-10">When your orders start coming in, you will be able to view and process them here.</p>
-                </div>
-            </div>
-
-            <!-- <object data="orders.html"></object> -->
-        </div>
-        <div id="products" class="tabcontent">
-            <h3>Products</h3>
-        </div>
-        <div id="customers" class="tabcontent">
-            <h3>Customers</h3>
-        </div>
-        <div id="settings" class="tabcontent">
-            <h3>Settings</h3>
-        </div>
-        <div id="store" class="tabcontent">
-            <h3>Online Store</h3>
-        </div>
-        <div id="order-details" class="tabcontent">
-            <iframe src="../orders/order-details.html" frameborder="0"></iframe>
-            <!-- <object data="../orders/order-details.html"></object> -->
-        </div>
-    </div>
-
-    <script src="../home/home.js"></script>
+    <script src="./home.js"></script>
     <script src="../orders/orders.js"></script>
     <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
 
