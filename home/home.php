@@ -19,7 +19,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
     <div id="mySidenav" class="sidenav">
         <div>
-            <a class="logo" href="#"><b>Logo</b></a>
+            <a class="logo" href="../home/home.php">
+                <img class="shop-logo" src="../images/shop_logo.png" alt="">
+            </a>
         </div>
         <div class="navs">
             <a href="../home/home.php" id="overview-tab" class="row nav-item tablinks active">
@@ -46,7 +48,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     <p>Products</p>
                 </div>
             </div>
-            <a href="#" class="row nav-item tablinks">
+            <a href="../customers/customers.php" class="row nav-item tablinks">
                 <div>
                     <ion-icon class="ion-icon" name="person-outline"></ion-icon>
                 </div>
@@ -54,7 +56,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     <p>Customers</p>
                 </div>
             </a>
-            <a href="#" class="row nav-item tablinks">
+            <a href="../settings/settings.php" class="row nav-item tablinks">
                 <div>    
                     <ion-icon class="ion-icon" name="settings-outline"></ion-icon>
                 </div>
@@ -62,27 +64,27 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     <p>Settings</p>
                 </div>
             </a>
-            <a href="#" class="row nav-item tablinks">
-                <div>
-                    <ion-icon class="ion-icon" name="home-outline"></ion-icon>
-                </div>
-                <div>
-                    <p>Online store</p>
-                </div>
-            </a>
         </div>
     </div>
 
     <section id="main">
+        <nav class="main-nav">
+            <div class="nav-item justify-content-end">
+                <select name="profile" id="profile-menu" onchange="selectMenu()">
+                    <option value="username"><?php echo htmlspecialchars($_SESSION["username"]); ?></option>
+                    <option value="account">Account profile</option>
+                    <option value="change-pass">Change password</option>
+                    <option value="logout">Logout</option>
+                </select>
+            </div>
+        </nav>
         <div id="overview" class="tabcontent">
             <h3>Overview</h3>
-            <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to our site.</h1>
-            <a href="../logout.php" class="btn btn-danger">Sign Out of Your Account</a>
+            <div class="div-line"></div>
         </div>
     </section>
 
-    <script src="./home.js"></script>
-    <script src="../orders/orders.js"></script>
+    <script src="./home.js?v=<?php echo time(); ?>"></script>
     <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
 
 </body>

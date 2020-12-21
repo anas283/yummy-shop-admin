@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: ../index.php");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +19,9 @@
 
     <div id="mySidenav" class="sidenav">
         <div>
-            <a class="logo" href="#"><b>Logo</b></a>
+            <a class="logo" href="../home/home.php">
+                <img class="shop-logo" src="../images/shop_logo.png" alt="">
+            </a>
         </div>
         <div class="navs">
             <a href="../home/home.php" id="overview-tab" class="row nav-item tablinks">
@@ -38,7 +48,7 @@
                     <p>Products</p>
                 </div>
             </div>
-            <a href="#" class="row nav-item tablinks">
+            <a href="../customers/customers.php" class="row nav-item tablinks">
                 <div>
                     <ion-icon class="ion-icon" name="person-outline"></ion-icon>
                 </div>
@@ -46,7 +56,7 @@
                     <p>Customers</p>
                 </div>
             </a>
-            <a href="#" class="row nav-item tablinks">
+            <a href="../settings/settings.php" class="row nav-item tablinks">
                 <div>    
                     <ion-icon class="ion-icon" name="settings-outline"></ion-icon>
                 </div>
@@ -54,18 +64,20 @@
                     <p>Settings</p>
                 </div>
             </a>
-            <a href="#" class="row nav-item tablinks">
-                <div>
-                    <ion-icon class="ion-icon" name="home-outline"></ion-icon>
-                </div>
-                <div>
-                    <p>Online store</p>
-                </div>
-            </a>
         </div>
     </div>
 
     <section id="main">
+        <nav class="main-nav">
+            <div class="nav-item justify-content-end">
+                <select name="profile" id="profile-menu" onchange="selectMenu()">
+                    <option value="username"><?php echo htmlspecialchars($_SESSION["username"]); ?></option>
+                    <option value="account">Account profile</option>
+                    <option value="change-pass">Change password</option>
+                    <option value="logout">Logout</option>
+                </select>
+            </div>
+        </nav>
         <div class="tabcontent">
             <div class="row">
                 <div class="col-6">

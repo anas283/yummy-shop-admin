@@ -52,8 +52,8 @@ html, body {
 }
 
 .text-dark {
+    color: #242424;
     font-weight: 600;
-    color: rgb(83, 83, 83);
 }
 
 .text-small {
@@ -410,6 +410,14 @@ html, body {
     margin-top: -10px;
     border-bottom: 1px solid #f1f1f1;
 }
+
+.div-line {
+    width: 100%;
+    height: 10px;
+    /* margin-left: -25px;
+    margin-top: -10px; */
+    border-bottom: 1px solid #ddeff3;
+}
   
 .close {
     color: #aaa;
@@ -457,12 +465,17 @@ iframe {
     background-color:white;
     overflow-x: hidden;
     transition: 0.5s;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    border-right: 1px solid #ddeff3;
     padding-top: 20px;
 }
 
 .sidenav .logo {
     margin: 20px 25px;
+}
+
+.sidenav .logo .shop-logo {
+    width: 70px;
+    margin-left: 5px;
 }
 
 .sidenav .navs {
@@ -545,13 +558,35 @@ iframe {
     margin-left: 200px;
 }
 
+#main .main-nav {
+    padding: 10px;
+    border-bottom: 1px solid #ddeff3;
+}
+
+#main .main-nav .nav-item {
+    font-size: .9rem;
+    margin-top: 16px;
+    margin-right: 40px;
+}
+
+#main .main-nav .nav-item select {
+    text-align: end;
+    width: fit-content;
+    border: 0;
+    margin: 10px;
+}
+
 .tabcontent {
     min-height: 100vh;
     background-color: #F9FBFD;
-    padding: 20px 30px;
+    padding: 10px 30px;
     border: 0;
 }
 
 .tabcontent h3 {
     font-weight: 600;
+}
+
+.content {
+    margin: 25px 0px;
 }
