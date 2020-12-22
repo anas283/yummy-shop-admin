@@ -26,7 +26,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     
     if(empty($email_err) && empty($password_err)){
-        $sql = "SELECT id, username, email, password FROM users WHERE email = ?";
+        $sql = "SELECT id, username, email, password FROM admin WHERE email = ?";
         
         if($stmt = mysqli_prepare($link, $sql)){
             mysqli_stmt_bind_param($stmt, "s", $param_email);
