@@ -37,7 +37,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     <p class="text-active"">Orders</p>
                 </div>
             </a>
-            <a href="#" class="row nav-item tablinks">
+            <a href="../products/products.php" class="row nav-item tablinks">
                 <div>
                     <ion-icon class="ion-icon" name="bag-outline"></ion-icon>
                 </div>
@@ -78,7 +78,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             </div>
         </nav>
         <div class="tabcontent">
-            <h3 class="text-secondary">Orders</h3>
+            <h3 class="text-secondary-2">Orders</h3>
             <div class="row">
                 <h1 class="order-number">#1</h1>
                 <small class="order-date">December 16, 2020 10:04 AM</small>

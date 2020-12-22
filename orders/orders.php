@@ -4,6 +4,7 @@ session_start();
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: ../index.php");
 }
+$card_empty = '';
 ?>
 
 <!DOCTYPE html>
@@ -40,7 +41,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     <p class="text-active">Orders</p>
                 </div>
             </a>
-            <a href="#" class="row nav-item tablinks">
+            <a href="../products/products.php" class="row nav-item tablinks">
                 <div>
                     <ion-icon class="ion-icon" name="bag-outline"></ion-icon>
                 </div>
@@ -105,6 +106,13 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             </div>
     
             <div id="all" class="card card-table tabcontent2">
+                <?php if(!empty($card_empty)) : ?>
+                    <div class="card card-empty">
+                        <h4 class="text-dark text-center">Manage orders</h4>
+                        <p class="text-secondary text-center -mt-10">When your orders start coming in, you will be able to view and process them here.</p>
+                    </div>
+                <?php endif; ?>
+
                 <div>
                     <form action="" class="row">
                         <div>

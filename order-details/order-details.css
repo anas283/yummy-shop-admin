@@ -5,11 +5,10 @@ h3 {
 .order-number {
     margin-top: -12px;
     font-weight: 600;
-    color: rgb(58, 58, 58);
+    color: #3A3A3A;
 }
 
 .order-date {
-    /* margin: 7px; */
     color: rgb(77, 77, 77);
 }
 

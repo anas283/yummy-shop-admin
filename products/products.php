@@ -12,8 +12,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../global.css?v=<?php echo time(); ?>">
-    <link rel="stylesheet" href="./settings.css?v=<?php echo time(); ?>">
-    <title>Settings</title>
+    <link rel="stylesheet" href="./products.css?v=<?php echo time(); ?>">
+    <title>Products</title>
 </head>
 <body>
 
@@ -40,12 +40,12 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     <p>Orders</p>
                 </div>
             </a>
-            <a href="../products/products.php" class="row nav-item tablinks">
+            <a href="../products/products.php" class="row nav-item tablinks active">
                 <div>
-                    <ion-icon class="ion-icon" name="bag-outline"></ion-icon>
+                    <ion-icon class="ion-icon logo-active" name="bag-outline"></ion-icon>
                 </div>
                 <div>
-                    <p>Products</p>
+                    <p class="text-active">Products</p>
                 </div>
             </div>
             <a href="../customers/customers.php" class="row nav-item tablinks">
@@ -53,12 +53,12 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     <ion-icon class="ion-icon" name="person-outline"></ion-icon>
                 </div>
                 <div>
-                    <p class="text-active">Customers</p>
+                    <p>Customers</p>
                 </div>
             </a>
-            <a href="../settings/settings.php" class="row nav-item tablinks active">
+            <a href="../settings/settings.php" class="row nav-item tablinks">
                 <div>    
-                    <ion-icon class="ion-icon logo-active" name="settings-outline"></ion-icon>
+                    <ion-icon class="ion-icon" name="settings-outline"></ion-icon>
                 </div>
                 <div>
                     <p>Settings</p>
@@ -81,7 +81,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             </div>
         </nav>
         <div id="overview" class="tabcontent">
-            <h3>Settings</h3>
+            <h3>Products</h3>
             <div class="div-line"></div>
         </div>
     </section>
