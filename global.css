@@ -69,6 +69,11 @@ html, body {
     color: #90a5c2;
 }
 
+.text-secondary-2 {
+    font-size: .9rem;
+    color: #B1C2D9;
+}
+
 .shadow {
     box-shadow: 10px 15px 15px -7px rgba(148, 148, 148, 0.75)
 }
@@ -133,6 +138,10 @@ html, body {
 
 .mr-5 {
     margin-right: 5px;
+}
+
+.mr-10 {
+    margin-right: 10px;
 }
 
 .mr-20 {
@@ -654,3 +663,8 @@ iframe {
 }
 
 /* custom select */
+
+.error-msg {
+    color: #C82333;
+    margin-top: -5px;
+}

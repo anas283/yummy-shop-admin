@@ -45,6 +45,7 @@
 .card-table {
     padding: 0;
     margin: 25px 5px;
+    border: 1px solid #ebf4f7;
 }
 
 .card-empty {

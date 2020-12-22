@@ -1,9 +1,14 @@
 <?php
 session_start();
+require_once "../config.php";
 
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: ../index.php");
 }
+
+$sql = "SELECT * FROM customer";
+$result = mysqli_query($link, $sql);
+$customers = mysqli_fetch_all($result, MYSQLI_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -40,7 +45,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     <p>Orders</p>
                 </div>
             </a>
-            <a href="#" class="row nav-item tablinks">
+            <a href="../products/products.php" class="row nav-item tablinks">
                 <div>
                     <ion-icon class="ion-icon" name="bag-outline"></ion-icon>
                 </div>
@@ -91,18 +96,61 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             </div>
             <div class="div-line"></div>
 
-            <div class="content">
-                <div id="processing" class="tabcontent2">
-                    <div class="card card-empty">
-                        <h4 class="text-dark text-center">Understand your customers</h4>
-                        <p class="text-secondary text-center -mt-10">Once you start making sales, you'll find their details and purchase history here.</p>
-                    </div>
+            <?php if (empty($customers)) : ?>
+                <div class="card card-empty">
+                    <h4 class="text-dark text-center">Understand your customers</h4>
+                    <p class="text-secondary text-center -mt-10">Once you start making sales, you'll find their details and purchase history here.</p>
                 </div>
-            </div>
+            <?php endif; ?>
+
+            <?php if (!empty($customers)) : ?>
+                <div class="card card-table content">
+                    <div>
+                        <form action="" class="row">
+                            <div>
+                                <ion-icon class="search-icon" name="search-outline"></ion-icon>
+                            </div>
+                            <div class="form-group">
+                                <input style="border: 0; margin-top: 5px;" class="form-control search-input" type="text" name="serach" placeholder="Search">
+                            </div>
+                        </form>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr class="bg-gray">
+                                <th>NAME</th>
+                                <th>ORDERS</th>
+                                <th>LAST_ORDER</th>
+                                <th>TOTAL SPENT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($customers as $customer) : ?>
+                                <tr>
+                                    <td>
+                                        <button class="btn-empty">
+                                            <?php echo $customer['first_name'] . ' ' . $customer['last_name'] ?>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        0
+                                    </td>
+                                    <td>
+                                        -
+                                    </td>
+                                    <td>
+                                        MYR0.00
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php endif; ?>
         </div>
     </section>
 
-    <script src="../home/home.js?v=<?php echo time(); ?>"></script>
+    <script src="./customers.js?v=<?php echo time(); ?>"></script>
     <script src="../global.js?v=<?php echo time(); ?>"></script>
     <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
     

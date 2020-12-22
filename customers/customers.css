@@ -3,3 +3,73 @@
     padding-bottom: 55px;
     margin: 25px 5px;
 }
+
+.card-form {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin: 25px 5px;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.add-customer-text {
+    margin-top: -14px;
+    font-weight: 600;
+    color: #3A3A3A;
+}
+
+.card-table {
+    padding: 0;
+    margin: 25px 5px;
+    border: 1px solid #ebf4f7;
+}
+
+.card-empty {
+    padding-top: 20px;
+    padding-bottom: 55px;
+    margin: 25px 5px;
+}
+
+.search-input {
+    margin-top: 0px;
+}
+
+.search-icon {
+    color: gray;
+    width: 18px;
+    height: 18px;
+    margin-top: 18px;
+    margin-left: 20px;
+}
+
+table {
+    width: 100%;
+    margin-top: -5px;
+}
+
+table a {
+    color: rgb(81, 81, 228);
+    text-decoration: none;
+}
+
+th {
+    color: #b2c5cf;
+    text-align: start;
+}
+
+table, td, th {
+    font-size: .85rem;
+    border-bottom: 1px solid #ececec;
+    border-collapse: collapse;
+    padding: 18px;
+}
+
+tr {
+    cursor: pointer;
+}
+
+.bg-gray {
+    background-color: #F8FAFC;
+}
