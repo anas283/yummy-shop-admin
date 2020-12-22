@@ -70,12 +70,14 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <section id="main">
         <nav class="main-nav">
             <div class="nav-item justify-content-end">
-                <select name="profile" id="profile-menu" onchange="selectMenu()">
-                    <option value="username"><?php echo htmlspecialchars($_SESSION["username"]); ?></option>
-                    <option value="account">Account profile</option>
-                    <option value="change-pass">Change password</option>
-                    <option value="logout">Logout</option>
-                </select>
+                <div class="custom-select" onclick="selectMenu()">
+                    <select name="profile" id="profile-menu">
+                        <option value="username"><?php echo htmlspecialchars($_SESSION["username"]); ?></option>
+                        <option value="account">Account profile</option>
+                        <option value="change-pass">Change password</option>
+                        <option value="logout">Logout</option>
+                    </select>
+                </div>
             </div>
         </nav>
         <div class="tabcontent">
@@ -84,7 +86,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     <h3>My orders</h3>
                 </div>
                 <div class="col-6">
-                    <button id="test1" onclick="openModalOrder()" class="btn-purple float-right" style="margin-top: 20px;">Create order</button>
+                    <button id="test1" onclick="openModalOrder()" class="btn-purple float-right" style="margin-top: 10px;">Create order</button>
                 </div>
             </div>
             <div class="row order-nav">
@@ -204,6 +206,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     </section>
 
     <script src="./orders.js?v=<?php echo time(); ?>"></script>
+    <script src="../global.js?v=<?php echo time(); ?>"></script>
     <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
     
 </body>
