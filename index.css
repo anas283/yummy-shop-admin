@@ -1,5 +1,5 @@
 body {
-    height: 100vh;
+    min-height: 100vh;
     padding-top: 100px;
     background-color: #eae9f5;
 }
@@ -33,4 +33,8 @@ body {
     position: absolute;
     margin-top: -40px;
     right: 0;
+}
+
+.mb-100 {
+    margin-bottom: 100px;
 }

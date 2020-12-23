@@ -2,43 +2,29 @@
 require_once "config.php";
  
 // Define variables and initialize with empty values
-$username = $email = $password = $confirm_password = "";
-$username_err = $email_err = $password_err = $confirm_password_err = "";
+$first_name = $last_name = $phone_number = $email = $password = $confirm_password = "";
+$first_name_err = $last_name_err = $phone_number_err = $email_err = $password_err = $confirm_password_err = "";
  
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
  
-    // Validate username
-    if(empty(trim($_POST["username"]))){
-        $username_err = "Please enter a username.";
-    } else{
-        // Prepare a select statement
-        $sql = "SELECT id FROM admin WHERE username = ?";
-        
-        if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "s", $param_username);
-            
-            // Set parameters
-            $param_username = trim($_POST["username"]);
-            
-            // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-                /* store result */
-                mysqli_stmt_store_result($stmt);
-                
-                if(mysqli_stmt_num_rows($stmt) == 1){
-                    $username_err = "This username is already taken.";
-                } else{
-                    $username = trim($_POST["username"]);
-                }
-            } else{
-                echo "Oops! Something went wrong. Please try again later.";
-            }
+    // Validate form
+    if(empty(trim($_POST["first_name"]))){
+        $first_name_err = "Please enter first name.";
+    } else {
+        $first_name = $_POST["first_name"];
+    }
 
-            // Close statement
-            mysqli_stmt_close($stmt);
-        }
+    if(empty(trim($_POST["last_name"]))){
+        $last_name_err = "Please enter last name.";
+    } else {
+        $last_name = $_POST["last_name"];
+    }
+
+    if(empty(trim($_POST["phone_number"]))){
+        $phone_number_err = "Please enter last name.";
+    } else {
+        $phone_number = $_POST["phone_number"];
     }
 
     // Validate email
@@ -46,7 +32,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $email_err = "Please enter an email.";
     } else{
         // Prepare a select statement
-        $sql = "SELECT id FROM admin WHERE email = ?";
+        $sql = "SELECT user_id FROM users WHERE email = ?";
         
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
@@ -94,17 +80,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     
     // Check input errors before inserting in database
-    if(empty($username_err) && empty($email_err) && empty($password_err) && empty($confirm_password_err)){
+    if(empty($first_name_err) && empty($last_name_err) && empty($phone_number_err) && empty($email_err) && empty($password_err) && empty($confirm_password_err)){
         
         // Prepare an insert statement
-        $sql = "INSERT INTO admin (username, email, password) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO users (first_name, last_name, phone_number, email, password) VALUES (?, ?, ?, ?, ?)";
          
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "sss", $param_username,  $param_email, $param_password);
+            mysqli_stmt_bind_param($stmt, "sssss", $param_first_name, $param_last_name, $param_phone_number, $param_email, $param_password);
             
             // Set parameters
-            $param_username = $username;
+            $param_first_name = $first_name;
+            $param_last_name = $last_name;
+            $param_phone_number = $phone_number;
             $param_email = $email;
             $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
             
@@ -143,14 +131,24 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <span class="line-2"></span>
     <span class="line-3"></span>
 
-    <div class="container">
+    <div class="container mb-100">
         <div class="col-4 mx-auto card">
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                 <h3 class="text-gray mt-10">Create an account</h3>
-                <div class="form-group my-10 <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
-                    <label class="form-label" for="username">Username</label>
-                    <input class="form-control" type="text" name="username" value="<?php echo $username; ?>">
-                    <small class="error-msg"><?php echo $username_err; ?></small>
+                <div class="form-group my-10 <?php echo (!empty($first_name_err)) ? 'has-error' : ''; ?>">
+                    <label class="form-label" for="first_name">First Name</label>
+                    <input class="form-control" type="text" name="first_name" value="<?php echo $first_name; ?>">
+                    <small class="error-msg"><?php echo $first_name_err; ?></small>
+                </div>
+                <div class="form-group my-10 <?php echo (!empty($last_name_err)) ? 'has-error' : ''; ?>">
+                    <label class="form-label" for="last_name">Last Name</label>
+                    <input class="form-control" type="text" name="last_name" value="<?php echo $last_name; ?>">
+                    <small class="error-msg"><?php echo $last_name_err; ?></small>
+                </div>
+                <div class="form-group my-10 <?php echo (!empty($phone_number_err)) ? 'has-error' : ''; ?>">
+                    <label class="form-label" for="phone_number">Phone Number</label>
+                    <input class="form-control" type="number" name="phone_number" value="<?php echo $phone_number; ?>">
+                    <small class="error-msg"><?php echo $phone_number_err; ?></small>
                 </div>
                 <div class="form-group my-10 <?php echo (!empty($email_err)) ? 'has-error' : ''; ?>">
                     <label class="form-label" for="email">Email</label>
