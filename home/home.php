@@ -40,7 +40,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     <p>Orders</p>
                 </div>
             </a>
-            <a href="#" class="row nav-item tablinks">
+            <a href="../products/products.php" class="row nav-item tablinks">
                 <div>
                     <ion-icon class="ion-icon" name="bag-outline"></ion-icon>
                 </div>
