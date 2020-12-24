@@ -83,17 +83,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($first_name_err) && empty($last_name_err) && empty($phone_number_err) && empty($email_err) && empty($password_err) && empty($confirm_password_err)){
         
         // Prepare an insert statement
-        $sql = "INSERT INTO users (first_name, last_name, phone_number, email, password) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO users (first_name, last_name, phone_number, email, account_type, password) VALUES (?, ?, ?, ?, ?, ?)";
          
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "sssss", $param_first_name, $param_last_name, $param_phone_number, $param_email, $param_password);
+            mysqli_stmt_bind_param($stmt, "ssssss", $param_first_name, $param_last_name, $param_phone_number, $param_email, $param_account_type, $param_password);
             
             // Set parameters
             $param_first_name = $first_name;
             $param_last_name = $last_name;
             $param_phone_number = $phone_number;
             $param_email = $email;
+            $param_account_type = "ADMIN";
             $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
             
             // Attempt to execute the prepared statement
