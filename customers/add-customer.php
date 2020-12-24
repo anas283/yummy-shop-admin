@@ -7,7 +7,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 }
 
 // Define variables and initialize with empty values
-$first_name = $last_name = $email = $phone = $address = $address2 = $city = $state = $zip_code = $note = "";
+$first_name = $last_name = $email = $password = $phone_ = $address = $address2 = $city = $state = $zip_code = "";
 $first_name_err = $last_name_err = $email_err = $phone_err = $address_err = $address2_err = $city_err = $state_err = $zip_code_err = "";
 
 // Processing form data when form is submitted
@@ -16,70 +16,127 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate form
     if(empty($_POST["first_name"])){
         $first_name_err = "Please enter first name.";
+    } else {
+        $first_name = $_POST['first_name'];
     }
+
     if(empty($_POST["last_name"])){
         $last_name_err = "Please enter last name.";
-    } 
+    } else {
+        $last_name = $_POST['last_name'];
+    }
+
     if(empty($_POST["email"])){
         $email_err = "Please enter last name.";
-    } 
+    } else {
+        $email = $_POST['email'];
+    }
+
     if(empty($_POST["phone"])){
         $phone_err = "Please enter phone number.";
-    } 
+    } else {
+        $phone = $_POST['phone'];
+    }
+
     if(empty($_POST["address"])){
         $address_err = "Please enter address.";
-    } 
+    } else {
+        $address = $_POST['address'];
+    }
+
     if(empty($_POST["address2"])){
         $address2_err = "Please enter address 2.";
-    } 
+    } else {
+        $address2 = $_POST['address2'];
+    }
+
     if(empty($_POST["city"])){
         $city_err = "Please enter city.";
-    } 
+    } else {
+        $city = $_POST['city'];
+    }
+
     if(empty($_POST["state"])){
         $state_err = "Please enter state.";
-    } 
+    } else {
+        $state = $_POST['state'];
+    }
+
     if(empty($_POST["zip_code"])){
         $zip_code_err = "Please enter zip code.";
-    } 
-
-    $first_name = $_POST['first_name'];
-    $last_name = $_POST['last_name'];
-    $email = $_POST['email'];
-    $phone = $_POST['phone'];
-    $address = $_POST['address'];
-    $address2 = $_POST['address2'];
-    $city = $_POST['city'];
-    $state = $_POST['state'];
-    $zip_code = $_POST['zip_code'];
-    $note = $_POST['note'];
+    } else {
+        $zip_code = $_POST['zip_code'];
+    }
 
     // Check input errors before inserting in database
     if(empty($first_name_err) && empty($last_name_err) && empty($email_err) && empty($phone_err)
     && empty($address_err) && empty($address2_err) && empty($city_err) && empty($state_err) && empty($zip_code_err)){
         
         // Prepare an insert statement
-        $sql = "INSERT INTO customer (first_name, last_name, email, phone, address, address2, city, state, zip_code, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO users (first_name, last_name, phone_number, email, account_type, password) VALUES (?, ?, ?, ?, ?, ?)";
          
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ssssssssss", $param_first_name,  $param_last_name, $param_email, $param_phone, $param_address, $param_address2, $param_city, $param_state, $param_zip_code, $param_note);
+            mysqli_stmt_bind_param($stmt, "ssssss", $param_first_name, $param_last_name, $param_phone_number, $param_email, $param_account_type, $param_password);
             
             // Set parameters
             $param_first_name = $first_name;
             $param_last_name = $last_name;
+            $param_phone_number = $phone;
             $param_email = $email;
-            $param_phone = $phone;
-            $param_address = $address;
-            $param_address2 = $address2;
-            $param_city = $city;
-            $param_state = $state;
-            $param_zip_code = $zip_code;
-            $param_note = $note;
+            $param_account_type = "CUSTOMER";
+            $password = "12345678";
+            $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
             
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
-                // Redirect to customer page
-                header("location: ./customers.php");
+                // get user_id from users table
+                $sql = "SELECT user_id, last_name, email, password FROM users WHERE email = ?";
+        
+                if($stmt = mysqli_prepare($link, $sql)){
+                    mysqli_stmt_bind_param($stmt, "s", $param_email);
+                    
+                    $param_email = $email;
+                    
+                    if(mysqli_stmt_execute($stmt)){
+                        mysqli_stmt_store_result($stmt);
+                        
+                        if(mysqli_stmt_num_rows($stmt) == 1){
+                            mysqli_stmt_bind_result($stmt, $user_id, $last_name, $email, $hashed_password);
+                            if(mysqli_stmt_fetch($stmt)) {
+                                echo "Email: " . $param_email . "\nId: " . $user_id;
+                                
+                                // Prepare an insert statement
+                                $sql = "INSERT INTO customer (user_id, address, address2, city, state, zip_code) VALUES (?, ?, ?, ?, ?, ?)";
+                    
+                                if($stmt = mysqli_prepare($link, $sql)){
+                                    // Bind variables to the prepared statement as parameters
+                                    mysqli_stmt_bind_param($stmt, "ssssss", $param_user_id, $param_address, $param_address2, $param_city, $param_state, $param_zip_code);
+                                    
+                                    // Set parameters
+                                    $param_user_id = $user_id;
+                                    $param_address = $address;
+                                    $param_address2 = $address2;
+                                    $param_city = $city;
+                                    $param_state = $state;
+                                    $param_zip_code = $zip_code;
+                                    
+                                    // Attempt to execute the prepared statement
+                                    if(mysqli_stmt_execute($stmt)){
+                                        // Redirect to customer page
+                                        header("location: ./customers.php");
+                                    } else{
+                                        echo "Something went wrong. Please try again later.";
+                                    }
+                                }
+                            }
+                        } else{
+                            echo "User id not found.";
+                        }
+                    } else{
+                        echo "Oops! Something went wrong. Please try again later.";
+                    }
+                }
             } else{
                 echo "Something went wrong. Please try again later.";
             }
@@ -105,7 +162,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 
-    <div id="mySidenav" class="sidenav">
+    <div id="mySidenav" class="sidenav" style="margin-top: 100px;">
         <div>
             <a class="logo" href="../home/home.php">
                 <img class="shop-logo" src="../images/shop_logo.png" alt="">
@@ -197,7 +254,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <small class="error-msg"><?php echo $email_err; ?></small>
                             </div>
                             <div class="form-group mt-10 <?php echo (!empty($phone_err)) ? 'has-error' : ''; ?>">
-                                <label class="form-label" for="phone">Phone</label>
+                                <label class="form-label" for="phone_number">Phone</label>
                                 <input class="form-control" type="number" name="phone" value="<?php echo $phone; ?>">
                                 <small class="error-msg"><?php echo $phone_err; ?></small>
                             </div>
@@ -227,10 +284,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <input class="form-control" type="text" name="zip_code" value="<?php echo $zip_code; ?>">
                                     <small class="error-msg"><?php echo $zip_code_err; ?></small>
                                 </div>
-                            </div>
-                            <div class="form-group mt-10">
-                                <label class="form-label" for="note">Note</label>
-                                <textarea class="form-control" name="note" style="height: 100px; padding-top: 10px;" value="<?php echo $city; ?>"></textarea>
                             </div>
                             <div class="row justify-content-end mt-10">
                                 <a href="./customers.php" class="btn-outline" style="margin-right: 7px; text-decoration: none; padding-top: 10px; height: 29px;">Cancel</a>

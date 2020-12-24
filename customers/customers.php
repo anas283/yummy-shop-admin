@@ -6,9 +6,15 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: ../index.php");
 }
 
-$sql = "SELECT * FROM customer";
+$sql = "SELECT * FROM users WHERE account_type = 'CUSTOMER'";
 $result = mysqli_query($link, $sql);
-$customers = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+if(mysqli_num_rows($result) > 0) {
+    $customers = mysqli_fetch_all($result, MYSQLI_ASSOC);
+} else {
+    $customers = "";
+}
+
 ?>
 
 <!DOCTYPE html>
