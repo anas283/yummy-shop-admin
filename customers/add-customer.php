@@ -162,7 +162,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 
-    <div id="mySidenav" class="sidenav" style="margin-top: 100px;">
+    <div id="mySidenav" class="sidenav">
         <div>
             <a class="logo" href="../home/home.php">
                 <img class="shop-logo" src="../images/shop_logo.png" alt="">
