@@ -15,6 +15,17 @@ if(mysqli_num_rows($result) > 0) {
     $customers = "";
 }
 
+$sql = "SELECT * FROM customer";
+$result = mysqli_query($link, $sql);
+
+if(mysqli_num_rows($result) > 0) {
+    $details = mysqli_fetch_all($result, MYSQLI_ASSOC);
+} else {
+    $details = "";
+}
+
+if(isset($_))
+
 ?>
 
 <!DOCTYPE html>
@@ -125,27 +136,36 @@ if(mysqli_num_rows($result) > 0) {
                         <thead>
                             <tr class="bg-gray">
                                 <th>NAME</th>
-                                <th>ORDERS</th>
-                                <th>LAST_ORDER</th>
-                                <th>TOTAL SPENT</th>
+                                <th class="w-100">ORDERS</th>
+                                <th class="w-100">LAST ORDER</th>
+                                <th class="w-100">TOTAL SPENT</th>
+                                <th class="w-30">&nbsp;</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($customers as $customer) : ?>
                                 <tr>
                                     <td>
-                                        <button class="btn-empty">
-                                            <?php echo $customer['first_name'] . ' ' . $customer['last_name'] ?>
-                                        </button>
+                                        <?php echo $customer['first_name'] . ' ' . $customer['last_name'] ?>
                                     </td>
-                                    <td>
+                                    <td class="w-100">
                                         0
                                     </td>
-                                    <td>
+                                    <td class="w-100">
                                         -
                                     </td>
-                                    <td>
+                                    <td class="w-100"> 
                                         MYR0.00
+                                    </td>
+                                    <td class="w-30">
+                                        <?php foreach ($details as $detail) : ?>
+                                            <?php 
+                                                if($detail['user_id'] == $customer['user_id']) {
+                                                    $data = array($detail['address'], $detail['address2'], $detail['city'], $detail['zip_code'], $customer['phone_number']);
+                                                    echo "<button onclick='openModalDetail(" . json_encode($data) . ")' class='btn-outline'>More</button>";
+                                                }
+                                            ?>
+                                        <?php endforeach; ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -155,6 +175,27 @@ if(mysqli_num_rows($result) > 0) {
             <?php endif; ?>
         </div>
     </section>
+
+    <div id="modal-detail" class="modal">
+        <div class="modal-content" style="margin-top: 70px;">
+            <span onclick="closeModalDetail()" class="close">&times;</span>
+            <h4 class="mt-10">Customer details</h4>
+
+            <div class="modal-content-detail">
+                <p id="address"></p>
+                <p id="address2"></p>
+                <p id="city"></p>
+                <p id="zip_code"></p>
+
+                <p id="phone_number" style="margin-top: 20px;"></p>
+            </div>
+
+            <div class="row justify-content-end mt-10">
+                <button class="btn-outline" style="margin-right: 7px;">Delete</button>
+                <button onclick="goToEdit()" class="btn-purple">Edit</button>
+            </div>
+        </div>
+    </div>
 
     <script src="./customers.js?v=<?php echo time(); ?>"></script>
     <script src="../global.js?v=<?php echo time(); ?>"></script>

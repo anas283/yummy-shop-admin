@@ -66,10 +66,20 @@ table, td, th {
     padding: 18px;
 }
 
-tr {
-    cursor: pointer;
-}
-
 .bg-gray {
     background-color: #F8FAFC;
+}
+
+.w-30 {
+    width: 30px;
+}
+
+.w-100 {
+    width: 100px;
+    text-align: center;
+}
+
+.modal-content-detail p {
+    font-size: .9rem;
+    margin: 4px 0px;
 }
