@@ -38,3 +38,7 @@ window.onclick = function(event) {
 function printOrder() {
     window.print();
 }
+
+function selectStatus() {
+    document.getElementById('status-btn').click();
+}
