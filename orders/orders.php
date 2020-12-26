@@ -390,7 +390,7 @@ if(mysqli_num_rows($result) > 0) {
                                 <th>FULFILLMENT</th>
                                 <th>ITEM(S)</th>
                             </tr>
-                            <?php foreach ($orders as $order) : ?>
+                            <?php foreach ($orders_processing as $order) : ?>
                                 <tr onclick="openOrderDetails(<?php echo $order['order_id'] ?>)">
                                     <td>
                                         <button class="btn-empty">
@@ -489,7 +489,7 @@ if(mysqli_num_rows($result) > 0) {
                                 <th>FULFILLMENT</th>
                                 <th>ITEM(S)</th>
                             </tr>
-                            <?php foreach ($orders as $order) : ?>
+                            <?php foreach ($orders_completed as $order) : ?>
                                 <tr onclick="openOrderDetails(<?php echo $order['order_id'] ?>)">
                                     <td>
                                         <button class="btn-empty">
@@ -588,7 +588,7 @@ if(mysqli_num_rows($result) > 0) {
                                 <th>FULFILLMENT</th>
                                 <th>ITEM(S)</th>
                             </tr>
-                            <?php foreach ($orders as $order) : ?>
+                            <?php foreach ($orders_cancelled as $order) : ?>
                                 <tr onclick="openOrderDetails(<?php echo $order['order_id'] ?>)">
                                     <td>
                                         <button class="btn-empty">
