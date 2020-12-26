@@ -121,6 +121,29 @@ if(isset($_POST['SUCCESS'])) {
     mysqli_close($link);
 }
 
+if(isset($_POST['cancel'])) {
+
+    // Delete a record by order_id
+    $sql = "DELETE FROM orders WHERE order_id = $orderId";
+
+    if(mysqli_query($link, $sql)) {
+        // Delete a record by order_id
+        $sql = "DELETE FROM order_detail WHERE order_id = $orderId";
+
+        if(mysqli_query($link, $sql)) {
+            // Redirect to orders page
+            header("location: ../orders/orders.php");
+        } else {
+            echo "Error deleting record: " . mysqli_error($conn);
+        }
+    } else {
+        echo "Error deleting record: " . mysqli_error($conn);
+    }
+    
+    // Close connection
+    mysqli_close($link);
+}
+
 if(isset($_POST['status'])) {
     $status = $_POST['status'];
 
@@ -242,7 +265,7 @@ if(isset($_POST['status'])) {
     </div>
 
     <section id="main">
-        <nav class="main-nav">
+        <nav id="main-nav" class="main-nav">
             <div class="nav-item justify-content-end">
                 <div class="custom-select" onclick="selectMenu()">
                     <select name="profile" id="profile-menu">
@@ -254,7 +277,7 @@ if(isset($_POST['status'])) {
                 </div>
             </div>
         </nav>
-        <div class="tabcontent">
+        <div id="tabcontent" class="tabcontent">
             <?php foreach ($orders as $order) : ?>
                 <h3 class="text-secondary-2">Orders</h3>
                 <div class="row">
@@ -458,17 +481,19 @@ if(isset($_POST['status'])) {
     </section>
 
     <div id="modal-cancel" class="modal">
-        <div class="modal-content">
-            <span onclick="closeModalCancel()" class="close">&times;</span>
-            <h4 class="modal-title">Cancel order</h4>
-            <div class="modal-line"></div>
-            <p class="text-medium font-weight-normal my-20">Are you sure you want to cancel your this order?</p>
+        <form name="cancel-form" method="post">
+            <div class="modal-content">
+                <span onclick="closeModalCancel()" class="close">&times;</span>
+                <h4 class="modal-title">Cancel order</h4>
+                <div class="modal-line"></div>
+                <p class="text-medium font-weight-normal my-20">Are you sure you want to cancel your this order?</p>
 
-            <div class="row justify-content-end">
-                <button onclick="closeModalCancel()" class="btn-outline" style="margin-right: 7px;">No</button>
-                <button class="btn-purple">Yes</button>
+                <div class="row justify-content-end">
+                    <button onclick="closeModalCancel()" class="btn-outline" style="margin-right: 7px;">No</button>
+                    <button type="submit" name="cancel" class="btn-purple">Yes</button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 
     <div id="modal-note" class="modal">

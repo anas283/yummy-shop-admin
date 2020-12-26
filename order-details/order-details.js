@@ -36,7 +36,20 @@ window.onclick = function(event) {
 }
 
 function printOrder() {
+    // hide side-nav and main-nav
+    document.getElementById('mySidenav').style.display = "none";
+    document.getElementById('main-nav').style.display = "none";
+    
+    // set content to full width
+    document.getElementById('tabcontent').style.width = "90vw";
+    document.getElementById('tabcontent').style.marginTop = "50px";
+    document.getElementById('tabcontent').style.marginLeft = "-200px";
+
     window.print();
+
+    setTimeout(function() {
+        window.location.reload();
+    },100)
 }
 
 function selectStatus() {
