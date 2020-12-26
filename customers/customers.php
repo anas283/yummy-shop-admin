@@ -24,8 +24,6 @@ if(mysqli_num_rows($result) > 0) {
     $details = "";
 }
 
-if(isset($_))
-
 ?>
 
 <!DOCTYPE html>
