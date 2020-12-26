@@ -11,6 +11,10 @@ html, body {
     border: 1px solid red;
 }
 
+.mt-150 {
+    margin-top: 150px;
+}
+
 .container {
     max-width: 80%;
     margin: 0 auto;
@@ -343,31 +347,44 @@ html, body {
 
 /* status */
 .pending {
-    width: 100px;
+    width: fit-content;
     border-radius: 25px;
     padding: 4px 10px;
     background-color: #FFC58B;
+    display: inline-block;
+    text-transform: lowercase;
 }
 
 .success {
-    width: 100px;
+    width: fit-content;
     border-radius: 25px;
     padding: 4px 10px;
     background-color: #81da7e;
+    display: inline-block;
+    text-transform: lowercase;
 }
 
 .failed {
-    width: 100px;
+    width: fit-content;
     border-radius: 25px;
     padding: 4px 10px;
     background-color: #f08989;
+    display: inline-block;
+    text-transform: lowercase;
 }
 
 .processing {
-    width: 100px;
+    width: fit-content;
     border-radius: 25px;
     padding: 4px 10px;
     background-color: #ffea8b;
+    display: inline-block;
+    text-transform: lowercase;
+}
+
+.pending::first-letter, .success::first-letter,
+.failed::first-letter, .processing::first-letter {
+    text-transform: uppercase;
 }
 
 .chip {

@@ -2,8 +2,8 @@ function setDefault() {
     document.getElementById("default").click();
 }
 
-function openOrderDetails() {
-    window.open('../order-details/order-details.php', '_self');
+function openOrderDetails(orderId) {
+    window.open('../order-details/order-details.php?order_id='+orderId, '_self');
 }
 
 function openTabOrders(evt, tabName) {
@@ -36,5 +36,34 @@ function closeModalOrder() {
 window.onclick = function(event) {
     if (event.target == modalOrder) {
         modalOrder.style.display = "none";
+    }
+}
+
+function validateForm() {
+    var product = document.getElementById('product').value;
+    var customer = document.getElementById('customer').value;
+    var date = document.getElementById('date').value;
+    var shipping = document.getElementById('shipping').value;
+    var quantity = document.getElementById('quantity').value;
+
+    if(product == "") {
+        document.getElementById('product-err').innerHTML = "Please choose a product";
+    }
+    if(customer == "") {
+        document.getElementById('customer-err').innerHTML = "Please choose a customer";
+    }
+    if(date == "") {
+        document.getElementById('date-err').innerHTML = "Please choose a date";
+    }
+    if(shipping == "") {
+        document.getElementById('shipping-err').innerHTML = "Please enter shipping cost";
+    }
+    if(quantity == "") {
+        document.getElementById('shipping-err').innerHTML = "Please enter quantity";
+    }
+
+    if(product != "" && customer != "" && date != "" && shipping != "" && quantity != "") {
+        document.getElementById('submit-btn').type = 'submit';
+        document.getElementById('submit-btn').click();
     }
 }
