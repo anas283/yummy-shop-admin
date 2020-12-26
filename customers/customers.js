@@ -14,8 +14,8 @@ function openModalDetail(data) {
     document.getElementById('address').innerHTML = data[0];
     document.getElementById('address2').innerHTML = data[1];
     document.getElementById('city').innerHTML = data[2];
-    document.getElementById('zip_code').innerHTML = data[3];
-    document.getElementById('phone_number').innerHTML = data[4];
+    document.getElementById('zip_code').innerHTML = "0" + data[3];
+    document.getElementById('phone_number').innerHTML = "+60" + data[4];
 
     modalDetail.style.display = "block";
 }
