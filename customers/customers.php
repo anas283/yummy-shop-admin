@@ -24,6 +24,47 @@ if(mysqli_num_rows($result) > 0) {
     $details = "";
 }
 
+if(isset($_POST['delete-user'])) {
+    
+    $user_id = $_SESSION['user_id'];
+
+    // Delete a record by user id
+    $sql = "DELETE FROM users WHERE user_id = $user_id";
+
+    if(mysqli_query($link, $sql)) {
+
+        // Delete a record by user id
+        $sql = "DELETE FROM customer WHERE user_id = $user_id";
+
+        if(mysqli_query($link, $sql)) {
+            $sql = "SELECT * FROM users WHERE account_type = 'CUSTOMER'";
+            $result = mysqli_query($link, $sql);
+
+            if(mysqli_num_rows($result) > 0) {
+                $customers = mysqli_fetch_all($result, MYSQLI_ASSOC);
+            } else {
+                $customers = "";
+            }
+
+            $sql = "SELECT * FROM customer";
+            $result = mysqli_query($link, $sql);
+
+            if(mysqli_num_rows($result) > 0) {
+                $details = mysqli_fetch_all($result, MYSQLI_ASSOC);
+            } else {
+                $details = "";
+            }
+        } else {
+            echo "Error deleting record: " . mysqli_error($conn);
+        }
+    } else {
+        echo "Error deleting record: " . mysqli_error($conn);
+    }
+    
+    // Close connection
+    mysqli_close($link);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -159,6 +200,7 @@ if(mysqli_num_rows($result) > 0) {
                                         <?php foreach ($details as $detail) : ?>
                                             <?php 
                                                 if($detail['user_id'] == $customer['user_id']) {
+                                                    $_SESSION['user_id'] = $customer['user_id'];
                                                     $data = array($detail['address'], $detail['address2'], $detail['city'], $detail['zip_code'], $customer['phone_number']);
                                                     echo "<button onclick='openModalDetail(" . json_encode($data) . ")' class='btn-outline'>More</button>";
                                                 }
@@ -175,24 +217,26 @@ if(mysqli_num_rows($result) > 0) {
     </section>
 
     <div id="modal-detail" class="modal">
-        <div class="modal-content" style="margin-top: 70px;">
-            <span onclick="closeModalDetail()" class="close">&times;</span>
-            <h4 class="mt-10">Customer details</h4>
+        <form name="delete-form" method="post">
+            <div class="modal-content" style="margin-top: 70px;">
+                <span onclick="closeModalDetail()" class="close">&times;</span>
+                <h4 class="mt-10">Customer details</h4>
 
-            <div class="modal-content-detail">
-                <p id="address"></p>
-                <p id="address2"></p>
-                <p id="city"></p>
-                <p id="zip_code"></p>
+                <div class="modal-content-detail">
+                    <p id="address"></p>
+                    <p id="address2"></p>
+                    <p id="city"></p>
+                    <p id="zip_code"></p>
 
-                <p id="phone_number" style="margin-top: 20px;"></p>
+                    <p id="phone_number" style="margin-top: 20px;"></p>
+                </div>
+
+                <div class="row justify-content-end mt-10">
+                    <button type="submit" name="delete-user" class="btn-outline" style="margin-right: 7px;">Delete</button>
+                    <button onclick="goToEdit()" class="btn-purple">Edit</button>
+                </div>
             </div>
-
-            <div class="row justify-content-end mt-10">
-                <button class="btn-outline" style="margin-right: 7px;">Delete</button>
-                <button onclick="goToEdit()" class="btn-purple">Edit</button>
-            </div>
-        </div>
+        </form>
     </div>
 
     <script src="./customers.js?v=<?php echo time(); ?>"></script>
