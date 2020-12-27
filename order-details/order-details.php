@@ -264,6 +264,47 @@ if(isset($_POST['save-note'])) {
     // Close connection
     mysqli_close($link);
 }
+
+if(isset($_POST['save-shipping'])) {
+    $address = $_POST['address'];
+    $address2 = $_POST['address2'];
+    $city = $_POST['city'];
+    $state = $_POST['state'];
+    $zip_code = $_POST['zip_code'];
+
+    if(!empty($address) && !empty($address2) && !empty($city) && !empty($state) && !empty($zip_code)) {
+        // Prepare an update statement
+        $sql = "UPDATE customer SET address, address2, city, state, zip_code = ? WHERE user_id = $userId";
+        
+        if($stmt = mysqli_prepare($link, $sql)){
+            // Bind variables to the prepared statement as parameters
+            mysqli_stmt_bind_param($stmt, "sssssi", $param_address, $param_address2, $param_city, $param_state, $param_zip_code, $param_id);
+            
+            // Set parameters
+            $param_address = $address;
+            $param_address2 = $address2;
+            $param_city = $city;
+            $param_state = $state;
+            $param_zip_code = $zip_code;
+            
+            // Attempt to execute the prepared statement
+            if(mysqli_stmt_execute($stmt)){
+                echo "Success :)";
+            } else{
+                echo "Oops! Something went wrong. Please try again later.";
+            }
+    
+            // Close statement
+            mysqli_stmt_close($stmt);
+        } else {
+            echo "Update error!";
+        }
+    }
+
+    // Close connection
+    mysqli_close($link);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -330,7 +371,7 @@ if(isset($_POST['save-note'])) {
                 <div class="custom-select" onclick="selectMenu()">
                     <select name="profile" id="profile-menu">
                         <option value="username"><?php echo htmlspecialchars($_SESSION["username"]); ?></option>
-                        <option value="account">Account profile</option>
+                        
                         <option value="change-pass">Change password</option>
                         <option value="logout">Logout</option>
                     </select>
@@ -537,11 +578,11 @@ if(isset($_POST['save-note'])) {
                                             Shipping address
                                         </h4>
                                     </div>
-                                    <div class="col-6 float-right">
+                                    <!-- <div class="col-6 float-right">
                                         <button onclick="openModalShipping()" class="btn-empty float-right mt-10">
                                             Edit
                                         </button>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="line"></div>
                                 <div class="col-auto">
@@ -640,30 +681,35 @@ if(isset($_POST['save-note'])) {
 
                     <div class="form-group mt-10">
                         <label class="form-label">Address</label>
-                        <input class="form-control" type="text" name="address" value="<?php echo $customer['address']; ?>">
+                        <input class="form-control" type="text" name="address" id="address" value="<?php echo $customer['address']; ?>">
+                        <small id="address-err" class="error-msg"></small>
                     </div>
                     <div class="form-group mt-10">
                         <label class="form-label">Address 2</label>
-                        <input class="form-control" type="text" name="address2" value="<?php echo $customer['address2']; ?>">
+                        <input class="form-control" type="text" name="address2" id="address2" value="<?php echo $customer['address2']; ?>">
+                        <small id="address2-err" class="error-msg"></small>
                     </div>
                     <div class="form-group mt-10">
                         <label class="form-label">City</label>
-                        <input class="form-control" type="text" name="city" value="<?php echo $customer['city']; ?>">
+                        <input class="form-control" type="text" name="city" id="city" value="<?php echo $customer['city']; ?>">
+                        <small id="city-err" class="error-msg"></small>
                     </div>
                     <div class="row">
                         <div class="form-group mt-10 mr-10 col-6">
                             <label class="form-label">State</label>
-                            <input class="form-control" type="text" name="state" value="<?php echo $customer['state']; ?>">
+                            <input class="form-control" type="text" name="state" id="state" value="<?php echo $customer['state']; ?>">
+                        <small id="state-err" class="error-msg"></small>
                         </div>
                         <div class="form-group mt-10 col-6">
                             <label class="form-label">Zip Code</label>
-                            <input class="form-control" type="number" name="zip_code" value="<?php echo '0' . $customer['zip_code']; ?>">
+                            <input class="form-control" type="number" name="zip_code" id="zip_code" value="<?php echo '0' . $customer['zip_code']; ?>">
+                        <small id="zip-code-err" class="error-msg"></small>
                         </div>
                     </div>
 
                     <div class="row justify-content-end">
                         <button onclick="closeModalShipping()" class="btn-outline" style="margin-right: 7px;">Cancel</button>
-                        <button type="submit" name="save-shipping" class="btn-purple">Save</button>
+                        <button onclick="validateForm()" id="shipping-btn" name="save-shipping" class="btn-purple">Save</button>
                     </div>
                 </div>
             </form>
