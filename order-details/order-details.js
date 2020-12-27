@@ -66,3 +66,32 @@ function printOrder() {
 function selectStatus() {
     document.getElementById('status-btn').click();
 }
+
+function validateForm() {
+    var address = document.getElementById('address').value;
+    var address2 = document.getElementById('address2').value;
+    var city = document.getElementById('city').value;
+    var state = document.getElementById('state').value;
+    var zip_code = document.getElementById('zip_code').value;
+
+    if(address == "") {
+        document.getElementById('address-err').innerHTML = "Please enter address";
+    }
+    if(address2 == "") {
+        document.getElementById('address-err').innerHTML = "Please enter address 2";
+    }
+    if(city == "") {
+        document.getElementById('city-err').innerHTML = "Please enter city";
+    }
+    if(state == "") {
+        document.getElementById('state-err').innerHTML = "Please enter state";
+    }
+    if(zip_code == "") {
+        document.getElementById('zip-code-err').innerHTML = "Please enter zip code";
+    }
+
+    if(address != "" && address2 != "" && city != "" && state != "" && zip_code != "") {
+        document.getElementById('shipping-btn').type = 'submit';
+        document.getElementById('shipping-btn').click();
+    }
+}

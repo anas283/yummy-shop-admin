@@ -6,6 +6,29 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: ../index.php");
 }
 
+$userId = $_GET['user_id']; 
+
+if($_GET['user_id']) {
+
+    $sql = "SELECT * FROM users WHERE user_id = $userId";
+    $result = mysqli_query($link, $sql);
+
+    if(mysqli_num_rows($result) > 0) {
+        $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } else {
+        $users = "";
+    }
+
+    $sql = "SELECT * FROM customer WHERE user_id = $userId";
+    $result = mysqli_query($link, $sql);
+
+    if(mysqli_num_rows($result) > 0) {
+        $customers = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } else {
+        $customers = "";
+    }
+}
+
 // Define variables and initialize with empty values
 $first_name = $last_name = $email = $password = $phone_ = $address = $address2 = $city = $state = $zip_code = "";
 $first_name_err = $last_name_err = $email_err = $phone_err = $address_err = $address2_err = $city_err = $state_err = $zip_code_err = "";
@@ -71,70 +94,43 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check input errors before inserting in database
     if(empty($first_name_err) && empty($last_name_err) && empty($email_err) && empty($phone_err)
     && empty($address_err) && empty($address2_err) && empty($city_err) && empty($state_err) && empty($zip_code_err)){
-        
-        // Prepare an insert statement
-        $sql = "INSERT INTO users (first_name, last_name, phone_number, email, account_type, password) VALUES (?, ?, ?, ?, ?, ?)";
-         
+
+        // Prepare an update statement
+        $sql = "UPDATE users SET first_name = ?, last_name = ?, phone_number = ?, email = ? WHERE user_id = ?";
+
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ssssss", $param_first_name, $param_last_name, $param_phone_number, $param_email, $param_account_type, $param_password);
+            mysqli_stmt_bind_param($stmt, "ssssi", $param_first_name, $param_last_name, $param_phone_number, $param_email, $param_user_id);
             
             // Set parameters
             $param_first_name = $first_name;
             $param_last_name = $last_name;
             $param_phone_number = $phone;
             $param_email = $email;
-            $param_account_type = "CUSTOMER";
-            $password = "12345678";
-            $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
+            $param_user_id = $userId;
             
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
-                // get user_id from users table
-                $sql = "SELECT user_id, last_name, email, password FROM users WHERE email = ?";
-        
+
+                // Prepare an update statement
+                $sql = "UPDATE customer SET address = ?, address2 = ?, city = ?, state = ?, zip_code = ? WHERE user_id = ?";
+
                 if($stmt = mysqli_prepare($link, $sql)){
-                    mysqli_stmt_bind_param($stmt, "s", $param_email);
-                    
-                    $param_email = $email;
-                    
+                    // Bind variables to the prepared statement as parameters
+                    mysqli_stmt_bind_param($stmt, "sssssi", $param_address, $param_address2, $param_city, $param_state, $param_zip_code, $param_user_id);
+
+                    $param_address = $address;
+                    $param_address2 = $address2;
+                    $param_city = $city;
+                    $param_state = $state;
+                    $param_zip_code = $zip_code;
+                    $param_user_id = $userId;
+
                     if(mysqli_stmt_execute($stmt)){
-                        mysqli_stmt_store_result($stmt);
-                        
-                        if(mysqli_stmt_num_rows($stmt) == 1){
-                            mysqli_stmt_bind_result($stmt, $user_id, $last_name, $email, $hashed_password);
-                            if(mysqli_stmt_fetch($stmt)) {
-                                echo "Email: " . $param_email . "\nId: " . $user_id;
-                                
-                                // Prepare an insert statement
-                                $sql = "INSERT INTO customer (user_id, address, address2, city, state, zip_code) VALUES (?, ?, ?, ?, ?, ?)";
-                    
-                                if($stmt = mysqli_prepare($link, $sql)){
-                                    // Bind variables to the prepared statement as parameters
-                                    mysqli_stmt_bind_param($stmt, "ssssss", $param_user_id, $param_address, $param_address2, $param_city, $param_state, $param_zip_code);
-                                    
-                                    // Set parameters
-                                    $param_user_id = $user_id;
-                                    $param_address = $address;
-                                    $param_address2 = $address2;
-                                    $param_city = $city;
-                                    $param_state = $state;
-                                    $param_zip_code = $zip_code;
-                                    
-                                    // Attempt to execute the prepared statement
-                                    if(mysqli_stmt_execute($stmt)){
-                                        // Redirect to customer page
-                                        header("location: ./customers.php");
-                                    } else{
-                                        echo "Something went wrong. Please try again later.";
-                                    }
-                                }
-                            }
-                        } else{
-                            echo "User id not found.";
-                        }
+                        // Redirect to customer page
+                        header("location: ./customers.php");
                     } else{
-                        echo "Oops! Something went wrong. Please try again later.";
+                        echo "Something went wrong. Please try again later.";
                     }
                 }
             } else{
@@ -162,7 +158,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 
-    <div id="mySidenav" class="sidenav">
+    <div id="mySidenav" class="sidenav mt-150">
         <div>
             <a class="logo" href="../home/home.php">
                 <img class="shop-logo" src="../images/shop_logo.png" alt="">
@@ -218,7 +214,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="custom-select" onclick="selectMenu()">
                     <select name="profile" id="profile-menu">
                         <option value="username"><?php echo htmlspecialchars($_SESSION["username"]); ?></option>
-                        <option value="account">Account profile</option>
                         <option value="change-pass">Change password</option>
                         <option value="logout">Logout</option>
                     </select>
@@ -235,61 +230,65 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="content">
                 <div id="processing" class="tabcontent2">
                     <div class="card card-form col-6">
-                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                            <div class="row">
-                                <div class="form-group my-10 mr-10 col-6 <?php echo (!empty($first_name_err)) ? 'has-error' : ''; ?>">
-                                    <label class="form-label" for="first_name">First Name</label>
-                                    <input class="form-control" type="text" name="first_name" value="<?php echo $first_name; ?>">
-                                    <small class="error-msg"><?php echo $first_name_err; ?></small>
-                                </div>
-                                <div class="form-group mt-10 col-6 <?php echo (!empty($last_name_err)) ? 'has-error' : ''; ?>">
-                                    <label class="form-label" for="last_name">Last Name</label>
-                                    <input class="form-control" type="text" name="last_name" value="<?php echo $first_name; ?>">
-                                    <small class="error-msg"><?php echo $last_name_err; ?></small>
-                                </div>
-                            </div>
-                            <div class="form-group mt-10 <?php echo (!empty($email_err)) ? 'has-error' : ''; ?>">
-                                <label class="form-label" for="email">Email</label>
-                                <input class="form-control" type="email" name="email" value="<?php echo $email; ?>">
-                                <small class="error-msg"><?php echo $email_err; ?></small>
-                            </div>
-                            <div class="form-group mt-10 <?php echo (!empty($phone_err)) ? 'has-error' : ''; ?>">
-                                <label class="form-label" for="phone_number">Phone</label>
-                                <input class="form-control" type="number" name="phone" value="<?php echo $phone; ?>">
-                                <small class="error-msg"><?php echo $phone_err; ?></small>
-                            </div>
-                            <div class="form-group mt-10 <?php echo (!empty($address_err)) ? 'has-error' : ''; ?>">
-                                <label class="form-label" for="address">Address</label>
-                                <input class="form-control" type="text" name="address" value="<?php echo $address; ?>">
-                                <small class="error-msg"><?php echo $address_err; ?></small>
-                            </div>
-                            <div class="form-group mt-10 <?php echo (!empty($address2_err)) ? 'has-error' : ''; ?>">
-                                <label class="form-label" for="address">Address 2</label>
-                                <input class="form-control" type="text" name="address2" value="<?php echo $address2; ?>">
-                                <small class="error-msg"><?php echo $address2_err; ?></small>
-                            </div>
-                            <div class="form-group mt-10 <?php echo (!empty($city_err)) ? 'has-error' : ''; ?>">
-                                <label class="form-label" for="city">City</label>
-                                <input class="form-control" type="text" name="city" value="<?php echo $city; ?>">
-                                <small class="error-msg"><?php echo $city_err; ?></small>
-                            </div>
-                            <div class="row">
-                                <div class="form-group mt-10 mr-10 col-6 <?php echo (!empty($state_err)) ? 'has-error' : ''; ?>">
-                                    <label class="form-label" for="state">State</label>
-                                    <input class="form-control" type="text" name="state" value="<?php echo $state; ?>">
-                                    <small class="error-msg"><?php echo $state_err; ?></small>
-                                </div>
-                                <div class="form-group mt-10 col-6 <?php echo (!empty($zip_code_err)) ? 'has-error' : ''; ?>">
-                                    <label class="form-label" for="zip_code">Zip Code</label>
-                                    <input class="form-control" type="text" name="zip_code" value="<?php echo $zip_code; ?>">
-                                    <small class="error-msg"><?php echo $zip_code_err; ?></small>
-                                </div>
-                            </div>
-                            <div class="row justify-content-end mt-10">
-                                <a href="./customers.php" class="btn-outline" style="margin-right: 7px; text-decoration: none; padding-top: 10px; height: 29px;">Cancel</a>
-                                <button type="submit" class="btn-purple">Save</button>
-                            </div>
-                        </form>
+                        <?php foreach ($users as $user) : ?>
+                            <?php foreach ($customers as $customer) : ?>
+                                <form method="post">
+                                    <div class="row">
+                                        <div class="form-group my-10 mr-10 col-6 <?php echo (!empty($first_name_err)) ? 'has-error' : ''; ?>">
+                                            <label class="form-label" for="first_name">First Name</label>
+                                            <input class="form-control" type="text" name="first_name" value="<?php echo $user['first_name']; ?>">
+                                            <small class="error-msg"><?php echo $first_name_err; ?></small>
+                                        </div>
+                                        <div class="form-group mt-10 col-6 <?php echo (!empty($last_name_err)) ? 'has-error' : ''; ?>">
+                                            <label class="form-label" for="last_name">Last Name</label>
+                                            <input class="form-control" type="text" name="last_name" value="<?php echo $user['last_name']; ?>">
+                                            <small class="error-msg"><?php echo $last_name_err; ?></small>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mt-10 <?php echo (!empty($email_err)) ? 'has-error' : ''; ?>">
+                                        <label class="form-label" for="email">Email</label>
+                                        <input class="form-control" type="email" name="email" value="<?php echo $user['email']; ?>">
+                                        <small class="error-msg"><?php echo $email_err; ?></small>
+                                    </div>
+                                    <div class="form-group mt-10 <?php echo (!empty($phone_err)) ? 'has-error' : ''; ?>">
+                                        <label class="form-label" for="phone_number">Phone</label>
+                                        <input class="form-control" type="number" name="phone" value="<?php echo $user['phone_number']; ?>">
+                                        <small class="error-msg"><?php echo $phone_err; ?></small>
+                                    </div>
+                                    <div class="form-group mt-10 <?php echo (!empty($address_err)) ? 'has-error' : ''; ?>">
+                                        <label class="form-label" for="address">Address</label>
+                                        <input class="form-control" type="text" name="address" value="<?php echo $customer['address']; ?>">
+                                        <small class="error-msg"><?php echo $address_err; ?></small>
+                                    </div>
+                                    <div class="form-group mt-10 <?php echo (!empty($address2_err)) ? 'has-error' : ''; ?>">
+                                        <label class="form-label" for="address">Address 2</label>
+                                        <input class="form-control" type="text" name="address2" value="<?php echo $customer['address2']; ?>">
+                                        <small class="error-msg"><?php echo $address2_err; ?></small>
+                                    </div>
+                                    <div class="form-group mt-10 <?php echo (!empty($city_err)) ? 'has-error' : ''; ?>">
+                                        <label class="form-label" for="city">City</label>
+                                        <input class="form-control" type="text" name="city" value="<?php echo $customer['city']; ?>">
+                                        <small class="error-msg"><?php echo $city_err; ?></small>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group mt-10 mr-10 col-6 <?php echo (!empty($state_err)) ? 'has-error' : ''; ?>">
+                                            <label class="form-label" for="state">State</label>
+                                            <input class="form-control" type="text" name="state" value="<?php echo $customer['state']; ?>">
+                                            <small class="error-msg"><?php echo $state_err; ?></small>
+                                        </div>
+                                        <div class="form-group mt-10 col-6 <?php echo (!empty($zip_code_err)) ? 'has-error' : ''; ?>">
+                                            <label class="form-label" for="zip_code">Zip Code</label>
+                                            <input class="form-control" type="text" name="zip_code" value="<?php echo $customer['zip_code']; ?>">
+                                            <small class="error-msg"><?php echo $zip_code_err; ?></small>
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-end mt-10">
+                                        <a href="./customers.php" class="btn-outline" style="margin-right: 7px; text-decoration: none; padding-top: 10px; height: 29px;">Cancel</a>
+                                        <button type="submit" class="btn-purple">Save</button>
+                                    </div>
+                                </form>
+                            <?php endforeach; ?>
+                        <?php endforeach; ?>
                     </div>
                 </div>
             </div>
