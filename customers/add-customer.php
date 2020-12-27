@@ -218,7 +218,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="custom-select" onclick="selectMenu()">
                     <select name="profile" id="profile-menu">
                         <option value="username"><?php echo htmlspecialchars($_SESSION["username"]); ?></option>
-                        <option value="account">Account profile</option>
+                        
                         <option value="change-pass">Change password</option>
                         <option value="logout">Logout</option>
                     </select>
