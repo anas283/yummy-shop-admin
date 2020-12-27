@@ -11,11 +11,12 @@ var modalDetail = document.getElementById("modal-detail");
 var span = document.getElementsByClassName("close")[0];
 
 function openModalDetail(data) {
-    document.getElementById('address').innerHTML = data[0];
-    document.getElementById('address2').innerHTML = data[1];
-    document.getElementById('city').innerHTML = data[2];
-    document.getElementById('zip_code').innerHTML = "0" + data[3];
-    document.getElementById('phone_number').innerHTML = "+60" + data[4];
+    // document.getElementById('user_id').value = data[0];
+    document.getElementById('address').innerHTML = data[1];
+    document.getElementById('address2').innerHTML = data[2];
+    document.getElementById('city').innerHTML = data[3];
+    document.getElementById('zip_code').innerHTML = "0" + data[4];
+    document.getElementById('phone_number').innerHTML = "+60" + data[5];
 
     modalDetail.style.display = "block";
 }
@@ -30,6 +31,6 @@ window.onclick = function(event) {
     }
 }
 
-function goToEdit() {
-    window.open('./edit-customer.php', '_SELF');
+function goToEdit(userId) {
+    window.open('./edit-customer.php?user_id=' + userId, '_SELF');
 }

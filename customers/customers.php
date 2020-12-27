@@ -24,42 +24,48 @@ if(mysqli_num_rows($result) > 0) {
     $details = "";
 }
 
+$userId = "";
+
 if(isset($_POST['delete-user'])) {
     
-    $user_id = $_SESSION['user_id'];
+    $userId = $_POST['user_id'];
 
-    // Delete a record by user id
-    $sql = "DELETE FROM users WHERE user_id = $user_id";
-
-    if(mysqli_query($link, $sql)) {
+    if(!empty($userId)) {
 
         // Delete a record by user id
-        $sql = "DELETE FROM customer WHERE user_id = $user_id";
-
+        $sql = "DELETE FROM users WHERE user_id = $userId";
+    
         if(mysqli_query($link, $sql)) {
-            $sql = "SELECT * FROM users WHERE account_type = 'CUSTOMER'";
-            $result = mysqli_query($link, $sql);
-
-            if(mysqli_num_rows($result) > 0) {
-                $customers = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    
+            // Delete a record by user id
+            $sql = "DELETE FROM customer WHERE user_id = $userId";
+    
+            if(mysqli_query($link, $sql)) {
+                $sql = "SELECT * FROM users WHERE account_type = 'CUSTOMER'";
+                $result = mysqli_query($link, $sql);
+    
+                if(mysqli_num_rows($result) > 0) {
+                    $customers = mysqli_fetch_all($result, MYSQLI_ASSOC);
+                } else {
+                    $customers = "";
+                }
+    
+                $sql = "SELECT * FROM customer";
+                $result = mysqli_query($link, $sql);
+    
+                if(mysqli_num_rows($result) > 0) {
+                    $details = mysqli_fetch_all($result, MYSQLI_ASSOC);
+                } else {
+                    $details = "";
+                }
             } else {
-                $customers = "";
-            }
-
-            $sql = "SELECT * FROM customer";
-            $result = mysqli_query($link, $sql);
-
-            if(mysqli_num_rows($result) > 0) {
-                $details = mysqli_fetch_all($result, MYSQLI_ASSOC);
-            } else {
-                $details = "";
+                echo "Error deleting record: " . mysqli_error($conn);
             }
         } else {
             echo "Error deleting record: " . mysqli_error($conn);
         }
-    } else {
-        echo "Error deleting record: " . mysqli_error($conn);
     }
+
     
     // Close connection
     mysqli_close($link);
@@ -134,7 +140,6 @@ if(isset($_POST['delete-user'])) {
                 <div class="custom-select" onclick="selectMenu()">
                     <select name="profile" id="profile-menu">
                         <option value="username"><?php echo htmlspecialchars($_SESSION["username"]); ?></option>
-                        <option value="account">Account profile</option>
                         <option value="change-pass">Change password</option>
                         <option value="logout">Logout</option>
                     </select>
@@ -197,15 +202,24 @@ if(isset($_POST['delete-user'])) {
                                         MYR0.00
                                     </td>
                                     <td class="w-30">
-                                        <?php foreach ($details as $detail) : ?>
-                                            <?php 
-                                                if($detail['user_id'] == $customer['user_id']) {
-                                                    $_SESSION['user_id'] = $customer['user_id'];
-                                                    $data = array($detail['address'], $detail['address2'], $detail['city'], $detail['zip_code'], $customer['phone_number']);
-                                                    echo "<button onclick='openModalDetail(" . json_encode($data) . ")' class='btn-outline'>More</button>";
-                                                }
-                                            ?>
-                                        <?php endforeach; ?>
+                                        <div class="row">
+                                            <?php foreach ($details as $detail) : ?>
+                                                <?php 
+                                                    if($detail['user_id'] == $customer['user_id']) {
+                                                        $data = array($detail['user_id'], $detail['address'], $detail['address2'], $detail['city'], $detail['zip_code'], $customer['phone_number']);
+                                                        echo "<button onclick='openModalDetail(" . json_encode($data) . ")' class='btn-outline'>More</button>";
+                                                    }
+                                                ?>
+                                                <?php if($detail['user_id'] == $customer['user_id']) : ?>
+                                                    <button onclick="goToEdit(<?php echo $customer['user_id']; ?>)" class="btn-outline" style="margin: 7px 4px;">Edit</button>
+
+                                                    <form name="delete-form" method="post">
+                                                        <input type="text" name="user_id" value="<?php echo $customer['user_id'] ?>" style="display: none;">
+                                                        <button type="submit" name="delete-user" class="btn-outline mr-5">Delete</button>
+                                                    </form>
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
+                                        </div>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -217,26 +231,23 @@ if(isset($_POST['delete-user'])) {
     </section>
 
     <div id="modal-detail" class="modal">
-        <form name="delete-form" method="post">
-            <div class="modal-content" style="margin-top: 70px;">
-                <span onclick="closeModalDetail()" class="close">&times;</span>
-                <h4 class="mt-10">Customer details</h4>
+        <div class="modal-content" style="margin-top: 70px;">
+            <span onclick="closeModalDetail()" class="close">&times;</span>
+            <h4 class="mt-10">Customer details</h4>
 
-                <div class="modal-content-detail">
-                    <p id="address"></p>
-                    <p id="address2"></p>
-                    <p id="city"></p>
-                    <p id="zip_code"></p>
+            <div class="modal-content-detail">
+                <p id="address"></p>
+                <p id="address2"></p>
+                <p id="city"></p>
+                <p id="zip_code"></p>
 
-                    <p id="phone_number" style="margin-top: 20px;"></p>
-                </div>
-
-                <div class="row justify-content-end mt-10">
-                    <button type="submit" name="delete-user" class="btn-outline" style="margin-right: 7px;">Delete</button>
-                    <button onclick="goToEdit()" class="btn-purple">Edit</button>
-                </div>
+                <p id="phone_number" style="margin-top: 20px;"></p>
             </div>
-        </form>
+
+            <div class="row justify-content-end mt-10">
+                <button onclick="closeModalDetail()" class="btn-purple">Close</button>
+            </div>
+        </div>
     </div>
 
     <script src="./customers.js?v=<?php echo time(); ?>"></script>
