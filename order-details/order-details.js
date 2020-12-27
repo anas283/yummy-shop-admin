@@ -1,6 +1,7 @@
 var modalCancel = document.getElementById("modal-cancel");
 var modalNote = document.getElementById("modal-note");
 var modalPaid = document.getElementById("modal-paid");
+var modalShipping = document.getElementById("modal-shipping");
 
 function openModalCancel() {
     modalCancel.style.display = "block";
@@ -23,6 +24,13 @@ function closeModalPaid() {
     modalPaid.style.display = "none";
 }
 
+function openModalShipping() {
+    modalShipping.style.display = "block";
+}
+function closeModalShipping() {
+    modalShipping.style.display = "none";
+}
+
 window.onclick = function(event) {
     if (event.target == modalCancel) {
         modalCancel.style.display = "none";
@@ -32,6 +40,9 @@ window.onclick = function(event) {
     }
     if (event.target == modalPaid) {
         modalPaid.style.display = "none";
+    }
+    if (event.target == modalShipping) {
+        modalShipping.style.display = "none";
     }
 }
 

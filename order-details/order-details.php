@@ -7,6 +7,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 }
 
 $orderId = $_GET['order_id']; 
+$userId = $_GET['user_id']; 
 
 if($_GET['order_id']) {
 
@@ -26,6 +27,27 @@ if($_GET['order_id']) {
         $orderDetails = mysqli_fetch_all($result, MYSQLI_ASSOC);
     } else {
         $orderDetails = "";
+    }
+}
+
+if($_GET['user_id']) {
+
+    $sql = "SELECT * FROM users WHERE user_id = $userId";
+    $result = mysqli_query($link, $sql);
+
+    if(mysqli_num_rows($result) > 0) {
+        $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } else {
+        $users = "";
+    }
+
+    $sql = "SELECT * FROM customer WHERE user_id = $userId";
+    $result = mysqli_query($link, $sql);
+
+    if(mysqli_num_rows($result) > 0) {
+        $customers = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } else {
+        $customers = "";
     }
 }
 
@@ -204,6 +226,44 @@ if(isset($_POST['status'])) {
         mysqli_close($link);
     }
 }
+
+if(isset($_POST['save-note'])) {
+    $order_note = $_POST['note'];
+
+    // Prepare an update statement
+    $sql = "UPDATE order_detail SET order_note = ? WHERE order_id = ?";
+    
+    if($stmt = mysqli_prepare($link, $sql)){
+        // Bind variables to the prepared statement as parameters
+        mysqli_stmt_bind_param($stmt, "si", $param_order_note, $param_id);
+        
+        // Set parameters
+        $param_order_note = $order_note;
+        $param_id = $orderId;
+        
+        // Attempt to execute the prepared statement
+        if(mysqli_stmt_execute($stmt)){
+            $sql = "SELECT * FROM order_detail WHERE order_id = $orderId";
+            $result = mysqli_query($link, $sql);
+
+            if(mysqli_num_rows($result) > 0) {
+                $orderDetails = mysqli_fetch_all($result, MYSQLI_ASSOC);
+            } else {
+                $orderDetails = "";
+            }
+        } else{
+            echo "Oops! Something went wrong. Please try again later.";
+        }
+
+        // Close statement
+        mysqli_stmt_close($stmt);
+    } else {
+        echo "Update error!";
+    }
+    
+    // Close connection
+    mysqli_close($link);
+}
 ?>
 
 <!DOCTYPE html>
@@ -277,7 +337,7 @@ if(isset($_POST['status'])) {
                 </div>
             </div>
         </nav>
-        <div id="tabcontent" class="tabcontent">
+        <div id="tabcontent" class="tabcontent mb-30">
             <?php foreach ($orders as $order) : ?>
                 <h3 class="text-secondary-2">Orders</h3>
                 <div class="row">
@@ -327,7 +387,7 @@ if(isset($_POST['status'])) {
                         Print
                     </button>
                     <button onclick="openModalCancel()" class="btn-outline" style="margin-right: 7px;">
-                        Cancel order
+                        Delete order
                     </button>
                 </div>
         
@@ -445,34 +505,63 @@ if(isset($_POST['status'])) {
                         </div>
         
                         <div class="card card-details mt-10">
-                            <div class="col-auto">
-                                <h4 class="text-medium font-weight-medium">
-                                    Customer
-                                </h4>
-                            </div>
-                            <div class="line"></div>
-                            <div class="col-auto">
-                                <h4 class="text-medium font-weight-normal">-</h4>
-                            </div>
+                            <?php foreach ($users as $user) : ?>
+                                <div class="col-auto">
+                                    <h4 class="text-medium font-weight-medium">
+                                        Customer
+                                    </h4>
+                                </div>
+                                <div class="line"></div>
+                                <div class="col-auto">
+                                    <?php if(empty($user['first_name'])) : ?>
+                                        <h4 class="text-medium font-weight-normal">
+                                            &#8210;
+                                        </h4>
+                                    <?php endif; ?>
+
+                                    <?php if(!empty($user['first_name'])) : ?>
+                                        <h4 class="text-medium font-weight-normal">
+                                            <?php echo $user['first_name']; ?>
+                                            <?php echo $user['last_name']; ?>
+                                        </h4>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
                 
                         <div class="card card-details mt-10">
-                            <div class="row w-full">
-                                <div class="col-6">
-                                    <h4 class="text-medium font-weight-medium">
-                                        Shipping address
-                                    </h4>
+                            <?php foreach ($customers as $customer) : ?>
+                                <div class="row w-full">
+                                    <div class="col-6">
+                                        <h4 class="text-medium font-weight-medium">
+                                            Shipping address
+                                        </h4>
+                                    </div>
+                                    <div class="col-6 float-right">
+                                        <button onclick="openModalShipping()" class="btn-empty float-right mt-10">
+                                            Edit
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="col-6 float-right">
-                                    <button class="btn-empty float-right mt-10">
-                                        Edit
-                                    </button>
+                                <div class="line"></div>
+                                <div class="col-auto">
+                                    <?php if(empty($customer['address'])) : ?>
+                                        <h4 class="text-medium font-weight-normal">
+                                            &#8210;
+                                        </h4>
+                                    <?php endif; ?>
+
+                                    <?php if(!empty($customer['address'])) : ?>
+                                        <h4 class="text-medium font-weight-normal">
+                                            <?php echo $customer['address'] . ',<br>'; ?>
+                                            <?php echo $customer['address2'] . ',<br>'; ?>
+                                            <?php echo '0' . $customer['zip_code']; ?>
+                                            <?php echo $customer['city'] . ',<br>'; ?>
+                                            <?php echo $customer['state']; ?>
+                                        </h4>
+                                    <?php endif; ?>
                                 </div>
-                            </div>
-                            <div class="line"></div>
-                            <div class="col-auto">
-                                <h4 class="text-medium font-weight-normal">-</h4>
-                            </div>
+                            <?php endforeach; ?>
                         </div>
                     </div>
                 </div>
@@ -484,9 +573,9 @@ if(isset($_POST['status'])) {
         <form name="cancel-form" method="post">
             <div class="modal-content">
                 <span onclick="closeModalCancel()" class="close">&times;</span>
-                <h4 class="modal-title">Cancel order</h4>
+                <h4 class="modal-title">Delete order</h4>
                 <div class="modal-line"></div>
-                <p class="text-medium font-weight-normal my-20">Are you sure you want to cancel your this order?</p>
+                <p class="text-medium font-weight-normal my-20">Are you sure you want to delete this order?</p>
 
                 <div class="row justify-content-end">
                     <button onclick="closeModalCancel()" class="btn-outline" style="margin-right: 7px;">No</button>
@@ -497,23 +586,25 @@ if(isset($_POST['status'])) {
     </div>
 
     <div id="modal-note" class="modal">
-        <div class="modal-content">
-            <span onclick="closeModalNote()" class="close">&times;</span>
-            <h4 class="modal-title">Add note</h4>
-            <div class="modal-line"></div>
+        <?php foreach ($orderDetails as $orderDetail) : ?>
+            <form name="note-form" method="post">       
+                <div class="modal-content">
+                    <span onclick="closeModalNote()" class="close">&times;</span>
+                    <h4 class="modal-title">Add note</h4>
+                    <div class="modal-line"></div>
 
-            <form action="">
-                <div class="form-group mt-10">
-                    <label class="form-label">Message</label>
-                    <textarea class="form-control" name="note" id="note" style="height: 80px; padding-top: 10px;"></textarea>
+                    <div class="form-group mt-10">
+                        <label class="form-label">Message</label>
+                        <textarea class="form-control" name="note" id="note" style="height: 80px; padding-top: 10px;"><?php echo $orderDetail['order_note']; ?></textarea>
+                    </div>
+
+                    <div class="row justify-content-end">
+                        <button onclick="closeModalNote()" class="btn-outline" style="margin-right: 7px;">Cancel</button>
+                        <button type="submit" name="save-note" class="btn-purple">Save</button>
+                    </div>
                 </div>
             </form>
-
-            <div class="row justify-content-end">
-                <button onclick="closeModalNote()" class="btn-outline" style="margin-right: 7px;">Cancel</button>
-                <button class="btn-purple">Save</button>
-            </div>
-        </div>
+        <?php endforeach; ?>
     </div>
 
     <div id="modal-paid" class="modal">
@@ -537,6 +628,46 @@ if(isset($_POST['status'])) {
                 </div>
             <?php endforeach; ?>
         </form>                              
+    </div>
+
+    <div id="modal-shipping" class="modal">
+        <?php foreach ($customers as $customer) : ?>
+            <form name="note-form" method="post">       
+                <div class="modal-content modal-shipping">
+                    <span onclick="closeModalShipping()" class="close">&times;</span>
+                    <h4 class="modal-title">Shipping address</h4>
+                    <div class="modal-line"></div>
+
+                    <div class="form-group mt-10">
+                        <label class="form-label">Address</label>
+                        <input class="form-control" type="text" name="address" value="<?php echo $customer['address']; ?>">
+                    </div>
+                    <div class="form-group mt-10">
+                        <label class="form-label">Address 2</label>
+                        <input class="form-control" type="text" name="address2" value="<?php echo $customer['address2']; ?>">
+                    </div>
+                    <div class="form-group mt-10">
+                        <label class="form-label">City</label>
+                        <input class="form-control" type="text" name="city" value="<?php echo $customer['city']; ?>">
+                    </div>
+                    <div class="row">
+                        <div class="form-group mt-10 mr-10 col-6">
+                            <label class="form-label">State</label>
+                            <input class="form-control" type="text" name="state" value="<?php echo $customer['state']; ?>">
+                        </div>
+                        <div class="form-group mt-10 col-6">
+                            <label class="form-label">Zip Code</label>
+                            <input class="form-control" type="number" name="zip_code" value="<?php echo '0' . $customer['zip_code']; ?>">
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-end">
+                        <button onclick="closeModalShipping()" class="btn-outline" style="margin-right: 7px;">Cancel</button>
+                        <button type="submit" name="save-shipping" class="btn-purple">Save</button>
+                    </div>
+                </div>
+            </form>
+        <?php endforeach; ?>
     </div>
 
     <script src="./order-details.js?v=<?php echo time(); ?>"></script>

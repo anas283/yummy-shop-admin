@@ -2,8 +2,8 @@ function setDefault() {
     document.getElementById("default").click();
 }
 
-function openOrderDetails(orderId) {
-    window.open('../order-details/order-details.php?order_id='+orderId, '_self');
+function openOrderDetails(orderId,userId) {
+    window.open('../order-details/order-details.php?order_id='+orderId+'&user_id='+userId, '_self');
 }
 
 function openTabOrders(evt, tabName) {
