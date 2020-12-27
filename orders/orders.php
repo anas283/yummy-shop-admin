@@ -43,50 +43,42 @@ if(isset($_POST['save'])) {
 
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)) {
+
                 // get order_id from orders table
-                $sql = "SELECT order_id, cust_id FROM orders WHERE cust_id = ?";
-        
-                if($stmt = mysqli_prepare($link, $sql)){
-                    mysqli_stmt_bind_param($stmt, "s", $param_customer_id);
-                    
-                    $param_customer_id = $customer_id;
 
-                    if(mysqli_stmt_execute($stmt)) {
-                        mysqli_stmt_store_result($stmt);
-                        
-                        if(mysqli_stmt_num_rows($stmt) == 1){
-                            mysqli_stmt_bind_result($stmt, $order_id, $cust_id);
-                            if(mysqli_stmt_fetch($stmt)) {
+                $sql = "SELECT order_id, cust_id FROM orders WHERE cust_id = $customer_id";
+                $result = mysqli_query($link, $sql);
 
-                                // Prepare an insert statement
-                                $sql = "INSERT INTO order_detail (order_id, product_id, order_quantity, shipping_cost) VALUES (?, ?, ?, ?)";
+                if (mysqli_num_rows($result) > 0) {
 
-                                if($stmt = mysqli_prepare($link, $sql)){
-                                    // Bind variables to the prepared statement as parameters
-                                    mysqli_stmt_bind_param($stmt, "ssss", $param_order_id, $param_product_id, $param_quantity, $param_shipping);
+                    while($row = mysqli_fetch_assoc($result)) {
+                        $order_id = $row['order_id'];
+                    }
 
-                                    // Set parameters
-                                    $param_order_id = $order_id;
-                                    $param_product_id = $product_id;
-                                    $param_quantity = $quantity;
-                                    $param_shipping = $shipping;
+                    // Prepare an insert statement
+                    $sql = "INSERT INTO order_detail (order_id, product_id, order_quantity, shipping_cost) VALUES (?, ?, ?, ?)";
 
-                                    // Attempt to execute the prepared statement
-                                    if(mysqli_stmt_execute($stmt)){
-                                        // echo "Order detail data inserted :)";
-                                    } else{
-                                        echo "Something went wrong. Please try again later.";
-                                    }
-                                } else {
-                                    echo 'Failed to insert details';
-                                }
-                            }
-                        } else {
-                            echo "Order id not found.";
+                    if($stmt = mysqli_prepare($link, $sql)){
+                        // Bind variables to the prepared statement as parameters
+                        mysqli_stmt_bind_param($stmt, "ssss", $param_order_id, $param_product_id, $param_quantity, $param_shipping);
+
+                        // Set parameters
+                        $param_order_id = $order_id;
+                        $param_product_id = $product_id;
+                        $param_quantity = $quantity;
+                        $param_shipping = $shipping;
+
+                        // Attempt to execute the prepared statement
+                        if(mysqli_stmt_execute($stmt)){
+                            // echo "Order detail data inserted :)";
+                        } else{
+                            echo "Something went wrong. Please try again later.";
                         }
+                    } else {
+                        echo 'Failed to insert details';
                     }
                 } else {
-                    echo "Oops! Something went wrong. Please try again later.";
+                    echo "0 results";
                 }
             } else {
                 echo "Something went wrong. Please try again later.";
