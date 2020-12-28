@@ -83,6 +83,9 @@ function selectMenu() {
     var selectBox = document.getElementById('profile-menu');
     var selectedValue = selectBox.options[selectBox.selectedIndex].value;
 
+    if(selectedValue == 'change-pass') {
+        window.open('../change-password.php', '_SELF');
+    }
     if(selectedValue == 'logout') {
         window.open('../logout.php', '_SELF');
     }
