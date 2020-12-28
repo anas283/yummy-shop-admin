@@ -158,7 +158,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 
-    <div id="mySidenav" class="sidenav mt-150">
+    <div id="mySidenav" class="sidenav">
         <div>
             <a class="logo" href="../home/home.php">
                 <img class="shop-logo" src="../images/shop_logo.png" alt="">
