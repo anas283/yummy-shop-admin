@@ -226,15 +226,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </nav>
         <div id="overview" class="tabcontent">
-            <h3 class="text-secondary-2 uppercase">Customers</h3>
-            <div class="row">
-                <h2 class="add-customer-text">Add customer</h2>
+            <div class="col-6 mx-auto">
+                <h3 class="text-secondary-2 uppercase">Customers</h3>
+                <div class="row">
+                    <h2 class="add-customer-text">Add customer</h2>
+                </div>
+                <div class="div-line"></div>
             </div>
-            <div class="div-line"></div>
 
-            <div class="content">
+            <div class="col-6 mx-auto">
                 <div id="processing" class="tabcontent2">
-                    <div class="card card-form col-6">
+                    <div class="card card-form">
                         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                             <div class="row">
                                 <div class="form-group my-10 mr-10 col-6 <?php echo (!empty($first_name_err)) ? 'has-error' : ''; ?>">

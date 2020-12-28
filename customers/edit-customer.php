@@ -221,15 +221,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </nav>
         <div id="overview" class="tabcontent">
-            <h3 class="text-secondary-2 uppercase">Customers</h3>
-            <div class="row">
-                <h2 class="add-customer-text">Edit customer</h2>
+            <div class="col-6 mx-auto">
+                <h3 class="text-secondary-2 uppercase">Customers</h3>
+                <div class="row">
+                    <h2 class="add-customer-text">Edit customer</h2>
+                </div>
+                <div class="div-line"></div>
             </div>
-            <div class="div-line"></div>
 
-            <div class="content">
+            <div class="col-6 mx-auto">
                 <div id="processing" class="tabcontent2">
-                    <div class="card card-form col-6">
+                    <div class="card card-form">
                         <?php foreach ($users as $user) : ?>
                             <?php foreach ($customers as $customer) : ?>
                                 <form method="post">
