@@ -67,3 +67,7 @@ function validateForm() {
         document.getElementById('submit-btn').click();
     }
 }
+
+function refresh() {
+    document.getElementById('order').click();
+}
