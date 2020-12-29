@@ -23,30 +23,31 @@ if(isset($_POST['save'])) {
     $date = $_POST['date'];
     $shipping = $_POST['shipping'];
     $quantity = $_POST['quantity'];
+    $user_id = "";
 
     // Check data before inserting in database
     if((!empty($product_id)) && (!empty($customer_id)) && (!empty($date)) && (!empty($shipping)) && (!empty($quantity))) {
 
         // Prepare an insert statement
-        $sql = "INSERT INTO orders (cust_id, product_id, payment_status, fulfillment_status, order_date) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO orders (user_id, payment_status, fulfillment_status, order_date, shipping_cost) VALUES (?, ?, ?, ?, ?)";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "sssss", $param_customer_id,  $param_product_id,$param_payment_status, $param_fulfillment_status, $param_order_date);
+            mysqli_stmt_bind_param($stmt, "sssss", $param_customer_id, $param_payment_status, $param_fulfillment_status, $param_order_date, $param_shipping);
 
             // Set parameters
             $param_customer_id = $customer_id;
-            $param_product_id = $product_id;
             $param_payment_status = 'PENDING';
             $param_fulfillment_status = 'PROCESSING';
             $param_order_date = $date;
+            $param_shipping = $shipping;
 
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)) {
 
                 // get order_id from orders table
 
-                $sql = "SELECT order_id, cust_id FROM orders WHERE cust_id = $customer_id";
+                $sql = "SELECT order_id, user_id FROM orders WHERE user_id = $customer_id";
                 $result = mysqli_query($link, $sql);
 
                 if (mysqli_num_rows($result) > 0) {
@@ -56,17 +57,16 @@ if(isset($_POST['save'])) {
                     }
 
                     // Prepare an insert statement
-                    $sql = "INSERT INTO order_detail (order_id, product_id, order_quantity, shipping_cost) VALUES (?, ?, ?, ?)";
+                    $sql = "INSERT INTO order_detail (order_id, product_id, order_quantity) VALUES (?, ?, ?)";
 
                     if($stmt = mysqli_prepare($link, $sql)){
                         // Bind variables to the prepared statement as parameters
-                        mysqli_stmt_bind_param($stmt, "ssss", $param_order_id, $param_product_id, $param_quantity, $param_shipping);
+                        mysqli_stmt_bind_param($stmt, "sss", $param_order_id, $param_product_id, $param_quantity);
 
                         // Set parameters
                         $param_order_id = $order_id;
                         $param_product_id = $product_id;
                         $param_quantity = $quantity;
-                        $param_shipping = $shipping;
 
                         // Attempt to execute the prepared statement
                         if(mysqli_stmt_execute($stmt)){
@@ -92,6 +92,7 @@ if(isset($_POST['save'])) {
 $orders = "";
 $searchOrders = "0";
 $noResult = "";
+$noOrder = "";
 
 if(isset($_POST['search'])) {
 
@@ -100,8 +101,7 @@ if(isset($_POST['search'])) {
     $sql = "SELECT orders.order_id, orders.order_date, users.user_id, users.first_name, users.last_name, orders.payment_status, orders.fulfillment_status, order_detail.order_quantity
     FROM orders
     INNER JOIN order_detail on orders.order_id = order_detail.order_id
-    INNER JOIN customer ON orders.cust_id = customer.cust_id
-    INNER JOIN users ON customer.user_id = users.user_id
+    INNER JOIN users ON orders.user_id = users.user_id
     WHERE orders.order_id = $search";
 
     $result = mysqli_query($link, $sql);
@@ -114,22 +114,13 @@ if(isset($_POST['search'])) {
         $noResult = "y";
     }
 } else {
-    $sql = "SELECT * FROM users WHERE account_type = 'CUSTOMER'";
+    $sql = "SELECT * FROM users WHERE level = 'CUSTOMER'";
     $result = mysqli_query($link, $sql);
 
     if(mysqli_num_rows($result) > 0) {
         $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
     } else {
         $users = "";
-    }
-
-    $sql = "SELECT * FROM customer";
-    $result = mysqli_query($link, $sql);
-
-    if(mysqli_num_rows($result) > 0) {
-        $customers = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    } else {
-        $customers = "";
     }
 
     $sql = "SELECT * FROM orders";
@@ -140,6 +131,7 @@ if(isset($_POST['search'])) {
         $searchOrders = "0";
     } else {
         $orders = "";
+        $noOrder = "y";
     }
 
     $sql = "SELECT * FROM order_detail";
@@ -195,7 +187,7 @@ if(isset($_POST['search'])) {
     <div id="mySidenav" class="sidenav">
         <div>
             <a class="logo" href="../home/home.php">
-                <img class="shop-logo" src="../images/shop_logo.png" alt="">
+                <img class="shop-logo" src="../images/yummy-logo.png" alt="">
             </a>
         </div>
         <div class="navs">
@@ -290,14 +282,14 @@ if(isset($_POST['search'])) {
                     </div>
                 <?php endif; ?>
 
-                <?php if(empty($orders) && !$orders == '0') : ?>
+                <?php if(empty($orders)) : ?>
                     <div class="card card-empty">
                         <h4 class="text-dark text-center">Manage orders</h4>
                         <p class="text-secondary text-center -mt-10">When your orders start coming in, you will be able to view and process them here.</p>
                     </div>
                 <?php endif; ?>
 
-                <?php if($noResult != 'y') : ?>
+                <?php if($noResult != 'y' && $noOrder != 'y') : ?>
                     <div class="card card-table">
                         <div>
                             <form method="post" class="row">
@@ -392,67 +384,65 @@ if(isset($_POST['search'])) {
                                 </tr>
                                 <?php foreach ($orders as $order) : ?>
                                     <?php foreach ($users as $user) : ?>
-                                        <?php foreach ($customers as $customer) : ?>
-                                            <?php if($user['user_id'] == $customer['user_id'] && $customer['cust_id'] == $order['cust_id']) : ?>
-                                                <tr onclick="openOrderDetails(<?php echo $order['order_id'] ?>, <?php echo $user['user_id'] ?>)">
-                                                    <td>
-                                                        <button class="btn-empty">
-                                                            #<?php echo $order['order_id'] ?>
-                                                        </button>
-                                                    </td>
-                                                    <td>
-                                                        <button class="btn-empty">
-                                                            <?php echo $order['order_date'] ?>
-                                                        </button>
-                                                    </td>
-                                                    <td>
-                                                        <?php echo $user['first_name'] . ' ' . $user['last_name']; ?>
-                                                    </td>
-                                                    <td>MYR0.00</td>
-                                                    <td>
-                                                        <?php if($order['payment_status'] == 'SUCCESS') : ?>
-                                                            <span class="success">
-                                                                <?php echo $order['payment_status'] ?>
-                                                            </span>
+                                        <?php if($order['user_id'] == $user['user_id']) : ?>
+                                            <tr onclick="openOrderDetails(<?php echo $order['order_id'] ?>, <?php echo $user['user_id'] ?>)">
+                                                <td>
+                                                    <button class="btn-empty">
+                                                        #<?php echo $order['order_id'] ?>
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button class="btn-empty">
+                                                        <?php echo $order['order_date'] ?>
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <?php echo $user['first_name'] . ' ' . $user['last_name']; ?>
+                                                </td>
+                                                <td>MYR0.00</td>
+                                                <td>
+                                                    <?php if($order['payment_status'] == 'SUCCESS') : ?>
+                                                        <span class="success">
+                                                            <?php echo $order['payment_status'] ?>
+                                                        </span>
+                                                    <?php endif; ?>
+                                                    <?php if($order['payment_status'] == 'PENDING') : ?>
+                                                        <span class="pending">
+                                                            <?php echo $order['payment_status'] ?>
+                                                        </span>
+                                                    <?php endif; ?>
+                                                    <?php if($order['payment_status'] == 'FAILED') : ?>
+                                                        <span class="failed">
+                                                            <?php echo $order['payment_status'] ?>
+                                                        </span>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td>
+                                                    <?php if($order['fulfillment_status'] == 'COMPLETED') : ?>
+                                                        <span class="success">
+                                                            <?php echo $order['fulfillment_status'] ?>
+                                                        </span>
+                                                    <?php endif; ?>
+                                                    <?php if($order['fulfillment_status'] == 'PROCESSING') : ?>
+                                                        <span class="processing">
+                                                            <?php echo $order['fulfillment_status'] ?>
+                                                        </span>
+                                                    <?php endif; ?>
+                                                    <?php if($order['fulfillment_status'] == 'CANCELLED') : ?>
+                                                        <span class="failed">
+                                                            <?php echo $order['fulfillment_status'] ?>
+                                                        </span>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td>
+                                                    <?php foreach ($orderDetails as $orderDetail) : ?>
+                                                        <?php if($order['order_id'] == $orderDetail['order_id']) : ?>
+                                                            <?php echo $orderDetail['order_quantity']; ?>
                                                         <?php endif; ?>
-                                                        <?php if($order['payment_status'] == 'PENDING') : ?>
-                                                            <span class="pending">
-                                                                <?php echo $order['payment_status'] ?>
-                                                            </span>
-                                                        <?php endif; ?>
-                                                        <?php if($order['payment_status'] == 'FAILED') : ?>
-                                                            <span class="failed">
-                                                                <?php echo $order['payment_status'] ?>
-                                                            </span>
-                                                        <?php endif; ?>
-                                                    </td>
-                                                    <td>
-                                                        <?php if($order['fulfillment_status'] == 'COMPLETED') : ?>
-                                                            <span class="success">
-                                                                <?php echo $order['fulfillment_status'] ?>
-                                                            </span>
-                                                        <?php endif; ?>
-                                                        <?php if($order['fulfillment_status'] == 'PROCESSING') : ?>
-                                                            <span class="processing">
-                                                                <?php echo $order['fulfillment_status'] ?>
-                                                            </span>
-                                                        <?php endif; ?>
-                                                        <?php if($order['fulfillment_status'] == 'CANCELLED') : ?>
-                                                            <span class="failed">
-                                                                <?php echo $order['fulfillment_status'] ?>
-                                                            </span>
-                                                        <?php endif; ?>
-                                                    </td>
-                                                    <td>
-                                                        <?php foreach ($orderDetails as $orderDetail) : ?>
-                                                            <?php if($order['order_id'] == $orderDetail['order_id']) : ?>
-                                                                <?php echo $orderDetail['order_quantity']; ?>
-                                                            <?php endif; ?>
-                                                        <?php endforeach; ?>    
-                                                    </td>
-                                                </tr>
-                                            <?php endif; ?>
-                                        <?php endforeach; ?> 
+                                                    <?php endforeach; ?>    
+                                                </td>
+                                            </tr>
+                                        <?php endif; ?>
                                     <?php endforeach; ?> 
                                 <?php endforeach; ?>
                             </table>
@@ -781,13 +771,7 @@ if(isset($_POST['search'])) {
                         <select class="btn-outline-select" id="customer" name="customer_id" style="width: 100%">
                             <option value="">Choose customer</option>
                             <?php foreach ($users as $user) : ?>
-                                <?php foreach ($customers as $customer) : ?>
-                                    <?php
-                                        if($user['user_id'] == $customer['user_id']) {
-                                            echo "<option value=" . $customer['cust_id'] . "> " . " " . $user['first_name'] . " " . $user['last_name'] .  " </option>";
-                                        }
-                                    ?>
-                                <?php endforeach; ?>
+                                <?php echo "<option value=" . $user['user_id'] . "> " . " " . $user['first_name'] . " " . $user['last_name'] .  " </option>"; ?>
                             <?php endforeach; ?>
                         </select>
                         <small id="customer-err" class="error-msg"></small>

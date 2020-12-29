@@ -40,15 +40,6 @@ if($_GET['user_id']) {
     } else {
         $users = "";
     }
-
-    $sql = "SELECT * FROM customer WHERE user_id = $userId";
-    $result = mysqli_query($link, $sql);
-
-    if(mysqli_num_rows($result) > 0) {
-        $customers = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    } else {
-        $customers = "";
-    }
 }
 
 if(isset($_POST['PENDING'])) {
@@ -274,7 +265,7 @@ if(isset($_POST['save-shipping'])) {
 
     if(!empty($address) && !empty($address2) && !empty($city) && !empty($state) && !empty($zip_code)) {
         // Prepare an update statement
-        $sql = "UPDATE customer SET address, address2, city, state, zip_code = ? WHERE user_id = $userId";
+        $sql = "UPDATE users SET address, address2, city, state, zip_code = ? WHERE user_id = $userId";
         
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
@@ -318,7 +309,7 @@ if(isset($_POST['save-shipping'])) {
     <div id="mySidenav" class="sidenav">
         <div>
             <a class="logo" href="../home/home.php">
-                <img class="shop-logo" src="../images/shop_logo.png" alt="">
+                <img class="shop-logo" src="../images/yummy-logo.png" alt="">
             </a>
         </div>
         <div class="navs">
@@ -457,7 +448,7 @@ if(isset($_POST['save-shipping'])) {
                                 </div>
                                 <div class="col-6 justify-content-end">
                                     <h4 class="text-medium font-weight-normal">
-                                        RM<?php echo $orderDetail['shipping_cost']; ?>
+                                        RM<?php echo $order['shipping_cost']; ?>
                                     </h4>
                                 </div>
                             </div>
@@ -570,7 +561,7 @@ if(isset($_POST['save-shipping'])) {
                         </div>
                 
                         <div class="card card-details mt-10">
-                            <?php foreach ($customers as $customer) : ?>
+                            <?php foreach ($users as $user) : ?>
                                 <div class="row w-full">
                                     <div class="col-6">
                                         <h4 class="text-medium font-weight-medium">
@@ -585,19 +576,19 @@ if(isset($_POST['save-shipping'])) {
                                 </div>
                                 <div class="line"></div>
                                 <div class="col-auto">
-                                    <?php if(empty($customer['address'])) : ?>
+                                    <?php if(empty($user['address'])) : ?>
                                         <h4 class="text-medium font-weight-normal">
                                             &#8210;
                                         </h4>
                                     <?php endif; ?>
 
-                                    <?php if(!empty($customer['address'])) : ?>
+                                    <?php if(!empty($user['address'])) : ?>
                                         <h4 class="text-medium font-weight-normal">
-                                            <?php echo $customer['address'] . ',<br>'; ?>
-                                            <?php echo $customer['address2'] . ',<br>'; ?>
-                                            <?php echo '0' . $customer['zip_code']; ?>
-                                            <?php echo $customer['city'] . ',<br>'; ?>
-                                            <?php echo $customer['state']; ?>
+                                            <?php echo $user['address'] . ',<br>'; ?>
+                                            <?php echo $user['address2'] . ',<br>'; ?>
+                                            <?php echo '0' . $user['zip_code']; ?>
+                                            <?php echo $user['city'] . ',<br>'; ?>
+                                            <?php echo $user['state']; ?>
                                         </h4>
                                     <?php endif; ?>
                                 </div>
@@ -671,7 +662,7 @@ if(isset($_POST['save-shipping'])) {
     </div>
 
     <div id="modal-shipping" class="modal">
-        <?php foreach ($customers as $customer) : ?>
+        <?php foreach ($users as $user) : ?>
             <form name="note-form" method="post">       
                 <div class="modal-content modal-shipping">
                     <span onclick="closeModalShipping()" class="close">&times;</span>
@@ -680,28 +671,28 @@ if(isset($_POST['save-shipping'])) {
 
                     <div class="form-group mt-10">
                         <label class="form-label">Address</label>
-                        <input class="form-control" type="text" name="address" id="address" value="<?php echo $customer['address']; ?>">
+                        <input class="form-control" type="text" name="address" id="address" value="<?php echo $user['address']; ?>">
                         <small id="address-err" class="error-msg"></small>
                     </div>
                     <div class="form-group mt-10">
                         <label class="form-label">Address 2</label>
-                        <input class="form-control" type="text" name="address2" id="address2" value="<?php echo $customer['address2']; ?>">
+                        <input class="form-control" type="text" name="address2" id="address2" value="<?php echo $user['address2']; ?>">
                         <small id="address2-err" class="error-msg"></small>
                     </div>
                     <div class="form-group mt-10">
                         <label class="form-label">City</label>
-                        <input class="form-control" type="text" name="city" id="city" value="<?php echo $customer['city']; ?>">
+                        <input class="form-control" type="text" name="city" id="city" value="<?php echo $user['city']; ?>">
                         <small id="city-err" class="error-msg"></small>
                     </div>
                     <div class="row">
                         <div class="form-group mt-10 mr-10 col-6">
                             <label class="form-label">State</label>
-                            <input class="form-control" type="text" name="state" id="state" value="<?php echo $customer['state']; ?>">
+                            <input class="form-control" type="text" name="state" id="state" value="<?php echo $user['state']; ?>">
                         <small id="state-err" class="error-msg"></small>
                         </div>
                         <div class="form-group mt-10 col-6">
                             <label class="form-label">Zip Code</label>
-                            <input class="form-control" type="number" name="zip_code" id="zip_code" value="<?php echo '0' . $customer['zip_code']; ?>">
+                            <input class="form-control" type="number" name="zip_code" id="zip_code" value="<?php echo '0' . $user['zip_code']; ?>">
                         <small id="zip-code-err" class="error-msg"></small>
                         </div>
                     </div>
