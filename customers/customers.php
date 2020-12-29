@@ -6,22 +6,13 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: ../index.php");
 }
 
-$sql = "SELECT * FROM users WHERE account_type = 'CUSTOMER'";
+$sql = "SELECT * FROM users WHERE level = 'CUSTOMER'";
 $result = mysqli_query($link, $sql);
 
 if(mysqli_num_rows($result) > 0) {
-    $customers = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
 } else {
-    $customers = "";
-}
-
-$sql = "SELECT * FROM customer";
-$result = mysqli_query($link, $sql);
-
-if(mysqli_num_rows($result) > 0) {
-    $details = mysqli_fetch_all($result, MYSQLI_ASSOC);
-} else {
-    $details = "";
+    $users = "";
 }
 
 $userId = "";
@@ -36,30 +27,15 @@ if(isset($_POST['delete-user'])) {
         $sql = "DELETE FROM users WHERE user_id = $userId";
     
         if(mysqli_query($link, $sql)) {
-    
-            // Delete a record by user id
-            $sql = "DELETE FROM customer WHERE user_id = $userId";
-    
-            if(mysqli_query($link, $sql)) {
-                $sql = "SELECT * FROM users WHERE account_type = 'CUSTOMER'";
-                $result = mysqli_query($link, $sql);
-    
-                if(mysqli_num_rows($result) > 0) {
-                    $customers = mysqli_fetch_all($result, MYSQLI_ASSOC);
-                } else {
-                    $customers = "";
-                }
-    
-                $sql = "SELECT * FROM customer";
-                $result = mysqli_query($link, $sql);
-    
-                if(mysqli_num_rows($result) > 0) {
-                    $details = mysqli_fetch_all($result, MYSQLI_ASSOC);
-                } else {
-                    $details = "";
-                }
+            
+            // Refresh table
+            $sql = "SELECT * FROM users WHERE level = 'CUSTOMER'";
+            $result = mysqli_query($link, $sql);
+
+            if(mysqli_num_rows($result) > 0) {
+                $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
             } else {
-                echo "Error deleting record: " . mysqli_error($conn);
+                $users = "";
             }
         } else {
             echo "Error deleting record: " . mysqli_error($conn);
@@ -87,7 +63,7 @@ if(isset($_POST['delete-user'])) {
     <div id="mySidenav" class="sidenav">
         <div>
             <a class="logo" href="../home/home.php">
-                <img class="shop-logo" src="../images/shop_logo.png" alt="">
+                <img class="shop-logo" src="../images/yummy-logo.png" alt="">
             </a>
         </div>
         <div class="navs">
@@ -157,14 +133,14 @@ if(isset($_POST['delete-user'])) {
             </div>
             <div class="div-line"></div>
 
-            <?php if (empty($customers)) : ?>
+            <?php if (empty($users)) : ?>
                 <div class="card card-empty">
                     <h4 class="text-dark text-center">Understand your customers</h4>
                     <p class="text-secondary text-center -mt-10">Once you start making sales, you'll find their details and purchase history here.</p>
                 </div>
             <?php endif; ?>
 
-            <?php if (!empty($customers)) : ?>
+            <?php if (!empty($users)) : ?>
                 <div class="card card-table content">
                     <div>
                         <form action="" class="row">
@@ -187,10 +163,10 @@ if(isset($_POST['delete-user'])) {
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($customers as $customer) : ?>
+                            <?php foreach ($users as $user) : ?>
                                 <tr>
                                     <td>
-                                        <?php echo $customer['first_name'] . ' ' . $customer['last_name'] ?>
+                                        <?php echo $user['first_name'] . ' ' . $user['last_name'] ?>
                                     </td>
                                     <td class="w-100">
                                         0
@@ -203,22 +179,16 @@ if(isset($_POST['delete-user'])) {
                                     </td>
                                     <td class="w-30">
                                         <div class="row">
-                                            <?php foreach ($details as $detail) : ?>
-                                                <?php 
-                                                    if($detail['user_id'] == $customer['user_id']) {
-                                                        $data = array($detail['user_id'], $detail['address'], $detail['address2'], $detail['city'], $detail['zip_code'], $customer['phone_number']);
-                                                        echo "<button onclick='openModalDetail(" . json_encode($data) . ")' class='btn-outline'>More</button>";
-                                                    }
-                                                ?>
-                                                <?php if($detail['user_id'] == $customer['user_id']) : ?>
-                                                    <button onclick="goToEdit(<?php echo $customer['user_id']; ?>)" class="btn-outline" style="margin: 7px 4px;">Edit</button>
+                                            <?php
+                                                $data = array($user['user_id'], $user['address'], $user['address2'], $user['city'], $user['zip_code'], $user['phone_number']);
+                                                echo "<button onclick='openModalDetail(" . json_encode($data) . ")' class='btn-outline'>More</button>";
+                                            ?>
+                                            <button onclick="goToEdit(<?php echo $user['user_id']; ?>)" class="btn-outline" style="margin: 7px 4px;">Edit</button>
 
-                                                    <form name="delete-form" method="post">
-                                                        <input type="text" name="user_id" value="<?php echo $customer['user_id'] ?>" style="display: none;">
-                                                        <button type="submit" name="delete-user" class="btn-outline mr-5">Delete</button>
-                                                    </form>
-                                                <?php endif; ?>
-                                            <?php endforeach; ?>
+                                            <form name="delete-form" method="post">
+                                                <input type="text" name="user_id" value="<?php echo $user['user_id'] ?>" style="display: none;">
+                                                <button type="submit" name="delete-user" class="btn-outline mr-5">Delete</button>
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>

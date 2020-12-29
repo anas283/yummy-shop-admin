@@ -73,70 +73,30 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     && empty($address_err) && empty($address2_err) && empty($city_err) && empty($state_err) && empty($zip_code_err)){
         
         // Prepare an insert statement
-        $sql = "INSERT INTO users (first_name, last_name, phone_number, email, account_type, password) VALUES (?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO users (first_name, last_name, phone_number, email, password, level, address, address2, city, state, zip_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
          
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ssssss", $param_first_name, $param_last_name, $param_phone_number, $param_email, $param_account_type, $param_password);
+            mysqli_stmt_bind_param($stmt, "sssssssssss", $param_first_name, $param_last_name, $param_phone_number, $param_email, $param_password, $param_level, $param_address, $param_address2, $param_city, $param_state, $param_zip_code);
             
             // Set parameters
             $param_first_name = $first_name;
             $param_last_name = $last_name;
             $param_phone_number = $phone;
             $param_email = $email;
-            $param_account_type = "CUSTOMER";
-            $password = "12345678";
+            $password = "12345678"; // Set temporary password
             $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
+            $param_level = "CUSTOMER";
+            $param_address = $address;
+            $param_address2 = $address2;
+            $param_city = $city;
+            $param_state = $state;
+            $param_zip_code = $zip_code;
             
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
-                // get user_id from users table
-                $sql = "SELECT user_id, last_name, email, password FROM users WHERE email = ?";
-        
-                if($stmt = mysqli_prepare($link, $sql)){
-                    mysqli_stmt_bind_param($stmt, "s", $param_email);
-                    
-                    $param_email = $email;
-                    
-                    if(mysqli_stmt_execute($stmt)){
-                        mysqli_stmt_store_result($stmt);
-                        
-                        if(mysqli_stmt_num_rows($stmt) == 1){
-                            mysqli_stmt_bind_result($stmt, $user_id, $last_name, $email, $hashed_password);
-                            if(mysqli_stmt_fetch($stmt)) {
-                                echo "Email: " . $param_email . "\nId: " . $user_id;
-                                
-                                // Prepare an insert statement
-                                $sql = "INSERT INTO customer (user_id, address, address2, city, state, zip_code) VALUES (?, ?, ?, ?, ?, ?)";
-                    
-                                if($stmt = mysqli_prepare($link, $sql)){
-                                    // Bind variables to the prepared statement as parameters
-                                    mysqli_stmt_bind_param($stmt, "ssssss", $param_user_id, $param_address, $param_address2, $param_city, $param_state, $param_zip_code);
-                                    
-                                    // Set parameters
-                                    $param_user_id = $user_id;
-                                    $param_address = $address;
-                                    $param_address2 = $address2;
-                                    $param_city = $city;
-                                    $param_state = $state;
-                                    $param_zip_code = $zip_code;
-                                    
-                                    // Attempt to execute the prepared statement
-                                    if(mysqli_stmt_execute($stmt)){
-                                        // Redirect to customer page
-                                        header("location: ./customers.php");
-                                    } else{
-                                        echo "Something went wrong. Please try again later.";
-                                    }
-                                }
-                            }
-                        } else{
-                            echo "User id not found.";
-                        }
-                    } else{
-                        echo "Oops! Something went wrong. Please try again later.";
-                    }
-                }
+                // Redirect to customer page
+                header("location: ./customers.php");
             } else{
                 echo "Something went wrong. Please try again later.";
             }
@@ -165,7 +125,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     <div id="mySidenav" class="sidenav">
         <div>
             <a class="logo" href="../home/home.php">
-                <img class="shop-logo" src="../images/shop_logo.png" alt="">
+                <img class="shop-logo" src="../images/yummy-logo.png" alt="">
             </a>
         </div>
         <div class="navs">
