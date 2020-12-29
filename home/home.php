@@ -13,6 +13,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../global.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="./home.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="./home.js?v=<?php echo time(); ?>">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <!-- Icons -->
     <title>Home</title>
 </head>
 <body id="body">
@@ -40,7 +43,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     <p>Orders</p>
                 </div>
             </a>
-            <a href="../products/products.php" class="row nav-item tablinks">
+            <a href="#" class="row nav-item tablinks">
                 <div>
                     <ion-icon class="ion-icon" name="bag-outline"></ion-icon>
                 </div>
@@ -81,7 +84,90 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
         </nav>
         <div id="overview" class="tabcontent">
             <h3>Overview</h3>
-            <div class="div-line"></div>
+			<div class="div-line"></div>
+
+			<!-- Top card-->
+            <div class="row mt-20">
+				<div class="col-3 mr-10">
+					<div class="card card-stats">
+						<!-- Card body -->
+						<div class="card-body">
+							<div class="row">
+								<div class="col-6">
+									<h6 class="text-secondary font-weight-medium">TOTAL TRAFFIC</h6>
+									<h3 class="text-number text-dark"><b>350,897</b></h3>
+								</div>
+								<div class="col-6">
+									<div class="icon-div icon-red float-right">
+										<ion-icon class="card-icon" name="speedometer-outline"></ion-icon>
+									</div>
+								</div>
+							</div>
+							<p class="text-percentage">
+								<span class="text-small text-green"><ion-icon name="arrow-up-outline"></ion-icon> 3.48%</span>
+								<small class="text-gray">Since last month</small>
+							</p>
+						</div>
+					</div>
+              	</div>
+              	<div class="col-3 mr-10">
+					<div class="card card-stats">
+						<!-- Card body -->
+						<div class="card-body">
+							<div class="row">
+								<div class="col-6">
+									<h6 class="text-secondary font-weight-medium">NEW USERS</h6>
+									<h3 class="text-number text-dark"><b>2,418</b></h3>
+								</div>
+								<div class="col-6">
+									<div class="icon-div icon-orange float-right">
+										<ion-icon class="card-icon" name="pie-chart-outline"></ion-icon>
+									</div>
+								</div>
+							</div>
+							<p class="text-percentage">
+								<span class="text-small text-green"><ion-icon name="arrow-up-outline"></ion-icon> 14.2%</span>
+								<small class="text-gray">Since last month</small>
+							</p>
+						</div>
+                	</div>
+				</div>
+				<div class="col-3">
+					<div class="card card-stats">
+						<!-- Card body -->
+						<div class="card-body">
+							<div class="row">
+								<div class="col-6">
+									<h6 class="text-secondary font-weight-medium">SALES</h6>
+									<h3 class="text-number text-dark"><b>RM 15,269.00</b></h3>
+								</div>
+								<div class="col-6">
+									<div class="icon-div icon-green float-right">
+										<ion-icon class="card-icon" name="server-outline"></ion-icon>
+									</div>
+								</div>
+							</div>
+								<p class="text-percentage">
+									<span class="text-small text-green"><ion-icon name="arrow-up-outline"></ion-icon> 7.3%</span>
+									<small class="text-gray">Since last month</small>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			<!-- Page content -->
+			<div class="row mt-20 card card-chart-1">
+				<div id="bar" style="width: 550px; height: 400px;"></div>
+				<!-- coding pada home.js -->
+			</div>
+			
+			<!-- pie chart-->
+			<div class="row mt-20">
+				<div id="pie" style="width: 550px; height: 400px;"></div>
+				<!-- coding pada home.js -->
+			</div>
+
         </div>
     </section>
 

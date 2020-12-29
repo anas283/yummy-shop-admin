@@ -100,6 +100,10 @@ html, body {
     width: 16.6666%;
 }
 
+.col-3 {
+    width: 27%;
+}
+
 .col-4 {
     width: 33.3333%;
 }
@@ -108,8 +112,20 @@ html, body {
     width: 50%;
 }
 
+.col-8 {
+    width: 70%;
+}
+
 .m-4 {
     margin: 20px;
+}
+
+.mx-10 {
+    margin: 0px 10px;
+}
+
+.mx-20 {
+    margin: 0px 20px;
 }
 
 .-mt-10 {
@@ -154,6 +170,10 @@ html, body {
 
 .mb-30 {
     margin-bottom: 30px;
+}
+
+.p-10 {
+    padding: 10px;
 }
 
 .p-5 {
