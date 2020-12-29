@@ -20,7 +20,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <div id="mySidenav" class="sidenav">
         <div>
             <a class="logo" href="../home/home.php">
-                <img class="shop-logo" src="../images/shop_logo.png" alt="">
+                <img class="shop-logo" src="../images/yummy-logo.png" alt="">
             </a>
         </div>
         <div class="navs">
