@@ -452,7 +452,7 @@ if(isset($_POST['save-shipping'])) {
                                         </div>
                                         <div class="col-6 justify-content-end">
                                             <h4 class="text-medium font-weight-normal">
-                                                MYR <?php echo $order['shipping_cost']; ?>
+                                            MYR <?php echo number_format((float)$order['shipping_cost'], 2, '.', '') ; ?>
                                             </h4>
                                         </div>
                                     </div>
@@ -467,7 +467,7 @@ if(isset($_POST['save-shipping'])) {
                                         </div>
                                         <div class="col-6 justify-content-end">
                                             <h4 class="text-medium font-weight-normal">
-                                                MYR <?php echo $product['price'] * $orderDetail['order_quantity'] + $order['shipping_cost']; ?>
+                                                MYR <?php echo number_format((float)$product['price'] * $orderDetail['order_quantity'] + $order['shipping_cost'], 2, '.', '') ; ?>
                                             </h4>
                                         </div>
                                     </div>

@@ -412,7 +412,7 @@ if(isset($_POST['search'])) {
                                                     <?php foreach ($orderDetails as $orderDetail) : ?>
                                                         <?php foreach ($products as $product) : ?>
                                                             <?php if($product['product_id'] == $orderDetail['product_id'] && $orderDetail['order_id'] == $order['order_id']) : ?>
-                                                                MYR <?php echo $product['price'] * $orderDetail['order_quantity'] + $order['shipping_cost']; ?>
+                                                                MYR <?php echo number_format((float)$product['price'] * $orderDetail['order_quantity'] + $order['shipping_cost'], 2, '.', '') ; ?>
                                                             <?php endif; ?>
                                                         <?php endforeach; ?> 
                                                     <?php endforeach; ?> 
