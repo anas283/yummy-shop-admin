@@ -174,14 +174,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                     <p class="text-active">Customers</p>
                 </div>
             </a>
-            <a href="../settings/settings.php" class="row nav-item tablinks">
-                <div>    
-                    <ion-icon class="ion-icon" name="settings-outline"></ion-icon>
-                </div>
-                <div>
-                    <p>Settings</p>
-                </div>
-            </a>
         </div>
     </div>
 

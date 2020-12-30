@@ -59,14 +59,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     <p>Customers</p>
                 </div>
             </a>
-            <a href="../settings/settings.php" class="row nav-item tablinks">
-                <div>    
-                    <ion-icon class="ion-icon" name="settings-outline"></ion-icon>
-                </div>
-                <div>
-                    <p>Settings</p>
-                </div>
-            </a>
         </div>
     </div>
 

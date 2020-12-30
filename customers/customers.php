@@ -99,14 +99,6 @@ if(isset($_POST['delete-user'])) {
                     <p class="text-active">Customers</p>
                 </div>
             </a>
-            <a href="../settings/settings.php" class="row nav-item tablinks">
-                <div>    
-                    <ion-icon class="ion-icon" name="settings-outline"></ion-icon>
-                </div>
-                <div>
-                    <p>Settings</p>
-                </div>
-            </a>
         </div>
     </div>
 
@@ -157,7 +149,6 @@ if(isset($_POST['delete-user'])) {
                             <tr class="bg-gray">
                                 <th>NAME</th>
                                 <th class="w-100">ORDERS</th>
-                                <th class="w-100">LAST ORDER</th>
                                 <th class="w-100">TOTAL SPENT</th>
                                 <th class="w-30">&nbsp;</th>
                             </tr>
@@ -170,9 +161,6 @@ if(isset($_POST['delete-user'])) {
                                     </td>
                                     <td class="w-100">
                                         0
-                                    </td>
-                                    <td class="w-100">
-                                        -
                                     </td>
                                     <td class="w-100"> 
                                         MYR0.00
