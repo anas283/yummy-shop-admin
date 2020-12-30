@@ -15,6 +15,33 @@ if(mysqli_num_rows($result) > 0) {
     $users = "";
 }
 
+$sql = "SELECT * FROM orders";
+$result = mysqli_query($link, $sql);
+
+if(mysqli_num_rows($result) > 0) {
+    $orders = mysqli_fetch_all($result, MYSQLI_ASSOC);
+} else {
+    $orders = "";
+}
+
+$sql = "SELECT * FROM order_detail";
+$result = mysqli_query($link, $sql);
+
+if(mysqli_num_rows($result) > 0) {
+    $orderDetails = mysqli_fetch_all($result, MYSQLI_ASSOC);
+} else {
+    $orderDetails = "";
+}
+
+$sql = "SELECT * FROM product";
+$result = mysqli_query($link, $sql);
+
+if(mysqli_num_rows($result) > 0) {
+    $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
+} else {
+    $products = "";
+}
+
 $userId = "";
 
 if(isset($_POST['delete-user'])) {
@@ -160,10 +187,28 @@ if(isset($_POST['delete-user'])) {
                                         <?php echo $user['first_name'] . ' ' . $user['last_name'] ?>
                                     </td>
                                     <td class="w-100">
-                                        0
+                                        <?php $total_order = 0; ?>
+                                        <?php foreach ($orders as $order) : ?>
+                                            <?php if($user['user_id'] == $order['user_id']) : ?>
+                                                <?php $total_order++ ?>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                        <?php echo $total_order ?>
                                     </td>
                                     <td class="w-100"> 
-                                        MYR0.00
+                                        <?php $total_spent = 0; ?>
+                                        <?php foreach ($orders as $order) : ?>
+                                            <?php foreach ($orderDetails as $orderDetail) : ?>
+                                                <?php foreach ($products as $product) : ?>
+                                                    <?php if($order['user_id'] == $user['user_id']) : ?>
+                                                        <?php if($product['product_id'] == $orderDetail['product_id'] && $orderDetail['order_id'] == $order['order_id']) : ?>
+                                                            <?php $total_spent += $product['price'] * $orderDetail['order_quantity'] + $order['shipping_cost']; ?>
+                                                        <?php endif; ?>
+                                                    <?php endif; ?>
+                                                <?php endforeach; ?> 
+                                            <?php endforeach; ?> 
+                                        <?php endforeach; ?> 
+                                        MYR <?php echo number_format((float)$total_spent, 2, '.', '') ?>
                                     </td>
                                     <td class="w-30">
                                         <div class="row">
