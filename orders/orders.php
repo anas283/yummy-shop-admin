@@ -169,6 +169,15 @@ if(isset($_POST['search'])) {
     } else {
         $orders_cancelled = "";
     }
+
+    $sql = "SELECT * FROM product";
+    $result = mysqli_query($link, $sql);
+
+    if(mysqli_num_rows($result) > 0) {
+        $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } else {
+        $products = "";
+    }
 }
 
 ?>
@@ -320,7 +329,15 @@ if(isset($_POST['search'])) {
                                         <td>
                                             <?php echo $order['first_name'] . ' ' . $order['last_name'] ?>
                                         </td>
-                                        <td>MYR0.00</td>
+                                        <td>
+                                            <?php foreach ($orderDetails as $orderDetail) : ?>
+                                                <?php foreach ($products as $product) : ?>
+                                                    <?php if($product['product_id'] == $orderDetail['product_id']) : ?>
+                                                        MYR <?php echo $product['price'] * $orderDetail['order_quantity'] + $order['shipping_cost']; ?>
+                                                    <?php endif; ?>
+                                                <?php endforeach; ?> 
+                                            <?php endforeach; ?> 
+                                        </td>
                                         <td>
                                             <?php if($order['payment_status'] == 'SUCCESS') : ?>
                                                 <span class="success">
@@ -391,7 +408,15 @@ if(isset($_POST['search'])) {
                                                 <td>
                                                     <?php echo $user['first_name'] . ' ' . $user['last_name']; ?>
                                                 </td>
-                                                <td>MYR0.00</td>
+                                                <td>
+                                                    <?php foreach ($orderDetails as $orderDetail) : ?>
+                                                        <?php foreach ($products as $product) : ?>
+                                                            <?php if($product['product_id'] == $orderDetail['product_id'] && $orderDetail['order_id'] == $order['order_id']) : ?>
+                                                                MYR <?php echo $product['price'] * $orderDetail['order_quantity'] + $order['shipping_cost']; ?>
+                                                            <?php endif; ?>
+                                                        <?php endforeach; ?> 
+                                                    <?php endforeach; ?> 
+                                                </td>
                                                 <td>
                                                     <?php if($order['payment_status'] == 'SUCCESS') : ?>
                                                         <span class="success">
@@ -490,7 +515,15 @@ if(isset($_POST['search'])) {
                                             <td>
                                                 <?php echo $user['first_name'] . ' ' . $user['last_name']; ?>
                                             </td>
-                                            <td>MYR0.00</td>
+                                            <td>
+                                                <?php foreach ($orderDetails as $orderDetail) : ?>
+                                                    <?php foreach ($products as $product) : ?>
+                                                        <?php if($product['product_id'] == $orderDetail['product_id'] && $orderDetail['order_id'] == $order['order_id']) : ?>
+                                                            MYR <?php echo $product['price'] * $orderDetail['order_quantity'] + $order['shipping_cost']; ?>
+                                                        <?php endif; ?>
+                                                    <?php endforeach; ?> 
+                                                <?php endforeach; ?> 
+                                            </td>
                                             <td>
                                                 <?php if($order['payment_status'] == 'SUCCESS') : ?>
                                                     <span class="success">
@@ -587,7 +620,15 @@ if(isset($_POST['search'])) {
                                             <td>
                                                 <?php echo $user['first_name'] . ' ' . $user['last_name']; ?>
                                             </td>
-                                            <td>MYR0.00</td>
+                                            <td>
+                                                <?php foreach ($orderDetails as $orderDetail) : ?>
+                                                    <?php foreach ($products as $product) : ?>
+                                                        <?php if($product['product_id'] == $orderDetail['product_id'] && $orderDetail['order_id'] == $order['order_id']) : ?>
+                                                            MYR <?php echo $product['price'] * $orderDetail['order_quantity'] + $order['shipping_cost']; ?>
+                                                        <?php endif; ?>
+                                                    <?php endforeach; ?> 
+                                                <?php endforeach; ?> 
+                                            </td>
                                             <td>
                                                 <?php if($order['payment_status'] == 'SUCCESS') : ?>
                                                     <span class="success">
@@ -684,7 +725,15 @@ if(isset($_POST['search'])) {
                                             <td>
                                                 <?php echo $user['first_name'] . ' ' . $user['last_name']; ?>
                                             </td>
-                                            <td>MYR0.00</td>
+                                            <td>
+                                                <?php foreach ($orderDetails as $orderDetail) : ?>
+                                                    <?php foreach ($products as $product) : ?>
+                                                        <?php if($product['product_id'] == $orderDetail['product_id'] && $orderDetail['order_id'] == $order['order_id']) : ?>
+                                                            MYR <?php echo $product['price'] * $orderDetail['order_quantity'] + $order['shipping_cost']; ?>
+                                                        <?php endif; ?>
+                                                    <?php endforeach; ?> 
+                                                <?php endforeach; ?> 
+                                            </td>
                                             <td>
                                                 <?php if($order['payment_status'] == 'SUCCESS') : ?>
                                                     <span class="success">
@@ -746,9 +795,9 @@ if(isset($_POST['search'])) {
                         <label class="form-label">Product</label>
                         <select class="btn-outline-select" id="product" name="product_id" style="width: 100%">
                             <option value="">Choose product</option>
-                            <option value="1">Product 1</option>
-                            <option value="2">Product 2</option>
-                            <option value="3">Product 3</option>
+                            <?php foreach ($products as $product) : ?> 
+                                <?php echo "<option value=" . $product['product_id'] . "> " . " " . $product['product_name'] .  " </option>"; ?>
+                            <?php endforeach; ?>
                         </select>
                         <small id="product-err" class="error-msg"></small>
                     </div>

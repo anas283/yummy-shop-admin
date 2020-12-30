@@ -8,6 +8,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
 $orderId = $_GET['order_id']; 
 $userId = $_GET['user_id']; 
+$product_id = "";
 
 if($_GET['order_id']) {
 
@@ -27,6 +28,15 @@ if($_GET['order_id']) {
         $orderDetails = mysqli_fetch_all($result, MYSQLI_ASSOC);
     } else {
         $orderDetails = "";
+    }
+
+    $sql = "SELECT * FROM product";
+    $result = mysqli_query($link, $sql);
+
+    if(mysqli_num_rows($result) > 0) {
+        $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } else {
+        $products = "";
     }
 }
 
@@ -417,81 +427,87 @@ if(isset($_POST['save-shipping'])) {
                 <div class="row">
                     <div class="card col-6 card-details mt-20 mr-20 h-fit">
                         <?php foreach ($orderDetails as $orderDetail) : ?>
-                            <div class="row">
-                                <div class="col-6">
-                                    <h4 class="text-medium font-weight-medium">
-                                        The Guide To The Galaxy
-                                    </h4>
-                                </div>
-                                <div class="col-6 justify-content-end">
-                                    <h4 class="text-medium font-weight-normal">
-                                        MYR0.00 x <?php echo $orderDetail['order_quantity']; ?>
-                                    </h4>
-                                </div>
-                            </div>
-                            
-                            <div class="line"></div>
-                
-                            <div class="row">
-                                <div class="col-6">
-                                    <h4 class="text-medium font-weight-medium">
-                                        Shipping
-                                    </h4>
-                                </div>
-                                <div class="col-6 justify-content-end">
-                                    <h4 class="text-medium font-weight-normal">
-                                        RM<?php echo $order['shipping_cost']; ?>
-                                    </h4>
-                                </div>
-                            </div>
-                
-                            <div class="line"></div>
-                
-                            <div class="row">
-                                <div class="col-6">
-                                    <h4 class="text-medium font-weight-medium">
-                                        Total
-                                    </h4>
-                                </div>
-                                <div class="col-6 justify-content-end">
-                                    <h4 class="text-medium font-weight-normal">MYR0.00</h4>
-                                </div>
-                            </div>
-                
-                            <div class="row my-10">
-                                <?php foreach ($orders as $order) : ?>
-                                    <?php if($order['payment_status'] == 'PENDING') : ?>
-                                        <button onclick="openModalPaid()" class="btn-outline" style="margin-right: 7px;">
-                                            Mark as paid
-                                        </button>
-                                    <?php endif; ?>
-                                    <?php if($order['payment_status'] == 'SUCCESS') : ?>
-                                        <button onclick="openModalPaid()" class="btn-outline" style="margin-right: 7px;">
-                                            Mark as unpaid
-                                        </button>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
-                                <form method="post">
-                                    <select onchange="selectStatus()" class="btn-outline-select" name="status" id="status">
-                                        <?php if($order['fulfillment_status'] == 'PROCESSING') : ?>
-                                            <option value="processing">Processing</option>
-                                            <option value="completed">Completed</option>
-                                            <option value="cancelled">Cancelled</option>
-                                        <?php endif; ?>
-                                        <?php if($order['fulfillment_status'] == 'COMPLETED') : ?>
-                                            <option value="completed">Completed</option>
-                                            <option value="processing">Processing</option>
-                                            <option value="cancelled">Cancelled</option>
-                                        <?php endif; ?>
-                                        <?php if($order['fulfillment_status'] == 'CANCELLED') : ?>
-                                            <option value="cancelled">Cancelled</option>
-                                            <option value="processing">Processing</option>
-                                            <option value="completed">Completed</option>
-                                        <?php endif; ?>
-                                    </select>
-                                    <button id="status-btn" type="submit" style="display: none;"></button>
-                                </form>
-                            </div>
+                            <?php foreach ($products as $product) : ?>
+                                <?php if($product['product_id'] == $orderDetail['product_id']) : ?>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <h4 class="text-medium font-weight-medium">
+                                                <?php echo $product['product_name']; ?>
+                                            </h4>
+                                        </div>
+                                        <div class="col-6 justify-content-end">
+                                            <h4 class="text-medium font-weight-normal">
+                                                MYR <?php echo $product['price']; ?> x <?php echo $orderDetail['order_quantity']; ?>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="line"></div>
+                        
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <h4 class="text-medium font-weight-medium">
+                                                Shipping
+                                            </h4>
+                                        </div>
+                                        <div class="col-6 justify-content-end">
+                                            <h4 class="text-medium font-weight-normal">
+                                                MYR <?php echo $order['shipping_cost']; ?>
+                                            </h4>
+                                        </div>
+                                    </div>
+                        
+                                    <div class="line"></div>
+                        
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <h4 class="text-medium font-weight-medium">
+                                                Total
+                                            </h4>
+                                        </div>
+                                        <div class="col-6 justify-content-end">
+                                            <h4 class="text-medium font-weight-normal">
+                                                MYR <?php echo $product['price'] * $orderDetail['order_quantity'] + $order['shipping_cost']; ?>
+                                            </h4>
+                                        </div>
+                                    </div>
+                        
+                                    <div class="row my-10">
+                                        <?php foreach ($orders as $order) : ?>
+                                            <?php if($order['payment_status'] == 'PENDING') : ?>
+                                                <button onclick="openModalPaid()" class="btn-outline" style="margin-right: 7px;">
+                                                    Mark as paid
+                                                </button>
+                                            <?php endif; ?>
+                                            <?php if($order['payment_status'] == 'SUCCESS') : ?>
+                                                <button onclick="openModalPaid()" class="btn-outline" style="margin-right: 7px;">
+                                                    Mark as unpaid
+                                                </button>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                        <form method="post">
+                                            <select onchange="selectStatus()" class="btn-outline-select" name="status" id="status">
+                                                <?php if($order['fulfillment_status'] == 'PROCESSING') : ?>
+                                                    <option value="processing">Processing</option>
+                                                    <option value="completed">Completed</option>
+                                                    <option value="cancelled">Cancelled</option>
+                                                <?php endif; ?>
+                                                <?php if($order['fulfillment_status'] == 'COMPLETED') : ?>
+                                                    <option value="completed">Completed</option>
+                                                    <option value="processing">Processing</option>
+                                                    <option value="cancelled">Cancelled</option>
+                                                <?php endif; ?>
+                                                <?php if($order['fulfillment_status'] == 'CANCELLED') : ?>
+                                                    <option value="cancelled">Cancelled</option>
+                                                    <option value="processing">Processing</option>
+                                                    <option value="completed">Completed</option>
+                                                <?php endif; ?>
+                                            </select>
+                                            <button id="status-btn" type="submit" style="display: none;"></button>
+                                        </form>
+                                    </div>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
                         <?php endforeach; ?>
                     </div>
         

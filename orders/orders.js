@@ -59,7 +59,7 @@ function validateForm() {
         document.getElementById('shipping-err').innerHTML = "Please enter shipping cost";
     }
     if(quantity == "") {
-        document.getElementById('shipping-err').innerHTML = "Please enter quantity";
+        document.getElementById('quantity-err').innerHTML = "Please enter quantity";
     }
 
     if(product != "" && customer != "" && date != "" && shipping != "" && quantity != "") {
