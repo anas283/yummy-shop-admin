@@ -22,7 +22,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
     if(empty(trim($_POST["phone_number"]))){
-        $phone_number_err = "Please enter last name.";
+        $phone_number_err = "Please enter phone number.";
     } else {
         $phone_number = $_POST["phone_number"];
     }
