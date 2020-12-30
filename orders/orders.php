@@ -282,7 +282,7 @@ if(isset($_POST['search'])) {
                     </div>
                 <?php endif; ?>
 
-                <?php if(empty($orders)) : ?>
+                <?php if(empty($orders) && $searchOrders == '0') : ?>
                     <div class="card card-empty">
                         <h4 class="text-dark text-center">Manage orders</h4>
                         <p class="text-secondary text-center -mt-10">When your orders start coming in, you will be able to view and process them here.</p>
@@ -297,7 +297,7 @@ if(isset($_POST['search'])) {
                                     <ion-icon class="search-icon" name="search-outline"></ion-icon>
                                 </div>
                                 <div class="form-group">
-                                    <input id="search" class="form-control search-input" type="text" name="search" placeholder="Search" style="border: 0; margin-top: 8px;">
+                                    <input id="search" class="form-control search-input" type="text" name="search" placeholder="Search" style="border: 0; margin-top: 5px;">
                                 </div>
                             </form>
                         </div>
@@ -467,7 +467,7 @@ if(isset($_POST['search'])) {
                                     <ion-icon class="search-icon" name="search-outline"></ion-icon>
                                 </div>
                                 <div class="form-group">
-                                    <input style="border: 0; margin-top: 5px;" class="form-control search-input" type="text" name="serach" placeholder="Search">
+                                    <input style="border: 0; margin-top: 5px;" class="form-control search-input" type="text" name="search" placeholder="Search">
                                 </div>
                             </form>
                         </div>
@@ -483,67 +483,65 @@ if(isset($_POST['search'])) {
                             </tr>
                             <?php foreach ($orders_processing as $order) : ?>
                                 <?php foreach ($users as $user) : ?>
-                                    <?php foreach ($customers as $customer) : ?>
-                                        <?php if($user['user_id'] == $customer['user_id'] && $customer['cust_id'] == $order['cust_id']) : ?>
-                                            <tr onclick="openOrderDetails(<?php echo $order['order_id'] ?>, <?php echo $user['user_id'] ?>)">
-                                                <td>
-                                                    <button class="btn-empty">
-                                                        #<?php echo $order['order_id'] ?>
-                                                    </button>
-                                                </td>
-                                                <td>
-                                                    <button class="btn-empty">
-                                                        <?php echo $order['order_date'] ?>
-                                                    </button>
-                                                </td>
-                                                <td>
-                                                    <?php echo $user['first_name'] . ' ' . $user['last_name']; ?>
-                                                </td>
-                                                <td>MYR0.00</td>
-                                                <td>
-                                                    <?php if($order['payment_status'] == 'SUCCESS') : ?>
-                                                        <span class="success">
-                                                            <?php echo $order['payment_status'] ?>
-                                                        </span>
+                                    <?php if($order['user_id'] == $user['user_id']) : ?>
+                                        <tr onclick="openOrderDetails(<?php echo $order['order_id'] ?>, <?php echo $user['user_id'] ?>)">
+                                            <td>
+                                                <button class="btn-empty">
+                                                    #<?php echo $order['order_id'] ?>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <button class="btn-empty">
+                                                    <?php echo $order['order_date'] ?>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <?php echo $user['first_name'] . ' ' . $user['last_name']; ?>
+                                            </td>
+                                            <td>MYR0.00</td>
+                                            <td>
+                                                <?php if($order['payment_status'] == 'SUCCESS') : ?>
+                                                    <span class="success">
+                                                        <?php echo $order['payment_status'] ?>
+                                                    </span>
+                                                <?php endif; ?>
+                                                <?php if($order['payment_status'] == 'PENDING') : ?>
+                                                    <span class="pending">
+                                                        <?php echo $order['payment_status'] ?>
+                                                    </span>
+                                                <?php endif; ?>
+                                                <?php if($order['payment_status'] == 'FAILED') : ?>
+                                                    <span class="failed">
+                                                        <?php echo $order['payment_status'] ?>
+                                                    </span>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td>
+                                                <?php if($order['fulfillment_status'] == 'COMPLETED') : ?>
+                                                    <span class="success">
+                                                        <?php echo $order['fulfillment_status'] ?>
+                                                    </span>
+                                                <?php endif; ?>
+                                                <?php if($order['fulfillment_status'] == 'PROCESSING') : ?>
+                                                    <span class="processing">
+                                                        <?php echo $order['fulfillment_status'] ?>
+                                                    </span>
+                                                <?php endif; ?>
+                                                <?php if($order['fulfillment_status'] == 'CANCELLED') : ?>
+                                                    <span class="failed">
+                                                        <?php echo $order['fulfillment_status'] ?>
+                                                    </span>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td>
+                                                <?php foreach ($orderDetails as $orderDetail) : ?>
+                                                    <?php if($order['order_id'] == $orderDetail['order_id']) : ?>
+                                                        <?php echo $orderDetail['order_quantity']; ?>
                                                     <?php endif; ?>
-                                                    <?php if($order['payment_status'] == 'PENDING') : ?>
-                                                        <span class="pending">
-                                                            <?php echo $order['payment_status'] ?>
-                                                        </span>
-                                                    <?php endif; ?>
-                                                    <?php if($order['payment_status'] == 'FAILED') : ?>
-                                                        <span class="failed">
-                                                            <?php echo $order['payment_status'] ?>
-                                                        </span>
-                                                    <?php endif; ?>
-                                                </td>
-                                                <td>
-                                                    <?php if($order['fulfillment_status'] == 'COMPLETED') : ?>
-                                                        <span class="success">
-                                                            <?php echo $order['fulfillment_status'] ?>
-                                                        </span>
-                                                    <?php endif; ?>
-                                                    <?php if($order['fulfillment_status'] == 'PROCESSING') : ?>
-                                                        <span class="processing">
-                                                            <?php echo $order['fulfillment_status'] ?>
-                                                        </span>
-                                                    <?php endif; ?>
-                                                    <?php if($order['fulfillment_status'] == 'CANCELLED') : ?>
-                                                        <span class="failed">
-                                                            <?php echo $order['fulfillment_status'] ?>
-                                                        </span>
-                                                    <?php endif; ?>
-                                                </td>
-                                                <td>
-                                                    <?php foreach ($orderDetails as $orderDetail) : ?>
-                                                        <?php if($order['order_id'] == $orderDetail['order_id']) : ?>
-                                                            <?php echo $orderDetail['order_quantity']; ?>
-                                                        <?php endif; ?>
-                                                    <?php endforeach; ?>    
-                                                </td>
-                                            </tr>
-                                        <?php endif; ?>
-                                    <?php endforeach; ?> 
+                                                <?php endforeach; ?>    
+                                            </td>
+                                        </tr>
+                                    <?php endif; ?>
                                 <?php endforeach; ?> 
                             <?php endforeach; ?>
                         </table>
@@ -582,67 +580,65 @@ if(isset($_POST['search'])) {
                             </tr>
                             <?php foreach ($orders_completed as $order) : ?>
                                 <?php foreach ($users as $user) : ?>
-                                    <?php foreach ($customers as $customer) : ?>
-                                        <?php if($user['user_id'] == $customer['user_id'] && $customer['cust_id'] == $order['cust_id']) : ?>
-                                            <tr onclick="openOrderDetails(<?php echo $order['order_id'] ?>, <?php echo $user['user_id'] ?>)">
-                                                <td>
-                                                    <button class="btn-empty">
-                                                        #<?php echo $order['order_id'] ?>
-                                                    </button>
-                                                </td>
-                                                <td>
-                                                    <button class="btn-empty">
-                                                        <?php echo $order['order_date'] ?>
-                                                    </button>
-                                                </td>
-                                                <td>
-                                                    <?php echo $user['first_name'] . ' ' . $user['last_name']; ?>
-                                                </td>
-                                                <td>MYR0.00</td>
-                                                <td>
-                                                    <?php if($order['payment_status'] == 'SUCCESS') : ?>
-                                                        <span class="success">
-                                                            <?php echo $order['payment_status'] ?>
-                                                        </span>
+                                    <?php if($order['user_id'] == $user['user_id']) : ?>
+                                        <tr onclick="openOrderDetails(<?php echo $order['order_id'] ?>, <?php echo $user['user_id'] ?>)">
+                                            <td>
+                                                <button class="btn-empty">
+                                                    #<?php echo $order['order_id'] ?>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <button class="btn-empty">
+                                                    <?php echo $order['order_date'] ?>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <?php echo $user['first_name'] . ' ' . $user['last_name']; ?>
+                                            </td>
+                                            <td>MYR0.00</td>
+                                            <td>
+                                                <?php if($order['payment_status'] == 'SUCCESS') : ?>
+                                                    <span class="success">
+                                                        <?php echo $order['payment_status'] ?>
+                                                    </span>
+                                                <?php endif; ?>
+                                                <?php if($order['payment_status'] == 'PENDING') : ?>
+                                                    <span class="pending">
+                                                        <?php echo $order['payment_status'] ?>
+                                                    </span>
+                                                <?php endif; ?>
+                                                <?php if($order['payment_status'] == 'FAILED') : ?>
+                                                    <span class="failed">
+                                                        <?php echo $order['payment_status'] ?>
+                                                    </span>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td>
+                                                <?php if($order['fulfillment_status'] == 'COMPLETED') : ?>
+                                                    <span class="success">
+                                                        <?php echo $order['fulfillment_status'] ?>
+                                                    </span>
+                                                <?php endif; ?>
+                                                <?php if($order['fulfillment_status'] == 'PROCESSING') : ?>
+                                                    <span class="processing">
+                                                        <?php echo $order['fulfillment_status'] ?>
+                                                    </span>
+                                                <?php endif; ?>
+                                                <?php if($order['fulfillment_status'] == 'CANCELLED') : ?>
+                                                    <span class="failed">
+                                                        <?php echo $order['fulfillment_status'] ?>
+                                                    </span>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td>
+                                                <?php foreach ($orderDetails as $orderDetail) : ?>
+                                                    <?php if($order['order_id'] == $orderDetail['order_id']) : ?>
+                                                        <?php echo $orderDetail['order_quantity']; ?>
                                                     <?php endif; ?>
-                                                    <?php if($order['payment_status'] == 'PENDING') : ?>
-                                                        <span class="pending">
-                                                            <?php echo $order['payment_status'] ?>
-                                                        </span>
-                                                    <?php endif; ?>
-                                                    <?php if($order['payment_status'] == 'FAILED') : ?>
-                                                        <span class="failed">
-                                                            <?php echo $order['payment_status'] ?>
-                                                        </span>
-                                                    <?php endif; ?>
-                                                </td>
-                                                <td>
-                                                    <?php if($order['fulfillment_status'] == 'COMPLETED') : ?>
-                                                        <span class="success">
-                                                            <?php echo $order['fulfillment_status'] ?>
-                                                        </span>
-                                                    <?php endif; ?>
-                                                    <?php if($order['fulfillment_status'] == 'PROCESSING') : ?>
-                                                        <span class="processing">
-                                                            <?php echo $order['fulfillment_status'] ?>
-                                                        </span>
-                                                    <?php endif; ?>
-                                                    <?php if($order['fulfillment_status'] == 'CANCELLED') : ?>
-                                                        <span class="failed">
-                                                            <?php echo $order['fulfillment_status'] ?>
-                                                        </span>
-                                                    <?php endif; ?>
-                                                </td>
-                                                <td>
-                                                    <?php foreach ($orderDetails as $orderDetail) : ?>
-                                                        <?php if($order['order_id'] == $orderDetail['order_id']) : ?>
-                                                            <?php echo $orderDetail['order_quantity']; ?>
-                                                        <?php endif; ?>
-                                                    <?php endforeach; ?>    
-                                                </td>
-                                            </tr>
-                                        <?php endif; ?>
-                                    <?php endforeach; ?> 
+                                                <?php endforeach; ?>    
+                                            </td>
+                                        </tr>
+                                    <?php endif; ?>
                                 <?php endforeach; ?> 
                             <?php endforeach; ?>
                         </table>
@@ -681,67 +677,65 @@ if(isset($_POST['search'])) {
                             </tr>
                             <?php foreach ($orders_cancelled as $order) : ?>
                                 <?php foreach ($users as $user) : ?>
-                                    <?php foreach ($customers as $customer) : ?>
-                                        <?php if($user['user_id'] == $customer['user_id'] && $customer['cust_id'] == $order['cust_id']) : ?>
-                                            <tr onclick="openOrderDetails(<?php echo $order['order_id'] ?>, <?php echo $user['user_id'] ?>)">
-                                                <td>
-                                                    <button class="btn-empty">
-                                                        #<?php echo $order['order_id'] ?>
-                                                    </button>
-                                                </td>
-                                                <td>
-                                                    <button class="btn-empty">
-                                                        <?php echo $order['order_date'] ?>
-                                                    </button>
-                                                </td>
-                                                <td>
-                                                    <?php echo $user['first_name'] . ' ' . $user['last_name']; ?>
-                                                </td>
-                                                <td>MYR0.00</td>
-                                                <td>
-                                                    <?php if($order['payment_status'] == 'SUCCESS') : ?>
-                                                        <span class="success">
-                                                            <?php echo $order['payment_status'] ?>
-                                                        </span>
+                                    <?php if($order['user_id'] == $user['user_id']) : ?>
+                                        <tr onclick="openOrderDetails(<?php echo $order['order_id'] ?>, <?php echo $user['user_id'] ?>)">
+                                            <td>
+                                                <button class="btn-empty">
+                                                    #<?php echo $order['order_id'] ?>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <button class="btn-empty">
+                                                    <?php echo $order['order_date'] ?>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <?php echo $user['first_name'] . ' ' . $user['last_name']; ?>
+                                            </td>
+                                            <td>MYR0.00</td>
+                                            <td>
+                                                <?php if($order['payment_status'] == 'SUCCESS') : ?>
+                                                    <span class="success">
+                                                        <?php echo $order['payment_status'] ?>
+                                                    </span>
+                                                <?php endif; ?>
+                                                <?php if($order['payment_status'] == 'PENDING') : ?>
+                                                    <span class="pending">
+                                                        <?php echo $order['payment_status'] ?>
+                                                    </span>
+                                                <?php endif; ?>
+                                                <?php if($order['payment_status'] == 'FAILED') : ?>
+                                                    <span class="failed">
+                                                        <?php echo $order['payment_status'] ?>
+                                                    </span>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td>
+                                                <?php if($order['fulfillment_status'] == 'COMPLETED') : ?>
+                                                    <span class="success">
+                                                        <?php echo $order['fulfillment_status'] ?>
+                                                    </span>
+                                                <?php endif; ?>
+                                                <?php if($order['fulfillment_status'] == 'PROCESSING') : ?>
+                                                    <span class="processing">
+                                                        <?php echo $order['fulfillment_status'] ?>
+                                                    </span>
+                                                <?php endif; ?>
+                                                <?php if($order['fulfillment_status'] == 'CANCELLED') : ?>
+                                                    <span class="failed">
+                                                        <?php echo $order['fulfillment_status'] ?>
+                                                    </span>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td>
+                                                <?php foreach ($orderDetails as $orderDetail) : ?>
+                                                    <?php if($order['order_id'] == $orderDetail['order_id']) : ?>
+                                                        <?php echo $orderDetail['order_quantity']; ?>
                                                     <?php endif; ?>
-                                                    <?php if($order['payment_status'] == 'PENDING') : ?>
-                                                        <span class="pending">
-                                                            <?php echo $order['payment_status'] ?>
-                                                        </span>
-                                                    <?php endif; ?>
-                                                    <?php if($order['payment_status'] == 'FAILED') : ?>
-                                                        <span class="failed">
-                                                            <?php echo $order['payment_status'] ?>
-                                                        </span>
-                                                    <?php endif; ?>
-                                                </td>
-                                                <td>
-                                                    <?php if($order['fulfillment_status'] == 'COMPLETED') : ?>
-                                                        <span class="success">
-                                                            <?php echo $order['fulfillment_status'] ?>
-                                                        </span>
-                                                    <?php endif; ?>
-                                                    <?php if($order['fulfillment_status'] == 'PROCESSING') : ?>
-                                                        <span class="processing">
-                                                            <?php echo $order['fulfillment_status'] ?>
-                                                        </span>
-                                                    <?php endif; ?>
-                                                    <?php if($order['fulfillment_status'] == 'CANCELLED') : ?>
-                                                        <span class="failed">
-                                                            <?php echo $order['fulfillment_status'] ?>
-                                                        </span>
-                                                    <?php endif; ?>
-                                                </td>
-                                                <td>
-                                                    <?php foreach ($orderDetails as $orderDetail) : ?>
-                                                        <?php if($order['order_id'] == $orderDetail['order_id']) : ?>
-                                                            <?php echo $orderDetail['order_quantity']; ?>
-                                                        <?php endif; ?>
-                                                    <?php endforeach; ?>    
-                                                </td>
-                                            </tr>
-                                        <?php endif; ?>
-                                    <?php endforeach; ?> 
+                                                <?php endforeach; ?>    
+                                            </td>
+                                        </tr>
+                                    <?php endif; ?>
                                 <?php endforeach; ?> 
                             <?php endforeach; ?>
                         </table>
@@ -778,7 +772,7 @@ if(isset($_POST['search'])) {
                     </div>
                     <div class="form-group mt-10">
                         <label class="form-label">Date</label>
-                        <input class="form-control" type="date" name="date" id="date">
+                        <input class="form-control" type="datetime-local" name="date" id="date">
                         <small id="date-err" class="error-msg"></small>
                     </div>
                     <div class="row">
