@@ -26,7 +26,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     
     if(empty($email_err) && empty($password_err)){
-        $sql = "SELECT user_id, last_name, email, password FROM users WHERE email = ?";
+        $sql = "SELECT user_id, last_name, email, password, level FROM users WHERE email = ?";
         
         if($stmt = mysqli_prepare($link, $sql)){
             mysqli_stmt_bind_param($stmt, "s", $param_email);
@@ -37,18 +37,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 mysqli_stmt_store_result($stmt);
                 
                 if(mysqli_stmt_num_rows($stmt) == 1){                    
-                    mysqli_stmt_bind_result($stmt, $user_id, $last_name, $email, $hashed_password);
+                    mysqli_stmt_bind_result($stmt, $user_id, $last_name, $email, $hashed_password, $level);
                     if(mysqli_stmt_fetch($stmt)){
-                        if(password_verify($password, $hashed_password)){
-                            session_start();
-                            
-                            $_SESSION["loggedin"] = true;
-                            $_SESSION["id"] = $user_id;
-                            $_SESSION["username"] = $last_name;                            
-                            
-                            header("location: ./home/home.php");
-                        } else{
-                            $password_err = "The password you entered was not valid.";
+                        if($level == 'ADMIN') {
+                            if(password_verify($password, $hashed_password)){
+                                session_start();
+                                
+                                $_SESSION["loggedin"] = true;
+                                $_SESSION["id"] = $user_id;
+                                $_SESSION["username"] = $last_name;                            
+                                
+                                header("location: ./home/home.php");
+                            } else{
+                                $password_err = "The password you entered was not valid.";
+                            }
+                        } else {
+                            $email_err = "No account found with that email.";
                         }
                     }
                 } else{
