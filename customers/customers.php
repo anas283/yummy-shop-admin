@@ -6,40 +6,59 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: ../index.php");
 }
 
-$sql = "SELECT * FROM users WHERE level = 'CUSTOMER'";
-$result = mysqli_query($link, $sql);
+if(isset($_POST['search'])) {
 
-if(mysqli_num_rows($result) > 0) {
-    $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $search = $_POST['search'];
+    echo "search: " . $search;
+
+    $sql = "SELECT users.user_id, users.first_name, users.last_name, orders.shipping_cost
+    FROM users
+    INNER JOIN orders ON users.user_id = orders.user_id
+    WHERE users.first_name = $search";
+
+    $result = mysqli_query($link, $sql);
+
+    if(mysqli_num_rows($result) > 0) {
+        // $searchCustomers = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } else {
+        // $searchCustomers = "";
+    }
 } else {
-    $users = "";
-}
+    $sql = "SELECT * FROM users WHERE level = 'CUSTOMER'";
+    $result = mysqli_query($link, $sql);
 
-$sql = "SELECT * FROM orders";
-$result = mysqli_query($link, $sql);
+    if(mysqli_num_rows($result) > 0) {
+        $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } else {
+        $users = "";
+    }
 
-if(mysqli_num_rows($result) > 0) {
-    $orders = mysqli_fetch_all($result, MYSQLI_ASSOC);
-} else {
-    $orders = "";
-}
+    $sql = "SELECT * FROM orders";
+    $result = mysqli_query($link, $sql);
 
-$sql = "SELECT * FROM order_detail";
-$result = mysqli_query($link, $sql);
+    if(mysqli_num_rows($result) > 0) {
+        $orders = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } else {
+        $orders = "";
+    }
 
-if(mysqli_num_rows($result) > 0) {
-    $orderDetails = mysqli_fetch_all($result, MYSQLI_ASSOC);
-} else {
-    $orderDetails = "";
-}
+    $sql = "SELECT * FROM order_detail";
+    $result = mysqli_query($link, $sql);
 
-$sql = "SELECT * FROM product";
-$result = mysqli_query($link, $sql);
+    if(mysqli_num_rows($result) > 0) {
+        $orderDetails = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } else {
+        $orderDetails = "";
+    }
 
-if(mysqli_num_rows($result) > 0) {
-    $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
-} else {
-    $products = "";
+    $sql = "SELECT * FROM product";
+    $result = mysqli_query($link, $sql);
+
+    if(mysqli_num_rows($result) > 0) {
+        $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } else {
+        $products = "";
+    }
 }
 
 $userId = "";
@@ -159,17 +178,72 @@ if(isset($_POST['delete-user'])) {
                 </div>
             <?php endif; ?>
 
-            <?php if (!empty($users)) : ?>
+            <?php if (!empty($searchCustomers)) : ?>
                 <div class="card card-table content">
-                    <div>
-                        <form action="" class="row">
+                    <!-- <div>
+                        <form method="post" class="row">
                             <div>
                                 <ion-icon class="search-icon" name="search-outline"></ion-icon>
                             </div>
                             <div class="form-group">
-                                <input style="border: 0; margin-top: 5px;" class="form-control search-input" type="text" name="serach" placeholder="Search">
+                                <input style="border: 0; margin-top: 5px;" class="form-control search-input" type="text" name="search" placeholder="Search">
                             </div>
                         </form>
+                    </div> -->
+                    <table>
+                        <thead>
+                            <tr class="bg-gray">
+                                <th>NAME</th>
+                                <th class="w-100">ORDERS</th>
+                                <th class="w-100">TOTAL SPENT</th>
+                                <th class="w-30">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($searchCustomers as $user) : ?>
+                                <tr>
+                                    <td>
+                                        <?php echo $user['first_name'] . ' ' . $user['last_name'] ?>
+                                    </td>
+                                    <td class="w-100">
+                                        -
+                                    </td>
+                                    <td class="w-100"> 
+                                        MYR 0
+                                    </td>
+                                    <td class="w-30">
+                                        <div class="row">
+                                            <?php
+                                                $data = array($user['user_id'], $user['address'], $user['address2'], $user['city'], $user['zip_code'], $user['phone_number']);
+                                                echo "<button onclick='openModalDetail(" . json_encode($data) . ")' class='btn-outline'>More</button>";
+                                            ?>
+                                            <button onclick="goToEdit(<?php echo $user['user_id']; ?>)" class="btn-outline" style="margin: 7px 4px;">Edit</button>
+
+                                            <form name="delete-form" method="post">
+                                                <input type="text" name="user_id" value="<?php echo $user['user_id'] ?>" style="display: none;">
+                                                <button type="submit" name="delete-user" class="btn-outline mr-5">Delete</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php endif; ?>
+
+            <?php if (!empty($users)) : ?>
+                <div class="card card-table content">
+                    <div>
+                        &nbsp;
+                        <!-- <form method="post" class="row">
+                            <div>
+                                <ion-icon class="search-icon" name="search-outline"></ion-icon>
+                            </div>
+                            <div class="form-group">
+                                <input style="border: 0; margin-top: 5px;" class="form-control search-input" type="text" name="search" placeholder="Search">
+                            </div>
+                        </form> -->
                     </div>
                     <table>
                         <thead>
