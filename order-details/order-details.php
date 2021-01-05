@@ -378,9 +378,11 @@ if(isset($_POST['save-shipping'])) {
                         #<?php echo $order['order_id']; ?>
                     </h1>
                     <small class="order-date">
-                        <?php echo $order['order_date'] ?>
+                        <?php
+                            $date = $order['order_date'];
+                            echo date('d M Y h:i A', strtotime($date));
+                        ?>
                     </small>
-                    <!-- <small class="order-date">December 16, 2020 10:04 AM</small> -->
                 </div>
                 <div class="row">
                     <?php if($order['payment_status'] == 'SUCCESS') : ?>

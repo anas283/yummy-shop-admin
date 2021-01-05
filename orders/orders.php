@@ -98,21 +98,86 @@ if(isset($_POST['search'])) {
 
     $search = $_POST['search'];
 
-    $sql = "SELECT orders.order_id, orders.order_date, users.user_id, users.first_name, users.last_name, orders.payment_status, orders.fulfillment_status, order_detail.order_quantity
-    FROM orders
-    INNER JOIN order_detail on orders.order_id = order_detail.order_id
-    INNER JOIN users ON orders.user_id = users.user_id
-    WHERE orders.order_id = $search";
+    if(is_numeric($search)) {
+        $sql = "SELECT orders.order_id, orders.order_date, orders.shipping_cost, users.user_id, users.first_name, users.last_name, 
+        orders.payment_status, orders.fulfillment_status, order_detail.order_quantity
+        FROM orders
+        INNER JOIN order_detail on orders.order_id = order_detail.order_id
+        INNER JOIN users ON orders.user_id = users.user_id
+        WHERE orders.order_id = $search";
 
-    $result = mysqli_query($link, $sql);
+        $result = mysqli_query($link, $sql);
 
-    if(mysqli_num_rows($result) > 0) {
-        $searchOrders = mysqli_fetch_all($result, MYSQLI_ASSOC);
-        $orders = "0";
+        if(mysqli_num_rows($result) > 0) {
+            $searchOrders = mysqli_fetch_all($result, MYSQLI_ASSOC);
+            $orders = "0";
+
+            $sql = "SELECT * FROM order_detail WHERE order_id = $search";
+            $result = mysqli_query($link, $sql);
+
+            if(mysqli_num_rows($result) > 0) {
+                $orderDetails = mysqli_fetch_all($result, MYSQLI_ASSOC);
+            } else {
+                $orderDetails = "";
+            }
+
+            $sql = "SELECT * FROM product";
+            $result = mysqli_query($link, $sql);
+
+            if(mysqli_num_rows($result) > 0) {
+                $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
+            } else {
+                $products = "";
+            }
+        } else {
+            $searchOrders = "";
+            $noResult = "y";
+        }
     } else {
         $searchOrders = "";
         $noResult = "y";
+        // search by name
+        // $sql = "SELECT orders.order_id, orders.order_date, orders.shipping_cost, users.user_id, users.first_name, users.last_name, 
+        // orders.payment_status, orders.fulfillment_status, order_detail.order_quantity
+        // FROM orders
+        // INNER JOIN order_detail on orders.order_id = order_detail.order_id
+        // INNER JOIN users ON orders.user_id = users.user_id
+        // WHERE users.first_name OR users.last_name = $search";
+
+        // $result = mysqli_query($link, $sql);
+
+        // if(mysqli_num_rows($result) > 0) {
+
+        //     while($row = $result->fetch_assoc()) {
+        //         echo "id: " . $row["user_id"]. " - Name: " . $row["first_name"]. " " . $row["last_name"]. "<br>";
+        //     }
+
+        //     $searchOrders = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        //     $orders = "0";
+
+            // $sql = "SELECT * FROM order_detail WHERE order_id = $search";
+            // $result = mysqli_query($link, $sql);
+
+            // if(mysqli_num_rows($result) > 0) {
+            //     $orderDetails = mysqli_fetch_all($result, MYSQLI_ASSOC);
+            // } else {
+            //     $orderDetails = "";
+            // }
+
+            // $sql = "SELECT * FROM product";
+            // $result = mysqli_query($link, $sql);
+
+            // if(mysqli_num_rows($result) > 0) {
+            //     $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
+            // } else {
+            //     $products = "";
+            // }
+        // } else {
+        //     $searchOrders = "";
+        //     $noResult = "y";
+        // }
     }
+
 } else {
     $sql = "SELECT * FROM users WHERE level = 'CUSTOMER'";
     $result = mysqli_query($link, $sql);
@@ -323,7 +388,10 @@ if(isset($_POST['search'])) {
                                         </td>
                                         <td>
                                             <button class="btn-empty">
-                                                <?php echo $order['order_date'] ?>
+                                                <?php
+                                                    $date = $order['order_date'];
+                                                    echo date('d/m/Y h:i A', strtotime($date));
+                                                ?>
                                             </button>
                                         </td>
                                         <td>
@@ -402,7 +470,10 @@ if(isset($_POST['search'])) {
                                                 </td>
                                                 <td>
                                                     <button class="btn-empty">
-                                                        <?php echo $order['order_date'] ?>
+                                                    <?php
+                                                        $date = $order['order_date'];
+                                                        echo date('d M Y h:i A', strtotime($date));
+                                                    ?>
                                                     </button>
                                                 </td>
                                                 <td>
@@ -479,14 +550,15 @@ if(isset($_POST['search'])) {
                 <?php if(!empty($orders_processing)) : ?>
                     <div class="card card-table">
                         <div>
-                            <form action="" class="row">
+                            &nbsp;
+                            <!-- <form action="" class="row">
                                 <div>
                                     <ion-icon class="search-icon" name="search-outline"></ion-icon>
                                 </div>
                                 <div class="form-group">
                                     <input style="border: 0; margin-top: 5px;" class="form-control search-input" type="text" name="search" placeholder="Search">
                                 </div>
-                            </form>
+                            </form> -->
                         </div>
                         <table>
                             <tr class="bg-gray">
@@ -584,14 +656,15 @@ if(isset($_POST['search'])) {
                 <?php if(!empty($orders_completed)) : ?>
                     <div class="card card-table">
                         <div>
-                            <form action="" class="row">
+                            &nbsp;
+                            <!-- <form action="" class="row">
                                 <div>
                                     <ion-icon class="search-icon" name="search-outline"></ion-icon>
                                 </div>
                                 <div class="form-group">
                                     <input style="border: 0; margin-top: 5px;" class="form-control search-input" type="text" name="serach" placeholder="Search">
                                 </div>
-                            </form>
+                            </form> -->
                         </div>
                         <table>
                             <tr class="bg-gray">
@@ -689,14 +762,15 @@ if(isset($_POST['search'])) {
                 <?php if(!empty($orders_cancelled)) : ?>
                     <div class="card card-table">
                         <div>
-                            <form action="" class="row">
+                            &nbsp;
+                            <!-- <form action="" class="row">
                                 <div>
                                     <ion-icon class="search-icon" name="search-outline"></ion-icon>
                                 </div>
                                 <div class="form-group">
                                     <input style="border: 0; margin-top: 5px;" class="form-control search-input" type="text" name="serach" placeholder="Search">
                                 </div>
-                            </form>
+                            </form> -->
                         </div>
                         <table>
                             <tr class="bg-gray">
