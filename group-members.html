@@ -14,64 +14,53 @@
 
         <div class="container py-5">
             <h4 class="text-center">Group Members</h4>
-            <div class="row mt-4">
-                <div class="col-sm-12 col-md-3">
-                    <div class="card border-0 shadow p-3">
-                        <div class="img-container">
-                            <img src="./images/akmal.png" class="card-img" alt="profile-picture">
-                        </div>
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Muhamad Akmal Nizam Bin Mazlan</h5>
-                            <p class="card-text">2018677928</p>
-                            <p class="card-text">KCS1105G</p>
-                            <p class="card-text">CSC318: WEB APPLICATION DEVELOPMENT</p>
-                            <p class="card-text">akmalnizam46@gmail.com</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-12 col-md-3">
-                    <div class="card border-0 shadow p-3">
-                        <div class="img-container bg-2">
-                            <img src="./images/mus.png" class="card-img" alt="profile-picture">
-                        </div>
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Akmal Mustaqim Bin Mohd Mustafah</h5>
-                            <p class="card-text">2018676102</p>
-                            <p class="card-text">KCS1105G</p>
-                            <p class="card-text">CSC318: WEB APPLICATION DEVELOPMENT</p>
-                            <p class="card-text">ikahmustafah@gmail.com</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-12 col-md-3">
-                    <div class="card border-0 shadow p-3">
-                        <div class="img-container bg-3">
-                            <img src="./images/anas.png" class="card-img" alt="profile-picture">
-                        </div>
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Muhammad Anas Bin Adam</h5>
-                            <p class="card-text">2018672264</p>
-                            <p class="card-text">KCS1105G</p>
-                            <p class="card-text">CSC318: WEB APPLICATION DEVELOPMENT</p>
-                            <p class="card-text">muhammadanasbinadam@gmail.com</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-12 col-md-3">
-                    <div class="card border-0 shadow p-3">
-                        <div class="img-container bg-4">
-                            <img src="./images/hafiz.png" class="card-img" alt="profile-picture">
-                        </div>
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Muhammad Hafiz Bin Ghazali</h5>
-                            <p class="card-text">2018662856</p>
-                            <p class="card-text">KCS1105G</p>
-                            <p class="card-text">CSC318: WEB APPLICATION DEVELOPMENT</p>
-                            <p class="card-text">hafizxizt476@gmail.com</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+            <table class="table shadow rounded mt-4">
+                <thead>
+                    <tr>
+                        <th scope="col">Picture</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Student Number</th>
+                        <th scope="col">Program Code</th>
+                        <th scope="col">Group</th>
+                        <th scope="col">Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><img src="./images/akmal.png" alt="Akmal"></td>
+                        <td>Muhamad Akmal Nizam Bin Mazlan</td>
+                        <td>2018677928</td>
+                        <td>CSC318: WEB APPLICATION DEVELOPMENT</td>
+                        <td>KCS1105G</td>
+                        <td>akmalnizam46@gmail.com</td>
+                    </tr>
+                    <tr>
+                        <td><img src="./images/mus.png" alt="Mus"></td>
+                        <td>Akmal Mustaqim Bin Mohd Mustafah</td>
+                        <td>2018676102</td>
+                        <td>CSC318: WEB APPLICATION DEVELOPMENT</td>
+                        <td>KCS1105G</td>
+                        <td>ikahmustafah@gmail.com</td>
+                    </tr>
+                    <tr>
+                        <td><img src="./images/anas.png" alt="Anas"></td>
+                        <td>Muhammad Anas Bin Adam</td>
+                        <td>2018672264</td>
+                        <td>CSC318: WEB APPLICATION DEVELOPMENT</td>
+                        <td>KCS1105G</td>
+                        <td>muhammadanasbinadam@gmail.com</td>
+                    </tr>
+                    <tr>
+                        <td><img src="./images/hafiz.png" alt="Hafiz"></td>
+                        <td>Muhammad Hafiz Bin Ghazali</td>
+                        <td>2018662856</td>
+                        <td>CSC318: WEB APPLICATION DEVELOPMENT</td>
+                        <td>KCS1105G</td>
+                        <td>hafizxizt476@gmail.com</td>
+                    </tr>
+                </tbody>
+            </table>
     
             <div class="d-flex justify-content-center mt-4">
                 <a href="./index.php" class="btn btn-primary">Back</a>
@@ -79,35 +68,9 @@
         </div>
 
         <style>
-            .card {
-                min-height: 390px;
-            }
-
-            .img-container {
-                width: 80px;
-                height: 80px;
-                border-radius: 50px;
-                background-color: #0B0B0B;
-                margin: 0 auto;
-                padding: 15px;
-            }
-
-            .bg-2 {
-                background-color: #121927;
-            }
-
-            .bg-3 {
-                background-color: #0D1116;
-            }
-
-            .bg-4 {
-                background-color: #0E1E40;
-            }
-            
-            .card-img {
+            img {
                 width: 50px;
-                height: 50px;
-
+                border-radius: 5px;
             }
         </style>
 
