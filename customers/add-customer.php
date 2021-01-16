@@ -27,7 +27,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if(empty($_POST["email"])){
-        $email_err = "Please enter last name.";
+        $email_err = "Please enter email.";
     } else {
         $email = $_POST['email'];
     }
@@ -129,14 +129,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             </a>
         </div>
         <div class="navs">
-            <a href="../home/home.php" id="overview-tab" class="row nav-item tablinks">
-                <div>
-                    <ion-icon class="ion-icon" name="home-outline"></ion-icon>
-                </div>
-                <div>
-                    <p>Overview</p>
-                </div>
-            </a>
+            
             <a href="../orders/orders.php" id="order" class="row nav-item tablinks">
                 <div>
                     <ion-icon class="ion-icon" name="cart-outline"></ion-icon>

@@ -2,7 +2,7 @@
 session_start();
  
 if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-    header("location: ./home/home.php");
+    header("location: ./orders/orders.php");
     exit;
 }
  
@@ -47,7 +47,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                 $_SESSION["id"] = $user_id;
                                 $_SESSION["username"] = $last_name;                            
                                 
-                                header("location: ./home/home.php");
+                                header("location: ./orders/orders.php");
                             } else{
                                 $password_err = "The password you entered was not valid.";
                             }
@@ -101,16 +101,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     <input class="form-control" type="password" name="password">
                     <small class="error-msg"><?php echo $password_err; ?></small>
                 </div>
-                <div>
-                    <a class="btn-link" href="#">Forgot your password?</a>
-                </div>
-                <button type="submit" class="btn-login">Login</button>
+                <button type="submit" class="btn-login" style="margin-top: 20px;">Login</button>
             </form>
         </div>
         <div class="col-auto mx-auto mt-20">
             <p class="text-small">Don't have an account? <a class="btn-link" href="register.php" style="margin-left: 5px;">Sign up</a></p>
         </div>
+        <div class="col-auto mx-auto">
+            <button onclick="viewGroupMembers()" class="btn-empty" style="margin-top: -15px;">Group members</button>
+        </div>
     </div>
+
+    <script>
+        function viewGroupMembers() {
+            window.open('group-members.html', '_SELF');
+        }
+    </script>
     
 </body>
 </html>

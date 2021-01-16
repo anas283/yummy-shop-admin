@@ -113,14 +113,7 @@ if(isset($_POST['delete-user'])) {
             </a>
         </div>
         <div class="navs">
-            <a href="../home/home.php" id="overview-tab" class="row nav-item tablinks">
-                <div>
-                    <ion-icon class="ion-icon" name="home-outline"></ion-icon>
-                </div>
-                <div>
-                    <p>Overview</p>
-                </div>
-            </a>
+            
             <a href="../orders/orders.php" id="order" class="row nav-item tablinks">
                 <div>
                     <ion-icon class="ion-icon" name="cart-outline"></ion-icon>
@@ -291,11 +284,7 @@ if(isset($_POST['delete-user'])) {
                                                 echo "<button onclick='openModalDetail(" . json_encode($data) . ")' class='btn-outline'>More</button>";
                                             ?>
                                             <button onclick="goToEdit(<?php echo $user['user_id']; ?>)" class="btn-outline" style="margin: 7px 4px;">Edit</button>
-
-                                            <form name="delete-form" method="post">
-                                                <input type="text" name="user_id" value="<?php echo $user['user_id'] ?>" style="display: none;">
-                                                <button type="submit" name="delete-user" class="btn-outline mr-5">Delete</button>
-                                            </form>
+                                            <button onclick="openModalDelete(<?php echo $user['user_id']; ?>)" class="btn-outline mr-5">Delete</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -325,6 +314,22 @@ if(isset($_POST['delete-user'])) {
                 <button onclick="closeModalDetail()" class="btn-purple">Close</button>
             </div>
         </div>
+    </div>
+
+    <div id="modal-delete" class="modal">
+        <form name="cancel-form" method="post">
+            <div class="modal-content">
+                <span onclick="closeModalDelete()" class="close">&times;</span>
+                <h4 class="modal-title">Delete customer</h4>
+                <div class="modal-line"></div>
+                <p class="text-medium font-weight-normal my-20">Are you sure you want to delete this customer?</p>
+
+                <div class="row justify-content-end">
+                    <button onclick="closeModalDelete()" class="btn-outline" style="margin-right: 7px;">No</button>
+                    <a id="delete-customer" class="btn-purple" style="margin-right: 7px; text-decoration: none; padding: 2px 13px; padding-top: 10px; height: 28px;">Yes</a>
+                </div>
+            </div>
+        </form>
     </div>
 
     <script src="./customers.js?v=<?php echo time(); ?>"></script>

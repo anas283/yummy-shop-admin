@@ -8,6 +8,7 @@ function goBack(evt) {
 }
 
 var modalDetail = document.getElementById("modal-detail");
+var modalDelete = document.getElementById("modal-delete");
 var span = document.getElementsByClassName("close")[0];
 
 function openModalDetail(data) {
@@ -25,9 +26,20 @@ function closeModalDetail() {
     modalDetail.style.display = "none";
 }
 
+function openModalDelete(customerId) {
+    document.getElementById('delete-customer').href = "./deleteCustomer.php?customerId=" + customerId;
+    modalDelete.style.display = "block";
+}
+function closeModalDelete() {
+    modalDelete.style.display = "none";
+}
+
 window.onclick = function(event) {
     if (event.target == modalDetail) {
         modalDetail.style.display = "none";
+    }
+    if (event.target == modalDelete) {
+        modalDelete.style.display = "none";
     }
 }
 

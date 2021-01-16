@@ -136,46 +136,6 @@ if(isset($_POST['search'])) {
     } else {
         $searchOrders = "";
         $noResult = "y";
-        // search by name
-        // $sql = "SELECT orders.order_id, orders.order_date, orders.shipping_cost, users.user_id, users.first_name, users.last_name, 
-        // orders.payment_status, orders.fulfillment_status, order_detail.order_quantity
-        // FROM orders
-        // INNER JOIN order_detail on orders.order_id = order_detail.order_id
-        // INNER JOIN users ON orders.user_id = users.user_id
-        // WHERE users.first_name OR users.last_name = $search";
-
-        // $result = mysqli_query($link, $sql);
-
-        // if(mysqli_num_rows($result) > 0) {
-
-        //     while($row = $result->fetch_assoc()) {
-        //         echo "id: " . $row["user_id"]. " - Name: " . $row["first_name"]. " " . $row["last_name"]. "<br>";
-        //     }
-
-        //     $searchOrders = mysqli_fetch_all($result, MYSQLI_ASSOC);
-        //     $orders = "0";
-
-            // $sql = "SELECT * FROM order_detail WHERE order_id = $search";
-            // $result = mysqli_query($link, $sql);
-
-            // if(mysqli_num_rows($result) > 0) {
-            //     $orderDetails = mysqli_fetch_all($result, MYSQLI_ASSOC);
-            // } else {
-            //     $orderDetails = "";
-            // }
-
-            // $sql = "SELECT * FROM product";
-            // $result = mysqli_query($link, $sql);
-
-            // if(mysqli_num_rows($result) > 0) {
-            //     $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
-            // } else {
-            //     $products = "";
-            // }
-        // } else {
-        //     $searchOrders = "";
-        //     $noResult = "y";
-        // }
     }
 
 } else {
@@ -265,14 +225,7 @@ if(isset($_POST['search'])) {
             </a>
         </div>
         <div class="navs">
-            <a href="../home/home.php" id="overview-tab" class="row nav-item tablinks">
-                <div>
-                    <ion-icon class="ion-icon" name="home-outline"></ion-icon>
-                </div>
-                <div>
-                    <p>Overview</p>
-                </div>
-            </a>
+            
             <a href="../orders/orders.php" id="order" class="row nav-item tablinks active">
                 <div>
                     <ion-icon class="ion-icon logo-active" name="cart-outline"></ion-icon>
@@ -581,7 +534,10 @@ if(isset($_POST['search'])) {
                                             </td>
                                             <td>
                                                 <button class="btn-empty">
-                                                    <?php echo $order['order_date'] ?>
+                                                <?php
+                                                    $date = $order['order_date'];
+                                                    echo date('d M Y h:i A', strtotime($date));
+                                                ?>
                                                 </button>
                                             </td>
                                             <td>
@@ -687,7 +643,10 @@ if(isset($_POST['search'])) {
                                             </td>
                                             <td>
                                                 <button class="btn-empty">
-                                                    <?php echo $order['order_date'] ?>
+                                                <?php
+                                                    $date = $order['order_date'];
+                                                    echo date('d M Y h:i A', strtotime($date));
+                                                ?>
                                                 </button>
                                             </td>
                                             <td>
@@ -793,7 +752,10 @@ if(isset($_POST['search'])) {
                                             </td>
                                             <td>
                                                 <button class="btn-empty">
-                                                    <?php echo $order['order_date'] ?>
+                                                <?php
+                                                    $date = $order['order_date'];
+                                                    echo date('d M Y h:i A', strtotime($date));
+                                                ?>
                                                 </button>
                                             </td>
                                             <td>

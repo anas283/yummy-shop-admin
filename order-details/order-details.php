@@ -323,14 +323,7 @@ if(isset($_POST['save-shipping'])) {
             </a>
         </div>
         <div class="navs">
-            <a href="../home/home.php" id="overview-tab" class="row nav-item tablinks">
-                <div>
-                    <ion-icon class="ion-icon" name="home-outline"></ion-icon>
-                </div>
-                <div>
-                    <p>Overview</p>
-                </div>
-            </a>
+            
             <a href="../orders/orders.php" id="order" class="row nav-item tablinks active">
                 <div>
                     <ion-icon class="ion-icon logo-active" name="cart-outline"></ion-icon>
