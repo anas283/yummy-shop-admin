@@ -12,7 +12,7 @@ if(isset($_GET['customerId'])) {
     $sql = "DELETE FROM users WHERE user_id = $customerId";
 
     if(mysqli_query($link, $sql)) {
-        header("location: ./customers.php");
+        header("location: ./customers.php?deleted=true");
     } else {
         // echo "Error deleting customer: " . mysqli_error($conn);
     }

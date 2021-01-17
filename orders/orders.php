@@ -6,6 +6,16 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: ../index.php");
 }
 
+$order_added_msg = "";
+$order_deleted_msg = "";
+
+if(isset($_GET['deleted'])) {
+
+    if($_GET['deleted'] = 'true') {
+        $order_deleted_msg = "Order successfully deleted!";
+    }
+}
+
 // Define variables and initialize with empty values
 $product_id = $customer_id = $date = $shipping = $quantity = "";
 // $product_err = $customer_err = $date_err = $shipping_err = "";
@@ -71,6 +81,7 @@ if(isset($_POST['save'])) {
                         // Attempt to execute the prepared statement
                         if(mysqli_stmt_execute($stmt)){
                             // echo "Order detail data inserted :)";
+                            $order_added_msg = "Order successfully added!";
                         } else{
                             echo "Something went wrong. Please try again later.";
                         }
@@ -252,6 +263,19 @@ if(isset($_POST['search'])) {
             </a>
         </div>
     </div>
+
+    <!-- The actual snackbar -->
+    <?php if(!empty($order_added_msg)) : ?>
+        <div id="snackbar" class="show snackbar-success">
+            <?php echo $order_added_msg; ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if(!empty($order_deleted_msg)) : ?>
+        <div id="snackbar" class="show snackbar-danger">
+            <?php echo $order_deleted_msg; ?>
+        </div>
+    <?php endif; ?>
 
     <section id="main">
         <nav class="main-nav">

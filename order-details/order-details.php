@@ -155,7 +155,7 @@ if(isset($_POST['cancel'])) {
 
         if(mysqli_query($link, $sql)) {
             // Redirect to orders page
-            header("location: ../orders/orders.php");
+            header("location: ../orders/orders.php?deleted=true");
         } else {
             echo "Error deleting record: " . mysqli_error($conn);
         }

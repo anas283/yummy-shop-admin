@@ -76,7 +76,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                 if(mysqli_stmt_execute($stmt)){
 
                     // Redirect to customer page
-                    header("location: ./products.php");
+                    header("location: ./products.php?edited=true");
                 } else{
                     echo "Something went wrong. Please try again later.";
                 }
@@ -110,7 +110,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
 
                     // Redirect to customer page
-                    header("location: ./products.php");
+                    header("location: ./products.php?edited=true");
                 } else{
                     echo "Something went wrong. Please try again later.";
                 }

@@ -8,6 +8,24 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
 $msg = ""; 
 $productId_d = 0;
+
+$product_added_msg = "";
+$product_edited_msg = "";
+$product_deleted_msg = "";
+
+if(isset($_GET['edited'])) {
+
+    if($_GET['edited'] = 'true') {
+        $product_edited_msg = "Product successfully edited!";
+    }
+}
+
+if(isset($_GET['deleted'])) {
+
+    if($_GET['deleted'] = 'true') {
+        $product_deleted_msg = "Product successfully deleted!";
+    }
+}
   
 // If upload button is clicked ... 
 if (isset($_POST['upload'])) { 
@@ -29,8 +47,9 @@ if (isset($_POST['upload'])) {
         
     // Now let's move the uploaded image into the folder: image 
     if (move_uploaded_file($tempname, $folder))  { 
+        $product_added_msg = "Product successfully added!";
         $msg = "Image uploaded successfully"; 
-    }else{ 
+    } else{ 
         $msg = "Failed to upload image"; 
     } 
 } 
@@ -84,6 +103,24 @@ $result = mysqli_query($link, "SELECT * FROM image");
             </a>
         </div>
     </div>
+
+    <?php if(!empty($product_added_msg)) : ?>
+        <div id="snackbar" class="show snackbar-success">
+            <?php echo $product_added_msg; ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if(!empty($product_edited_msg)) : ?>
+        <div id="snackbar" class="show snackbar-success">
+            <?php echo $product_edited_msg; ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if(!empty($product_deleted_msg)) : ?>
+        <div id="snackbar" class="show snackbar-danger">
+            <?php echo $product_deleted_msg; ?>
+        </div>
+    <?php endif; ?>
 
     <section id="main">
         <nav class="main-nav">

@@ -12,7 +12,7 @@ if(isset($_GET['productId'])) {
     $sql = "DELETE FROM product WHERE product_id = $productId";
 
     if(mysqli_query($link, $sql)) {
-        header("location: ./products.php");
+        header("location: ./products.php?deleted=true");
     } else {
         // echo "Error deleting record: " . mysqli_error($conn);
     }

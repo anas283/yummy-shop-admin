@@ -6,91 +6,65 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: ../index.php");
 }
 
-if(isset($_POST['search'])) {
+$customer_added_msg = "";
+$customer_edited_msg = "";
+$customer_deleted_msg = "";
 
-    $search = $_POST['search'];
-    echo "search: " . $search;
+if(isset($_GET['added'])) {
 
-    $sql = "SELECT users.user_id, users.first_name, users.last_name, orders.shipping_cost
-    FROM users
-    INNER JOIN orders ON users.user_id = orders.user_id
-    WHERE users.first_name = $search";
-
-    $result = mysqli_query($link, $sql);
-
-    if(mysqli_num_rows($result) > 0) {
-        // $searchCustomers = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    } else {
-        // $searchCustomers = "";
-    }
-} else {
-    $sql = "SELECT * FROM users WHERE level = 'CUSTOMER'";
-    $result = mysqli_query($link, $sql);
-
-    if(mysqli_num_rows($result) > 0) {
-        $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    } else {
-        $users = "";
-    }
-
-    $sql = "SELECT * FROM orders";
-    $result = mysqli_query($link, $sql);
-
-    if(mysqli_num_rows($result) > 0) {
-        $orders = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    } else {
-        $orders = "";
-    }
-
-    $sql = "SELECT * FROM order_detail";
-    $result = mysqli_query($link, $sql);
-
-    if(mysqli_num_rows($result) > 0) {
-        $orderDetails = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    } else {
-        $orderDetails = "";
-    }
-
-    $sql = "SELECT * FROM product";
-    $result = mysqli_query($link, $sql);
-
-    if(mysqli_num_rows($result) > 0) {
-        $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    } else {
-        $products = "";
+    if($_GET['added'] = 'true') {
+        $customer_added_msg = "Customer successfully added!";
     }
 }
 
-$userId = "";
+if(isset($_GET['edited'])) {
 
-if(isset($_POST['delete-user'])) {
-    
-    $userId = $_POST['user_id'];
-
-    if(!empty($userId)) {
-
-        // Delete a record by user id
-        $sql = "DELETE FROM users WHERE user_id = $userId";
-    
-        if(mysqli_query($link, $sql)) {
-            
-            // Refresh table
-            $sql = "SELECT * FROM users WHERE level = 'CUSTOMER'";
-            $result = mysqli_query($link, $sql);
-
-            if(mysqli_num_rows($result) > 0) {
-                $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
-            } else {
-                $users = "";
-            }
-        } else {
-            echo "Error deleting record: " . mysqli_error($conn);
-        }
+    if($_GET['edited'] = 'true') {
+        $customer_edited_msg = "Customer successfully edited!";
     }
+} 
 
-    
-    // Close connection
-    mysqli_close($link);
+if(isset($_GET['deleted'])) {
+
+    if($_GET['deleted'] = 'true') {
+        $customer_deleted_msg = "Customer successfully deleted!";
+    }
+} 
+
+$sql = "SELECT * FROM users WHERE level = 'CUSTOMER'";
+$result = mysqli_query($link, $sql);
+
+if(mysqli_num_rows($result) > 0) {
+    $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
+} else {
+    $users = "";
+}
+
+$sql = "SELECT * FROM orders";
+$result = mysqli_query($link, $sql);
+
+if(mysqli_num_rows($result) > 0) {
+    $orders = mysqli_fetch_all($result, MYSQLI_ASSOC);
+} else {
+    $orders = "";
+}
+
+$sql = "SELECT * FROM order_detail";
+$result = mysqli_query($link, $sql);
+
+if(mysqli_num_rows($result) > 0) {
+    $orderDetails = mysqli_fetch_all($result, MYSQLI_ASSOC);
+} else {
+    $orderDetails = "";
+}
+
+$sql = "SELECT * FROM product";
+$result = mysqli_query($link, $sql);
+
+if(mysqli_num_rows($result) > 0) {
+    $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
+} else {
+    $products = "";
 }
 
 ?>
@@ -141,6 +115,24 @@ if(isset($_POST['delete-user'])) {
         </div>
     </div>
 
+    <?php if(!empty($customer_added_msg)) : ?>
+        <div id="snackbar" class="show snackbar-success">
+            <?php echo $customer_added_msg; ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if(!empty($customer_edited_msg)) : ?>
+        <div id="snackbar" class="show snackbar-success">
+            <?php echo $customer_edited_msg; ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if(!empty($customer_deleted_msg)) : ?>
+        <div id="snackbar" class="show snackbar-danger">
+            <?php echo $customer_deleted_msg; ?>
+        </div>
+    <?php endif; ?>
+
     <section id="main">
         <nav class="main-nav">
             <div class="nav-item justify-content-end">
@@ -173,16 +165,6 @@ if(isset($_POST['delete-user'])) {
 
             <?php if (!empty($searchCustomers)) : ?>
                 <div class="card card-table content">
-                    <!-- <div>
-                        <form method="post" class="row">
-                            <div>
-                                <ion-icon class="search-icon" name="search-outline"></ion-icon>
-                            </div>
-                            <div class="form-group">
-                                <input style="border: 0; margin-top: 5px;" class="form-control search-input" type="text" name="search" placeholder="Search">
-                            </div>
-                        </form>
-                    </div> -->
                     <table>
                         <thead>
                             <tr class="bg-gray">
@@ -229,14 +211,6 @@ if(isset($_POST['delete-user'])) {
                 <div class="card card-table content">
                     <div>
                         &nbsp;
-                        <!-- <form method="post" class="row">
-                            <div>
-                                <ion-icon class="search-icon" name="search-outline"></ion-icon>
-                            </div>
-                            <div class="form-group">
-                                <input style="border: 0; margin-top: 5px;" class="form-control search-input" type="text" name="search" placeholder="Search">
-                            </div>
-                        </form> -->
                     </div>
                     <table>
                         <thead>
