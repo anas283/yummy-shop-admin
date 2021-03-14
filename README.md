@@ -1,9 +1,9 @@
-## yummy shop admin
+# Yummy Shop Admin
 
 Yummy Shop is a website built for shop owner to manage their delivery food.
 This is my last semester project.
 
-# How to run
+## How to run
 
 1. Clone this repo in C:\xampp\htdocs.
 2. Get yummy_shop.sql from database folder and import the database in phpmyadmin.
