@@ -10,6 +10,5 @@ This is my last semester project.
 3. Run XAMPP Control Panel
 4. Navigate to http://localhost/admin/
 5. You can sign in using:
-
-email: admin@localhost
-password: 123123123
+- email: admin@localhost
+- password: 123123123
